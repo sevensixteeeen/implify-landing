@@ -208,22 +208,47 @@ footer a:hover{color:var(--text)}
   <p style="margin-bottom:12px"><a href="#">implify.co</a> &nbsp;·&nbsp; <a href="#">Twitter/X</a> &nbsp;·&nbsp; <a href="#">Reddit</a> &nbsp;·&nbsp; <a href="#">Contact</a></p>
   <p>© 2026 Implify. Built for every beginner who's tired of reading.</p>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function joinWaitlist(){
-  var e=document.getElementById('email-input').value.trim();
-  if(!e||!e.includes('@')){document.getElementById('email-input').style.borderColor='rgba(239,68,68,0.5)';return;}
-  document.getElementById('waitlist-wrap').style.display='none';
-  document.getElementById('success-msg').style.display='block';
+const supabase = window.supabase.createClient(
+  'https://pcanpormnrtzuabspejx.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjYW5wb3JtbnJ0enVhYnNwZWp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NDE4MDksImV4cCI6MjA5NTExNzgwOX0.-2FjiPxLO9-8leTwqlHQUGvgDh5TY4EYx1QG5ipxC10'
+)
+
+async function joinWaitlist(){
+  const email = document.getElementById('email-input').value.trim()
+  if(!email || !email.includes('@')){
+    document.getElementById('email-input').style.borderColor='rgba(239,68,68,0.5)'
+    return
+  }
+  const { error } = await supabase.from('waitlist').insert([{ email }])
+  if(error){
+    alert('Something went wrong. Try again.')
+    console.error(error)
+    return
+  }
+  document.getElementById('waitlist-wrap').style.display='none'
+  document.getElementById('success-msg').style.display='block'
 }
-function joinWaitlist2(){
-  var e=document.getElementById('email-input-2').value.trim();
-  if(!e||!e.includes('@')){document.getElementById('email-input-2').style.borderColor='rgba(239,68,68,0.5)';return;}
-  document.getElementById('waitlist-wrap-2').style.display='none';
-  document.getElementById('success-msg-2').style.display='block';
+
+async function joinWaitlist2(){
+  const email = document.getElementById('email-input-2').value.trim()
+  if(!email || !email.includes('@')){
+    document.getElementById('email-input-2').style.borderColor='rgba(239,68,68,0.5)'
+    return
+  }
+  const { error } = await supabase.from('waitlist').insert([{ email }])
+  if(error){
+    alert('Something went wrong. Try again.')
+    console.error(error)
+    return
+  }
+  document.getElementById('waitlist-wrap-2').style.display='none'
+  document.getElementById('success-msg-2').style.display='block'
 }
-document.getElementById('email-input').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist()});
-document.getElementById('email-input-2').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist2()});
+
+document.getElementById('email-input').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist()})
+document.getElementById('email-input-2').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist2()})
 </script>
 </body>
 </html>
