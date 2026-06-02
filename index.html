@@ -4,251 +4,304 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Implify — Stop Reading. Start Doing.</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080808;--surface:#101010;--surface2:#161616;--border:rgba(255,255,255,0.07);--border-hover:rgba(255,255,255,0.14);--orange:#ff5f1f;--orange-light:#ff7a42;--orange-dim:rgba(255,95,31,0.12);--orange-dim2:rgba(255,95,31,0.06);--text:#f2ede4;--text-muted:rgba(242,237,228,0.5);--text-faint:rgba(242,237,228,0.25);--green:#22c55e}
+:root {
+  --bg: #050505;
+  --surface: #0c0c0c;
+  --surface2: #111;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --blue: #00D4FF;
+  --blue-dim: rgba(0,212,255,0.08);
+  --blue-dim2: rgba(0,212,255,0.04);
+  --blue-glow: rgba(0,212,255,0.15);
+  --text: #f0f0f0;
+  --text-muted: rgba(240,240,240,0.45);
+  --text-faint: rgba(240,240,240,0.2);
+  --green: #00FF94;
+  --yellow: #FFE500;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);background:rgba(8,8,8,0.8)}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px;color:var(--text);text-decoration:none}
-.logo span{color:var(--orange)}
-.nav-pill{background:var(--orange);color:#fff;padding:9px 20px;border-radius:100px;font-size:14px;font-weight:500;text-decoration:none;transition:opacity .2s}
-.nav-pill:hover{opacity:0.85}
-.nav-badge{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:0.04em;border:1px solid var(--border);padding:6px 14px;border-radius:100px}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(255,95,31,0.08) 0%,transparent 65%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange-dim2);border:1px solid rgba(255,95,31,0.2);border-radius:100px;padding:7px 16px;font-size:13px;color:var(--orange-light);font-weight:500;margin-bottom:40px;letter-spacing:0.03em}
-.hero-eyebrow::before{content:'';width:7px;height:7px;background:var(--orange);border-radius:50%;display:block;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(52px,8vw,96px);font-weight:800;line-height:0.95;letter-spacing:-3px;margin-bottom:28px;max-width:900px}
-.hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;color:var(--orange);letter-spacing:-2px}
-.hero-sub{font-size:clamp(17px,2.2vw,21px);color:var(--text-muted);max-width:560px;line-height:1.55;margin-bottom:52px;font-weight:300}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(24px);background:rgba(5,5,5,0.85);border-bottom:1px solid var(--border)}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.5px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px var(--blue)}50%{opacity:0.4;box-shadow:none}}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-tag{font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:0.1em;border:1px solid rgba(0,212,255,0.25);padding:5px 12px;border-radius:4px}
+.nav-cta{background:var(--blue);color:#000;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif;text-decoration:none;letter-spacing:0.02em;transition:opacity .2s,transform .15s}
+.nav-cta:hover{opacity:0.88;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:140px 48px 80px;position:relative;overflow:hidden;max-width:1400px;margin:0 auto}
+.hero-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
+.hero-bg::before{content:'';position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 60%);pointer-events:none}
+.hero-bg::after{content:'';position:absolute;bottom:-20%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,0.04) 0%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-mono{font-family:'Space Mono',monospace;font-size:12px;color:var(--blue);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.hero-mono::before{content:'';width:32px;height:1px;background:var(--blue);display:block}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,8vw,108px);font-weight:700;line-height:0.92;letter-spacing:-3px;margin-bottom:32px}
+.hero h1 .line1{display:block;color:var(--text)}
+.hero h1 .line2{display:block;color:var(--blue);position:relative}
+.hero-sub{font-size:18px;color:var(--text-muted);max-width:480px;line-height:1.6;margin-bottom:48px;font-weight:300}
 .hero-sub strong{color:var(--text);font-weight:500}
-.waitlist-form{display:flex;gap:10px;max-width:480px;width:100%;margin:0 auto}
-.waitlist-form input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:14px 22px;font-size:15px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.waitlist-form input::placeholder{color:var(--text-faint)}
-.waitlist-form input:focus{border-color:rgba(255,95,31,0.4)}
-.waitlist-form button{background:var(--orange);color:#fff;border:none;border-radius:100px;padding:14px 26px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:transform .15s,opacity .2s}
-.waitlist-form button:hover{opacity:0.88;transform:scale(1.02)}
-.hero-note{margin-top:20px;font-size:13px;color:var(--text-faint)}
-.success-msg{display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:100px;padding:14px 28px;color:var(--green);font-size:15px;font-weight:500;max-width:480px;text-align:center}
-.stats{display:flex;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.stat{flex:1;padding:40px 0;text-align:center;border-right:1px solid var(--border)}
+
+/* FORM */
+.waitlist-wrap{display:flex;gap:12px;max-width:520px}
+.waitlist-wrap input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px 20px;font-size:15px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.waitlist-wrap input::placeholder{color:var(--text-faint)}
+.waitlist-wrap input:focus{border-color:rgba(0,212,255,0.4)}
+.waitlist-wrap button{background:var(--blue);color:#000;border:none;border-radius:6px;padding:14px 24px;font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;letter-spacing:0.03em;transition:opacity .2s,transform .15s}
+.waitlist-wrap button:hover{opacity:0.88;transform:translateY(-1px)}
+.hero-note{margin-top:16px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-faint);letter-spacing:0.05em}
+.success-msg{display:none;background:rgba(0,255,148,0.08);border:1px solid rgba(0,255,148,0.2);border-radius:6px;padding:14px 24px;color:var(--green);font-size:14px;font-family:'Space Mono',monospace;max-width:520px}
+
+/* STATS */
+.stats-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:36px 48px;border-right:1px solid var(--border)}
 .stat:last-child{border-right:none}
-.stat-n{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--text);letter-spacing:-1px}
-.stat-n span{color:var(--orange)}
-.stat-l{font-size:13px;color:var(--text-muted);margin-top:4px;letter-spacing:0.03em}
-section{padding:100px 40px;max-width:1100px;margin:0 auto}
-.label{font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange);margin-bottom:20px}
-.section-title{font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:20px}
-.section-sub{font-size:18px;color:var(--text-muted);max-width:520px;font-weight:300;line-height:1.55}
-.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.problem-card{background:var(--surface);padding:40px;position:relative}
-.problem-card:first-child{border-right:1px solid var(--border)}
-.problem-card-tag{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;padding:5px 12px;border-radius:100px;display:inline-block}
-.tag-bad{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2)}
-.tag-good{background:var(--orange-dim);color:var(--orange-light);border:1px solid rgba(255,95,31,0.2)}
-.problem-card h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:16px;letter-spacing:-0.5px}
-.problem-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-.problem-list li{font-size:15px;color:var(--text-muted);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
-.problem-list li::before{content:'';width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:2px}
-.bad li::before{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3)}
-.good li::before{background:var(--orange-dim);border:1px solid rgba(255,95,31,0.3)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
-.step{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;position:relative;transition:border-color .2s}
-.step:hover{border-color:var(--border-hover)}
-.step-num{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;color:var(--orange-dim);line-height:1;margin-bottom:20px;letter-spacing:-2px}
-.step h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-0.3px}
-.step p{font-size:15px;color:var(--text-muted);line-height:1.55}
-.step-arrow{position:absolute;top:50%;right:-14px;transform:translateY(-50%);width:28px;height:28px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-faint);z-index:2}
-.tracks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.track{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 24px;cursor:default;transition:all .2s;position:relative;overflow:hidden}
-.track::before{content:'';position:absolute;inset:0;background:var(--orange-dim2);opacity:0;transition:opacity .2s}
-.track:hover{border-color:rgba(255,95,31,0.25);transform:translateY(-2px)}
-.track:hover::before{opacity:1}
-.track-icon{font-size:28px;margin-bottom:16px;display:block}
-.track h4{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;letter-spacing:-0.3px;position:relative}
-.track p{font-size:13px;color:var(--text-muted);line-height:1.45;position:relative}
-.track-badge{position:absolute;top:16px;right:16px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:var(--orange-dim);color:var(--orange-light);border:1px solid rgba(255,95,31,0.2)}
-.cta-inner{background:var(--surface);border-top:1px solid var(--border);padding:100px 40px;text-align:center;position:relative;overflow:hidden}
-.cta-inner::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(255,95,31,0.07) 0%,transparent 60%);pointer-events:none}
-.cta-inner .section-title{max-width:700px;margin:0 auto 20px}
-.cta-inner .section-sub{margin:0 auto 48px}
-footer{padding:40px;text-align:center;border-top:1px solid var(--border)}
-footer p{font-size:13px;color:var(--text-faint)}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;letter-spacing:-1px;color:var(--text);margin-bottom:4px}
+.stat-n span{color:var(--blue)}
+.stat-l{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase}
+
+/* SECTIONS */
+.section{padding:120px 48px;max-width:1200px;margin:0 auto}
+.section-tag{font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.section-tag::before{content:'';width:24px;height:1px;background:var(--blue);display:block}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-2px;line-height:0.95;margin-bottom:24px}
+.section-sub{font-size:18px;color:var(--text-muted);max-width:480px;font-weight:300;line-height:1.6}
+.divider{border:none;border-top:1px solid var(--border)}
+
+/* PROBLEM */
+.problem-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:64px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.problem-col{background:var(--surface);padding:48px}
+.problem-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:24px}
+.label-bad{background:rgba(255,50,50,0.08);color:#ff6b6b;border:1px solid rgba(255,50,50,0.15)}
+.label-good{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(0,212,255,0.2)}
+.problem-col h3{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:24px}
+.problem-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.problem-list li{font-size:14px;color:var(--text-muted);display:flex;align-items:flex-start;gap:12px;line-height:1.5;font-family:'Inter',sans-serif}
+.problem-list li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.bad-list li::before{background:#ff6b6b}
+.good-list li::before{background:var(--blue)}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:64px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.step{background:var(--surface);padding:48px 40px}
+.step-num{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;color:rgba(0,212,255,0.15);line-height:1;margin-bottom:24px}
+.step h3{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;letter-spacing:-0.3px;margin-bottom:12px}
+.step p{font-size:14px;color:var(--text-muted);line-height:1.6;font-family:'Inter',sans-serif}
+
+/* TRACKS */
+.tracks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:64px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.track{background:var(--surface);padding:32px 28px;transition:background .2s;position:relative;cursor:default}
+.track:hover{background:var(--surface2)}
+.track-icon{font-size:24px;margin-bottom:16px;display:block}
+.track h4{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;letter-spacing:-0.2px}
+.track p{font-size:13px;color:var(--text-muted);line-height:1.5;font-family:'Inter',sans-serif}
+.track-tag{position:absolute;top:16px;right:16px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--blue-dim);color:var(--blue);border:1px solid rgba(0,212,255,0.2)}
+
+/* CTA */
+.cta-section{background:var(--surface);border-top:1px solid var(--border);padding:120px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:400px;background:radial-gradient(ellipse,rgba(0,212,255,0.05) 0%,transparent 60%);pointer-events:none}
+.cta-inner{max-width:700px;margin:0 auto;position:relative}
+
+/* FOOTER */
+footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+footer p{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-faint);letter-spacing:0.05em}
 footer a{color:var(--text-muted);text-decoration:none;transition:color .2s}
 footer a:hover{color:var(--text)}
-.full-border{border-top:1px solid var(--border)}
-@media(max-width:768px){nav{padding:16px 20px}.hero{padding:100px 20px 60px}.waitlist-form{flex-direction:column}.waitlist-form button{width:100%}.problem-grid{grid-template-columns:1fr}.problem-card:first-child{border-right:none;border-bottom:1px solid var(--border)}.steps{grid-template-columns:1fr}.step-arrow{display:none}section{padding:72px 20px}.stats{flex-direction:column}.stat{border-right:none;border-bottom:1px solid var(--border);padding:28px 0}.stat:last-child{border-bottom:none}.cta-inner{padding:72px 20px}}
+
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .hero{padding:100px 20px 60px}
+  .hero h1{letter-spacing:-2px}
+  .waitlist-wrap{flex-direction:column}
+  .waitlist-wrap button{width:100%}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .stat{padding:24px 20px;border-bottom:1px solid var(--border)}
+  .section{padding:80px 20px}
+  .problem-split{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .cta-section{padding:80px 20px}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:32px 20px}
+}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="logo">Impl<span>i</span>fy</a>
-  <span class="nav-badge">Early Access</span>
-  <a href="#waitlist" class="nav-pill">Join Waitlist</a>
+  <a href="#" class="logo">
+    <span class="logo-dot"></span>
+    Implify
+  </a>
+  <div class="nav-right">
+    <span class="nav-tag">EARLY ACCESS</span>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
 </nav>
 
-<div class="hero" id="waitlist">
-  <div class="hero-eyebrow">Now building — join early access</div>
-  <h1>Stop reading.<br><em>Start doing.</em></h1>
-  <p class="hero-sub">The internet has <strong>endless tutorials</strong> but zero implementation. Implify drops you into real projects with AI guiding every step — for coding, design, marketing, and more.</p>
-  <div id="waitlist-wrap" class="waitlist-form">
-    <input type="email" id="email-input" placeholder="your@email.com" />
-    <button onclick="joinWaitlist()">Get Early Access →</button>
+<div class="hero-bg"></div>
+
+<div style="max-width:1400px;margin:0 auto">
+  <div class="hero" id="waitlist">
+    <div class="hero-content">
+      <div class="hero-mono">Now building in public</div>
+      <h1>
+        <span class="line1">Stop reading.</span>
+        <span class="line2">Start doing.</span>
+      </h1>
+      <p class="hero-sub">
+        The internet has <strong>endless tutorials</strong> but zero implementation. Implify drops you into real projects with AI guiding every step.
+      </p>
+      <div id="waitlist-wrap" class="waitlist-wrap">
+        <input type="email" id="email-input" placeholder="your@email.com" />
+        <button onclick="joinWaitlist()">Get Early Access →</button>
+      </div>
+      <div id="success-msg" class="success-msg">// you're on the list. we'll reach out soon.</div>
+      <p class="hero-note">FREE_TO_JOIN · NO_SPAM · EARLY_DISCOUNT</p>
+    </div>
   </div>
-  <div id="success-msg" class="success-msg">🎉 You're on the list! We'll reach out soon.</div>
-  <p class="hero-note">Free to join · No spam · Early users get lifetime discount</p>
 </div>
 
-<div class="stats" style="max-width:1100px;margin:0 auto">
-  <div class="stat"><div class="stat-n">47<span>M+</span></div><div class="stat-l">Beginners stuck every year</div></div>
+<div class="stats-strip">
+  <div class="stat"><div class="stat-n">47<span>M+</span></div><div class="stat-l">Beginners stuck yearly</div></div>
   <div class="stat"><div class="stat-n">12<span>+</span></div><div class="stat-l">Skill tracks at launch</div></div>
-  <div class="stat"><div class="stat-n">0</div><div class="stat-l">Passive video watching</div></div>
+  <div class="stat"><div class="stat-n">0</div><div class="stat-l">Passive watching</div></div>
   <div class="stat"><div class="stat-n">100<span>%</span></div><div class="stat-l">Hands-on from day one</div></div>
 </div>
 
-<div class="full-border">
-<section>
-  <div class="label">The Problem</div>
-  <h2 class="section-title">You've read the tutorial.<br>You still can't build it.</h2>
-  <p class="section-sub">Every beginner hits the same wall — endless information, zero implementation muscle.</p>
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="problem-card-tag tag-bad">What exists today</div>
+<hr class="divider">
+
+<div class="section">
+  <div class="section-tag">The Problem</div>
+  <h2 class="section-title">You read it.<br>Still can't build it.</h2>
+  <p class="section-sub">Every beginner hits the same wall. Not lack of information — lack of implementation.</p>
+  <div class="problem-split">
+    <div class="problem-col">
+      <span class="problem-label label-bad">What exists today</span>
       <h3>Information overload</h3>
-      <ul class="problem-list bad">
-        <li>100 Git articles but no one shows what to actually type</li>
-        <li>YouTube tutorials that work until your project is different</li>
-        <li>Documentation written for people who already know</li>
-        <li>Forums that assume context you don't have yet</li>
-        <li>You learn in isolation with no feedback on your mistakes</li>
+      <ul class="problem-list bad-list">
+        <li>100 articles — still don't know what to type</li>
+        <li>YouTube tutorials that break on your actual project</li>
+        <li>Docs written for people who already know</li>
+        <li>Forums that assume context you don't have</li>
+        <li>Learning in isolation with zero feedback</li>
       </ul>
     </div>
-    <div class="problem-card">
-      <div class="problem-card-tag tag-good">What Implify does</div>
+    <div class="problem-col">
+      <span class="problem-label label-good">What Implify does</span>
       <h3>Implementation first</h3>
-      <ul class="problem-list good">
-        <li>Real projects from minute one — no fluff, no theory walls</li>
+      <ul class="problem-list good-list">
+        <li>Real projects from minute one — no theory walls</li>
         <li>AI co-pilot watches what you do and corrects live</li>
-        <li>Missions that adapt to your actual project, not a demo</li>
-        <li>Step-by-step context built exactly when you need it</li>
-        <li>You finish every session with something working</li>
+        <li>Missions that adapt to your actual project</li>
+        <li>Context built exactly when you need it</li>
+        <li>Every session ends with something working</li>
       </ul>
     </div>
   </div>
-</section>
 </div>
 
-<div class="full-border">
-<section>
-  <div class="label">How It Works</div>
+<hr class="divider">
+
+<div class="section">
+  <div class="section-tag">How It Works</div>
   <h2 class="section-title">Three steps.<br>Real skills.</h2>
-  <p class="section-sub">No course syllabus. No 40-hour video series. Just pick a skill and do the work.</p>
+  <p class="section-sub">No syllabus. No 40-hour videos. Pick a skill and build something real.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">01</div>
       <h3>Pick your mission</h3>
-      <p>Choose a real-world scenario — "Deploy your first website", "Build a marketing email", "Commit code without breaking things". Each mission is a real task, not a toy example.</p>
-      <div class="step-arrow">→</div>
+      <p>Choose a real-world scenario — "Deploy your first website", "Fix this broken repo", "Build a contact form". Real tasks, not toy examples.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
       <h3>Get dropped in</h3>
-      <p>You're inside a live sandbox — a real environment. No setup. No confusion about where to start. The project is already there. Your job is to complete it.</p>
-      <div class="step-arrow">→</div>
+      <p>You're inside a live sandbox instantly. No setup. No confusion. The project is there. Your job is to complete it.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
       <h3>AI guides you through</h3>
-      <p>Make a mistake? The AI explains exactly why. Stuck? It gives a nudge, not the answer. You build understanding that sticks — not just the output.</p>
+      <p>Make a mistake? AI explains why. Stuck? It nudges, not answers. You build understanding that sticks.</p>
     </div>
   </div>
-</section>
 </div>
 
-<div class="full-border">
-<section>
-  <div class="label">Skill Tracks</div>
+<hr class="divider">
+
+<div class="section">
+  <div class="section-tag">Skill Tracks</div>
   <h2 class="section-title">One platform.<br>Every skill.</h2>
   <p class="section-sub">From Git commits to video edits — if beginners get stuck on implementation, we cover it.</p>
-  <div style="margin-top:48px"></div>
   <div class="tracks-grid">
-    <div class="track"><span class="track-icon">⚡</span><div class="track-badge">Launch</div><h4>Frontend Dev</h4><p>HTML, CSS, JS, React — build real interfaces, not color boxes</p></div>
-    <div class="track"><span class="track-icon">⚙️</span><div class="track-badge">Launch</div><h4>Backend Dev</h4><p>APIs, databases, servers — ship something that actually works</p></div>
-    <div class="track"><span class="track-icon">🔀</span><div class="track-badge">Launch</div><h4>Git & DevOps</h4><p>Version control, CI/CD, deployment — the stuff no one teaches</p></div>
-    <div class="track"><span class="track-icon">📊</span><h4>Data Science</h4><p>Python, pandas, ML basics — real datasets, real analysis</p></div>
-    <div class="track"><span class="track-icon">🎨</span><h4>UI/UX Design</h4><p>Figma, design systems, prototypes — not theory, actual screens</p></div>
-    <div class="track"><span class="track-icon">📣</span><h4>Digital Marketing</h4><p>SEO, ads, funnels — run a real campaign from zero</p></div>
-    <div class="track"><span class="track-icon">🎬</span><h4>Video Editing</h4><p>Cut, color, export — hands-on with real footage</p></div>
-    <div class="track"><span class="track-icon">✍️</span><h4>Copywriting</h4><p>Write emails, ads, landing pages that actually convert</p></div>
-    <div class="track"><span class="track-icon">🤖</span><h4>AI & Prompting</h4><p>Use AI tools like a pro — workflows, automation, prompts</p></div>
+    <div class="track"><span class="track-icon">⚡</span><div class="track-tag">Launch</div><h4>Frontend Dev</h4><p>HTML, CSS, JS, React — build real interfaces</p></div>
+    <div class="track"><span class="track-icon">⚙️</span><div class="track-tag">Launch</div><h4>Backend Dev</h4><p>APIs, databases, servers — ship something real</p></div>
+    <div class="track"><span class="track-icon">🔀</span><div class="track-tag">Launch</div><h4>Git & DevOps</h4><p>Version control, CI/CD — the stuff no one teaches</p></div>
+    <div class="track"><span class="track-icon">📊</span><h4>Data Science</h4><p>Python, pandas, ML — real datasets</p></div>
+    <div class="track"><span class="track-icon">🎨</span><h4>UI/UX Design</h4><p>Figma, design systems — actual screens</p></div>
+    <div class="track"><span class="track-icon">📣</span><h4>Marketing</h4><p>SEO, ads, funnels — real campaigns</p></div>
+    <div class="track"><span class="track-icon">🎬</span><h4>Video Editing</h4><p>Cut, color, export — hands-on footage</p></div>
+    <div class="track"><span class="track-icon">✍️</span><h4>Copywriting</h4><p>Emails, ads, pages that convert</p></div>
+    <div class="track"><span class="track-icon">🤖</span><h4>AI & Prompting</h4><p>Workflows, automation, real prompts</p></div>
   </div>
-  <p style="margin-top:24px;font-size:14px;color:var(--text-faint);text-align:center">+ More tracks added every month based on what you vote for</p>
-</section>
+  <p style="margin-top:20px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-faint);letter-spacing:0.05em">// MORE TRACKS ADDED BASED ON COMMUNITY VOTES</p>
 </div>
 
-<div>
+<div class="cta-section">
   <div class="cta-inner">
-    <div class="label" style="display:block;text-align:center">Early Access</div>
-    <h2 class="section-title" style="max-width:700px;margin:0 auto 20px">Ready to actually<br><em style="font-family:'Instrument Serif',serif;font-style:italic;color:var(--orange)">build something?</em></h2>
-    <p class="section-sub" style="margin:0 auto 48px">Join the waitlist. Early users get lifetime access at a discount + direct input on which tracks we build first.</p>
-    <div id="waitlist-wrap-2" class="waitlist-form" style="justify-content:center">
+    <div class="section-tag" style="justify-content:center;margin-bottom:24px">Early Access</div>
+    <h2 class="section-title" style="letter-spacing:-2px;margin-bottom:20px">Ready to actually<br><span style="color:var(--blue)">build something?</span></h2>
+    <p class="section-sub" style="margin:0 auto 48px;text-align:center">Join the waitlist. First 500 get lifetime discount + direct input on which tracks we build first.</p>
+    <div id="waitlist-wrap-2" class="waitlist-wrap" style="justify-content:center">
       <input type="email" id="email-input-2" placeholder="your@email.com" />
       <button onclick="joinWaitlist2()">Reserve My Spot →</button>
     </div>
-    <div id="success-msg-2" class="success-msg" style="margin:0 auto">🎉 You're on the list! We'll reach out soon.</div>
-    <p class="hero-note" style="margin-top:20px">Implify is launching soon. Be among the first 500.</p>
+    <div id="success-msg-2" class="success-msg" style="margin:16px auto 0">// you're on the list. we'll reach out soon.</div>
+    <p class="hero-note" style="text-align:center;margin-top:16px">LAUNCHING SOON · FIRST 500 USERS GET LIFETIME DISCOUNT</p>
   </div>
 </div>
 
 <footer>
-  <p style="margin-bottom:12px"><a href="#">implify.co</a> &nbsp;·&nbsp; <a href="#">Twitter/X</a> &nbsp;·&nbsp; <a href="#">Reddit</a> &nbsp;·&nbsp; <a href="#">Contact</a></p>
-  <p>© 2026 Implify. Built for every beginner who's tired of reading.</p>
+  <p>© 2026 IMPLIFY — BUILT FOR EVERY BEGINNER WHO'S TIRED OF READING</p>
+  <p>
+    <a href="#">implify.co</a> &nbsp;·&nbsp;
+    <a href="#">Twitter/X</a> &nbsp;·&nbsp;
+    <a href="#">Reddit</a>
+  </p>
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const supabase = window.supabase.createClient(
+const sb = window.supabase.createClient(
   'https://pcanpormnrtzuabspejx.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjYW5wb3JtbnJ0enVhYnNwZWp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NDE4MDksImV4cCI6MjA5NTExNzgwOX0.-2FjiPxLO9-8leTwqlHQUGvgDh5TY4EYx1QG5ipxC10'
 )
 
 async function joinWaitlist(){
   const email = document.getElementById('email-input').value.trim()
-  if(!email || !email.includes('@')){
-    document.getElementById('email-input').style.borderColor='rgba(239,68,68,0.5)'
-    return
-  }
-  const { error } = await supabase.from('waitlist').insert([{ email }])
-  if(error){
-    alert('Something went wrong. Try again.')
-    console.error(error)
-    return
-  }
+  if(!email||!email.includes('@')){document.getElementById('email-input').style.borderColor='rgba(255,50,50,0.5)';return}
+  const{error}=await sb.from('waitlist').insert([{email}])
+  if(error){alert('Something went wrong. Try again.');return}
   document.getElementById('waitlist-wrap').style.display='none'
   document.getElementById('success-msg').style.display='block'
 }
 
 async function joinWaitlist2(){
   const email = document.getElementById('email-input-2').value.trim()
-  if(!email || !email.includes('@')){
-    document.getElementById('email-input-2').style.borderColor='rgba(239,68,68,0.5)'
-    return
-  }
-  const { error } = await supabase.from('waitlist').insert([{ email }])
-  if(error){
-    alert('Something went wrong. Try again.')
-    console.error(error)
-    return
-  }
+  if(!email||!email.includes('@')){document.getElementById('email-input-2').style.borderColor='rgba(255,50,50,0.5)';return}
+  const{error}=await sb.from('waitlist').insert([{email}])
+  if(error){alert('Something went wrong. Try again.');return}
   document.getElementById('waitlist-wrap-2').style.display='none'
   document.getElementById('success-msg-2').style.display='block'
 }
 
-document.getElementById('email-input').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist()})
-document.getElementById('email-input-2').addEventListener('keydown',function(e){if(e.key==='Enter')joinWaitlist2()})
+document.getElementById('email-input').addEventListener('keydown',e=>{if(e.key==='Enter')joinWaitlist()})
+document.getElementById('email-input-2').addEventListener('keydown',e=>{if(e.key==='Enter')joinWaitlist2()})
 </script>
 </body>
 </html>
