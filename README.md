@@ -72,7 +72,7 @@ https://implify-landing-phi.vercel.app
 
 ## Built By
 
-**Harshit Singh** — [@sevensixteeeen](https://github.com/sevensixteeeen)
+**Harshit** — [@sevensixteeeen](https://github.com/sevensixteeeen)
 
 Building Implify in public. Follow the journey on X/Twitter.
 
