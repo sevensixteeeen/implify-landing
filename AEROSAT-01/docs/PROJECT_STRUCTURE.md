@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | Document | PROJECT_STRUCTURE.md |
-| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
+| Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. Phase 2 build step 1 is implemented: `core` (constants, clock, rng, faults, and the truth types) and `sim`. Every other backend module is still a placeholder. `schemas/` and `scenarios/verification/` are still empty, and `data/` is created at run time. Test status is listed at the top of TEST_PLAN.md.
+> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. Phase 2 build steps 1 and 2 are implemented: `core` (constants, clock, rng, faults, and the truth and measurement types), `sim` and `sensors`. Every other backend module is still a placeholder. `schemas/` and `scenarios/verification/` are still empty, and `data/` is created at run time. Test status is listed at the top of TEST_PLAN.md.
 
 ---
 
@@ -193,6 +193,7 @@ App, main   -> components, state, net, react
 | Allowed suffixes | `_m`, `_mps`, `_mps2`, `_s`, `_ms`, `_kg`, `_n`, `_ns` (N·s), `_pa`, `_k`, `_kgpm3`, `_m2`, `_rad`, `_radps`, `_hz`, `_kpm` (K/m, lapse rate), `_jpkgk` (J/(kg·K), specific gas constant) |
 | Altitude always states its reference | `altitude_msl_m`, `altitude_agl_m` (telemetry `altitude_m` is defined as AGL in the protocol) |
 | Truth, measurement and estimate never share a name | `TruthState.velocity_mps` vs `AvionicsEstimate.velocity_mps`: different types, different files |
+| Unit strings carried in data are ASCII and exactly these | `Pa`, `m/s^2`, `rad/s`, `K` (also `s`, `m`, `m/s`) |
 | Dimensionless values say so in a docstring | `mach`, `drag_coefficient` |
 | Enumerations are upper snake case | `PAD_IDLE`, `DEPLOY_DRAG_DEVICE` |
 | Integer time in scenarios is milliseconds | `t_ms`, `t_ignition_ms` |
@@ -263,6 +264,8 @@ Unit conversions for display (K → °C, m/s² → g, rad/s → deg/s) happen on
   "link": { "profile": "ideal" }
 }
 ```
+
+Each sensor section (`baro`, `accel`, `gyro`, `temp`) may carry `"enabled": true` or `"enabled": false`. It defaults to true when omitted, as in REF-01. A disabled sensor generates no samples.
 
 Estimator gains are added to `avionics` in Phase 2 once chosen by analysis. The roll profile is linearly interpolated between points and held after the last one.
 

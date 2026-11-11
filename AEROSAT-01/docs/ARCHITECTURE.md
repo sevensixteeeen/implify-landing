@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Document | ARCHITECTURE.md |
-| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
+| Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 | Scope | Subsystems, mathematical model, sensors, avionics logic, software interfaces, risks |
 
@@ -263,18 +263,25 @@ y_k   = Q( sat( x'_k + b + σ·w_k ) )       w_k ~ N(0, 1), independent
 - `σ` — white-noise standard deviation per sample.
 - `sat` — clip to the sensor range; sets a `saturated` flag.
 - `Q` — round to the nearest multiple of the resolution.
-- First-order lag: `x' ← x' + (1 − exp(−T_s/τ)) · (x − x')`, `T_s` = sample period.
+- First-order lag: `x' ← x' + (1 − exp(−T_s/τ)) · (x − x')`, `T_s` = sample period. The lag state is initialised to the first true value, so the first sample equals truth (before bias and noise) and there is no artificial start-up transient.
 
 ### 5.2 Sensor definitions
 
 Default values are **illustrative**, of the general magnitude of hobby-grade parts, not taken from any datasheet. All are scenario-configurable.
 
+**Channels.** A scalar sensor (barometer, temperature) has one channel, named after its quantity: `pressure`, `temperature`. A vector sensor (accelerometer, gyroscope) has three channels: `x`, `y`, `z`.
+
+**Units.** Unit strings carried in data (samples, the `hello` message, the manifest) are exactly `Pa`, `m/s^2`, `rad/s` and `K`, written in ASCII.
+
+**Enabled flag.** Each sensor has an `enabled` Boolean in its scenario section. It defaults to true when omitted; any value that is not a JSON Boolean is rejected. A disabled sensor is never sampled and generates no samples. The enabled status of all four sensors is recorded in the mission metadata (manifest, FR-FDR-02).
+
 | | Barometer | Accelerometer | Gyroscope | Temperature |
 |---|---|---|---|---|
 | Sensor ID | `baro` | `accel` | `gyro` | `temp` |
 | Quantity | Static pressure | Specific force | Angular rate | Ambient air temperature |
-| Unit | Pa | m/s² | rad/s | K |
-| Channels | 1 | 3 (x, y, z; z = up) | 3 (x, y, z; z = roll) | 1 |
+| Kind | Scalar | Vector | Vector | Scalar |
+| Unit string | `Pa` | `m/s^2` | `rad/s` | `K` |
+| Channels | 1: `pressure` | 3: `x`, `y`, `z` (z = up) | 3: `x`, `y`, `z` (z = roll) | 1: `temperature` |
 | Sample rate | 50 Hz | 200 Hz | 200 Hz | 10 Hz |
 | Ticks per sample | 20 | 5 | 5 | 100 |
 | Range | 1 000 – 110 000 | ±160 | ±35 | 200 – 330 |
@@ -294,7 +301,7 @@ Notes:
 ### 5.3 Random number generation
 
 - Standard library only. One `random.Random` instance per stream.
-- Stream seed = first 8 bytes of `SHA-256("{master_seed}:{stream_name}")`, where the text is encoded as UTF-8 and the eight bytes are interpreted as a big-endian unsigned integer (0 to 2⁶⁴ − 1). Stream names look like `baro.noise`, `baro.bias`, `accel.z.noise`.
+- Stream seed = first 8 bytes of `SHA-256("{master_seed}:{stream_name}")`, where the text is encoded as UTF-8 and the eight bytes are interpreted as a big-endian unsigned integer (0 to 2⁶⁴ − 1). Stream names: a scalar sensor uses `{sensor_id}.noise` and `{sensor_id}.bias` (`baro.noise`, `baro.bias`, `temp.noise`, `temp.bias`); a vector sensor uses `{sensor_id}.{channel}.noise` and `{sensor_id}.{channel}.bias` (`accel.x.noise`, `accel.y.noise`, `accel.z.noise`, `gyro.z.bias`).
 - Gaussian values are produced by a project-owned Box–Muller transform on `Random.random()`. Python guarantees the reproducibility of `random()` for a given seed across versions; it does not guarantee that for `gauss()`.
 
 ---

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Document | TELEMETRY_PROTOCOL.md |
-| Protocol version | 1.0 — APPROVED 2026-11-11 (Phase 1) |
+| Protocol version | 1.0 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 | Transport | WebSocket text frames, UTF-8 JSON, one JSON object per frame |
 | Direction | Server → client only. Commands use the REST API (ARCHITECTURE.md §8.3). |
@@ -15,7 +15,7 @@
 ## 1. Design rules
 
 1. **One object per frame**, no batching, no binary.
-2. **SI units, named in the key.** `altitude_m`, `velocity_mps`, `acceleration_mps2`, `pressure_pa`, `temperature_k`, `roll_rate_radps`, `t_sim_s`.
+2. **SI units, named in the key.** `altitude_m`, `velocity_mps`, `acceleration_mps2`, `pressure_pa`, `temperature_k`, `roll_rate_radps`, `t_sim_s`. Where a unit is carried as a string (the `units` object of `hello`), it is written in ASCII exactly as: `s`, `m`, `m/s`, `m/s^2`, `Pa`, `K`, `rad/s`.
 3. **Every message says it is simulated:** `data_origin` is always `"SIMULATED"`. The value `"MEASURED"` is reserved, is never emitted by this system, and must be rejected by this system's clients.
 4. **Sim time is the timestamp.** Wall-clock time is informational only.
 5. **No non-finite numbers.** `NaN` and `Infinity` are not valid JSON and must never be sent.
@@ -50,7 +50,7 @@
 | `t_wall_utc` | string | – | yes on the wire | ISO 8601 UTC time the server sent the frame. Informational; not recorded. |
 | `altitude_m` | number | m | yes | Estimated altitude above the pad (AGL) |
 | `velocity_mps` | number | m/s | yes | Estimated vertical velocity, positive up |
-| `acceleration_mps2` | number | m/s² | yes | Estimated vertical kinematic acceleration, positive up (bias-corrected specific force minus g₀). About 0 at rest on the pad. |
+| `acceleration_mps2` | number | m/s^2 | yes | Estimated vertical kinematic acceleration, positive up (bias-corrected specific force minus g₀). About 0 at rest on the pad. |
 | `pressure_pa` | number | Pa | yes | Most recent barometer reading |
 | `temperature_k` | number | K | yes | Most recent temperature-sensor reading |
 | `flight_state` | string | – | yes | `PAD_IDLE`, `BOOST`, `COAST`, `DESCENT`, `LANDED` |

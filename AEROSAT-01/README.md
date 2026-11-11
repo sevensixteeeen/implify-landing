@@ -10,10 +10,10 @@ software, sensors, telemetry and ground systems fit together.
 
 ## Status
 
-Phase 1 (specification and setup) is approved. Phase 2 build step 1 is implemented: the shared
-core and the flight simulator (truth physics), tested against closed-form solutions (PHY-01 to
-PHY-16, PHY-18, SEN-12). Sensors, avionics, telemetry, recorder, playback, server and the
-dashboard are not implemented yet. Test status is listed at the top of `docs/TEST_PLAN.md`.
+Phase 1 (specification and setup) is approved. Phase 2 build steps 1 and 2 are implemented: the
+shared core, the flight simulator (truth physics, tested against closed-form solutions: PHY-01 to
+PHY-16, PHY-18) and the synthetic sensors (SEN-01 to SEN-14). Avionics, telemetry, recorder,
+playback, server and the dashboard are not implemented yet. Test status is listed at the top of `docs/TEST_PLAN.md`.
 
 ## Documents
 

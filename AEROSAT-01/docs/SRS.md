@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | Document | SRS.md |
-| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
+| Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
-| Phase | 1 (requirements and architecture) approved 2026-11-11. Phase 2 (implementation) in progress; status is tracked in PROJECT_STRUCTURE.md and TEST_PLAN.md. |
+| Phase | 2 (implementation) in progress; status is tracked in PROJECT_STRUCTURE.md and TEST_PLAN.md. The documents remain under review until final approval. |
 | Related | ARCHITECTURE.md, TELEMETRY_PROTOCOL.md, TEST_PLAN.md, PROJECT_STRUCTURE.md |
 
 ---
@@ -72,7 +72,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-SCN-02 | Every physical quantity in a scenario shall use a unit-suffixed key (e.g. `dry_mass_kg`). | T, I |
 | FR-SCN-03 | Every scenario shall carry `"fictional": true`; the loader shall reject scenarios without it. | T |
 | FR-SCN-04 | A scenario shall contain one master seed from which all random streams are derived. | T |
-| FR-SCN-05 | The loader shall reject: a dry mass that is not finite and positive, a propellant mass that is not finite or is negative (zero propellant is valid), thrust breakpoints not on the 1 ms tick grid, sensor/avionics/telemetry rates that do not divide the physics rate exactly, ignition earlier than 2 s after scenario start (pad calibration time), a constant-density scenario whose `environment.air_density_kgpm3` is missing, non-numeric, non-finite or not positive, and that parameter present in a scenario that uses any other atmosphere model. Unsupported or unexpected density parameters shall be rejected, never silently ignored. | T |
+| FR-SCN-05 | The loader shall reject: a dry mass that is not finite and positive, a propellant mass that is not finite or is negative (zero propellant is valid), thrust breakpoints not on the 1 ms tick grid, sensor/avionics/telemetry rates that do not divide the physics rate exactly, ignition earlier than 2 s after scenario start (pad calibration time), a sensor `enabled` value that is not a Boolean, a constant-density scenario whose `environment.air_density_kgpm3` is missing, non-numeric, non-finite or not positive, and that parameter present in a scenario that uses any other atmosphere model. Unsupported or unexpected density parameters shall be rejected, never silently ignored. | T |
 
 ### 4.2 Flight simulator (SIM)
 
@@ -95,11 +95,11 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 
 | ID | Requirement | Ver. |
 |---|---|---|
-| FR-SEN-01 | The system shall simulate a barometer, accelerometer, gyroscope and temperature sensor as specified in ARCHITECTURE.md §5. | T |
+| FR-SEN-01 | The system shall simulate a barometer, accelerometer, gyroscope and temperature sensor as specified in ARCHITECTURE.md §5. Each sensor shall have an explicit `enabled` Boolean in its configuration, defaulting to true when omitted. A disabled sensor shall generate no samples. | T |
 | FR-SEN-02 | Each sensor shall apply, in this order: dynamics (lag, where defined), bias, noise, saturation, quantization. | T |
 | FR-SEN-03 | Each sensor shall sample at its configured rate on exact ticks. | T |
 | FR-SEN-04 | Each sensor channel shall draw from its own random stream, so changing one sensor never alters another's noise. | T |
-| FR-SEN-05 | Every sample shall carry sim time, sensor ID, channel, value, unit and a saturation flag. | T |
+| FR-SEN-05 | Every sample shall carry sim time, sensor ID, channel, value, unit and a saturation flag. Scalar sensors have one channel named after the quantity (`pressure`, `temperature`); vector sensors have channels `x`, `y`, `z`. Unit strings are exactly `Pa`, `m/s^2`, `rad/s` and `K`. | T |
 | FR-SEN-06 | An "ideal sensors" mode (all error terms off) shall exist for verification. | T |
 | FR-SEN-07 | The accelerometer shall output specific force, not kinematic acceleration. | T |
 
@@ -134,7 +134,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | ID | Requirement | Ver. |
 |---|---|---|
 | FR-FDR-01 | For each mission the recorder shall write: `manifest.json`, `truth.csv`, `truth_events.json`, `sensors.csv`, `avionics.csv`, `telemetry.jsonl`. | T |
-| FR-FDR-02 | The manifest shall record: mission ID, scenario (embedded copy), seed, software version, protocol version, platform, rates, units per column, data category per file, `data_origin: "SIMULATED"`, completion status and SHA-256 of every data file. | T |
+| FR-FDR-02 | The manifest shall record: mission ID, scenario (embedded copy), seed, software version, protocol version, platform, rates, units per column, data category per file, `data_origin: "SIMULATED"`, the enabled or disabled status of each sensor, completion status and SHA-256 of every data file. | T |
 | FR-FDR-03 | Files shall be append-only during a run and flushed at least once per second of wall time. | T |
 | FR-FDR-04 | CSV column names shall carry unit suffixes; numbers shall be written so they read back bit-identically. | T |
 | FR-FDR-05 | Truth, measurements and estimates shall be stored in separate files and never mixed in one table. | T, I |

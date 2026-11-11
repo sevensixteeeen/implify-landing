@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | Document | TEST_PLAN.md |
-| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
+| Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except: ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04 (Phase 1 setup); PHY-01 to PHY-16, PHY-18 and SEN-12 (Phase 2 build step 1). PHY-17 and the multi-seed part of PHY-13 are present but skipped until build step 4.
+> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except: ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04 (Phase 1 setup); PHY-01 to PHY-16, PHY-18 and SEN-12 (Phase 2 build step 1); SEN-01 to SEN-11, SEN-13 and SEN-14 (build step 2). PHY-17 and the multi-seed part of PHY-13 are present but skipped until build step 4.
 > This is a plan. It contains no test results. Numbers shown are expected values derived from formulas or pass/fail limits, never outcomes.
 
 ---
@@ -175,12 +175,13 @@ Initial conditions and unpowered vehicles (decided 2026-11-11): a normal launch 
 | SEN-05 | Quantization | Every output is an integer multiple of the resolution (within floating-point rounding) |
 | SEN-06 | Saturation | Truth beyond range gives the range limit and `saturated = true` |
 | SEN-07 | Sample timing | Sample count = `floor(duration × rate) + 1`; every sample tick is a multiple of the sensor's tick period |
-| SEN-08 | Temperature lag | Step input, noise off: output reaches 63.2 % of the step at τ = 2.0 s within one sample period |
-| SEN-09 | Stream independence | Changing barometer σ, or disabling the gyroscope, leaves the accelerometer noise sequence bit-identical |
+| SEN-08 | Temperature lag | Step input, noise off: output reaches 63.2 % of the step at τ = 2.0 s within one sample period. The first sample equals the first true value exactly, and constant truth gives a constant output (no start-up transient) |
+| SEN-09 | Stream independence | Changing barometer σ, or disabling the gyroscope (`enabled: false`), leaves the accelerometer noise sequence bit-identical |
 | SEN-10 | Reproducibility | Same seed gives identical samples; different seed gives different samples |
-| SEN-11 | Metadata | Every sample has a valid sensor ID, channel and unit from the allowed set |
+| SEN-11 | Metadata | Every sample has a valid sensor ID, channel and unit from the allowed set: `baro` / `pressure` / `Pa`; `accel` / `x`, `y`, `z` / `m/s^2`; `gyro` / `x`, `y`, `z` / `rad/s`; `temp` / `temperature` / `K` |
 | SEN-12 | Gaussian generator | Box–Muller output over 100 000 draws: mean within 0.02, standard deviation within 1 % of 1; first 10 values for a fixed seed match a stored vector within 1×10⁻¹² relative (cross-platform check; bit-for-bit equality across platforms is not required); identical seeds give bit-identical sequences within one environment |
 | SEN-13 | Order of error stages | A constructed case where order matters (large bias near the range limit) gives the result of bias → noise → saturate → quantize |
+| SEN-14 | Enabled flag | Sensors are enabled when `enabled` is omitted; `enabled: false` gives no samples from that sensor and leaves the others unchanged; a value that is not a Boolean is rejected with the field named; the suite reports the enabled status of all four sensors for the mission metadata |
 
 ## 7. Telemetry integrity (TLM)
 
@@ -293,7 +294,7 @@ These check that the project scaffold and toolchain match the specification. The
 | FR-SIM-10 | PHY-06, PHY-07, PHY-08 |
 | FR-SIM-11 | SEN-01, DSH-08 |
 | FR-SIM-12 | ARCH-02 |
-| FR-SEN-01…07 | SEN-01…SEN-13 |
+| FR-SEN-01…07 | SEN-01…SEN-14 |
 | FR-AVI-01 | ARCH-01, ARCH-02, TLM-07 |
 | FR-AVI-02, 03 | EVT-09, EVT-10, EVT-11 |
 | FR-AVI-04, 05 | EVT-01…EVT-08 |

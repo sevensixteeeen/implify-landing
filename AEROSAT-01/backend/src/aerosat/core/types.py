@@ -3,7 +3,7 @@
 Distinct types per data category, so a truth value cannot be passed where a measurement is
 expected without a visible conversion (ARCHITECTURE section 3).
 
-Implemented so far: TruthState and VehicleCommand (build step 1). SensorSample,
+Implemented so far: TruthState and VehicleCommand (build step 1), SensorSample (build step 2).
 AvionicsEstimate, FlightEvent and DownlinkMessage are added with the subsystems that produce them.
 """
 from dataclasses import dataclass
@@ -14,6 +14,22 @@ class VehicleCommand(StrEnum):
     """Commands the avionics computer may send to the vehicle."""
 
     DEPLOY_DRAG_DEVICE = "DEPLOY_DRAG_DEVICE"
+
+
+@dataclass(frozen=True, slots=True)
+class SensorSample:
+    """MEASUREMENT. One reading of one sensor channel (FR-SEN-05).
+
+    Simulated data: truth plus lag, bias, noise, saturation and quantization. `value` is in `unit`.
+    """
+
+    tick: int
+    t_sim_s: float
+    sensor_id: str
+    channel: str
+    value: float
+    unit: str
+    saturated: bool
 
 
 @dataclass(frozen=True, slots=True)
