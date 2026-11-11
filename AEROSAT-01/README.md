@@ -10,10 +10,10 @@ software, sensors, telemetry and ground systems fit together.
 
 ## Status
 
-Initial project setup only. The folder layout, toolchains and test runners are in place; no
-subsystem is implemented. The only tests that exist are the architecture rules (ARCH-01 to
-ARCH-03) and the setup checks (SET-01 to SET-04) from `docs/TEST_PLAN.md`. They verify the
-scaffold and toolchain, not system behaviour.
+Phase 1 (specification and setup) is approved. Phase 2 build step 1 is implemented: the shared
+core and the flight simulator (truth physics), tested against closed-form solutions (PHY-01 to
+PHY-16, PHY-18, SEN-12). Sensors, avionics, telemetry, recorder, playback, server and the
+dashboard are not implemented yet. Test status is listed at the top of `docs/TEST_PLAN.md`.
 
 ## Documents
 

@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | Document | TEST_PLAN.md |
-| Version | 0.1 — DRAFT FOR REVIEW |
+| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
 | Date | 2026-11-10 |
 
-> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04, which are implemented as part of Phase 1 setup.
+> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except: ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04 (Phase 1 setup); PHY-01 to PHY-16, PHY-18 and SEN-12 (Phase 2 build step 1). PHY-17 and the multi-seed part of PHY-13 are present but skipped until build step 4.
 > This is a plan. It contains no test results. Numbers shown are expected values derived from formulas or pass/fail limits, never outcomes.
 
 ---

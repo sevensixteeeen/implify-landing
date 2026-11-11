@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Document | ARCHITECTURE.md |
-| Version | 0.1 — DRAFT FOR REVIEW |
+| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
 | Date | 2026-11-10 |
 | Scope | Subsystems, mathematical model, sensors, avionics logic, software interfaces, risks |
 

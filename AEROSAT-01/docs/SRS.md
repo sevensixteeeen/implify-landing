@@ -3,9 +3,9 @@
 | | |
 |---|---|
 | Document | SRS.md |
-| Version | 0.1 — DRAFT FOR REVIEW |
+| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
 | Date | 2026-11-10 |
-| Phase | 1 (requirements and architecture). No subsystem is implemented yet; only the project scaffold, placeholder modules and setup tests exist. |
+| Phase | 1 (requirements and architecture) approved 2026-11-11. Phase 2 (implementation) in progress; status is tracked in PROJECT_STRUCTURE.md and TEST_PLAN.md. |
 | Related | ARCHITECTURE.md, TELEMETRY_PROTOCOL.md, TEST_PLAN.md, PROJECT_STRUCTURE.md |
 
 ---

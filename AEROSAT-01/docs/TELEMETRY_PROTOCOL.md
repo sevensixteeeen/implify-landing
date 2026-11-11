@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Document | TELEMETRY_PROTOCOL.md |
-| Protocol version | 1.0 — DRAFT FOR REVIEW |
+| Protocol version | 1.0 — APPROVED 2026-11-11 (Phase 1) |
 | Date | 2026-11-10 |
 | Transport | WebSocket text frames, UTF-8 JSON, one JSON object per frame |
 | Direction | Server → client only. Commands use the REST API (ARCHITECTURE.md §8.3). |

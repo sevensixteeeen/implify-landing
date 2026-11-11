@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | Document | PROJECT_STRUCTURE.md |
-| Version | 0.1 — DRAFT FOR REVIEW |
+| Version | 0.1 — APPROVED 2026-11-11 (Phase 1) |
 | Date | 2026-11-10 |
 
-> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. No subsystem is implemented. `schemas/` and `scenarios/verification/` are empty until Phase 2, and `data/` is created at run time. The only tests that exist are ARCH-01 to ARCH-03 and SET-01 to SET-04.
+> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. Phase 2 build step 1 is implemented: `core` (constants, clock, rng, faults, and the truth types) and `sim`. Every other backend module is still a placeholder. `schemas/` and `scenarios/verification/` are still empty, and `data/` is created at run time. Test status is listed at the top of TEST_PLAN.md.
 
 ---
 
