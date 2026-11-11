@@ -117,7 +117,7 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 | PHY-12 | Touchdown: vacuum drop from 100 m | `t = sqrt(2h/g)`; `v = −sqrt(2gh)` | Touchdown time within 1×10⁻³ s; impact velocity within 1×10⁻³ m/s; afterwards h = h_pad and v = 0 exactly |
 | PHY-13 | Truth determinism | Invariant | Two runs bit-identical; with drag device disabled, truth identical across seeds 0–9 |
 | PHY-14 | Time base | Arithmetic | `t == tick / 1000` exactly; at tick 600 000, `t == 600.0` |
-| PHY-15 | Validity handling | Constructed scenarios | `VALIDITY` warning recorded when Mach > 0.8; run stops with `MODEL_RANGE` above 20 km |
+| PHY-15 | Validity handling | Constructed scenarios | One `VALIDITY` warning recorded on each upward crossing of Mach 0.8, not repeated while Mach stays above it; run stops with `MODEL_RANGE` above 20 km |
 | PHY-16 | Command timing | Constraint | `C_d·A` changes exactly one tick after `DEPLOY_DRAG_DEVICE` |
 | PHY-17 | Scenario validation | Constructed bad files | Each rule in FR-SCN-03 and FR-SCN-05 rejected with the field named |
 | PHY-18 | Numerical integrator stress test, 300 s. **Not a flight scenario.** RK4 is applied directly to the bounded synthetic equation `dv/dt = −g − (g / v_t²)·v·\|v\|` with constants `g = 9.80665`, `v_t = 219.1633`, `v(0) = 0`, `Δt = 1 ms` (300 000 steps). Velocity is the only state, so every value stays within `\|v\| ≤ v_t`; altitude is not integrated. The atmosphere model, the simulator and the 0–20 km range check are not involved. | Closed-form limit `v_t` | Speed within 1×10⁻⁶ relative of `v_t` after 300 s; every intermediate value finite |
@@ -134,7 +134,7 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 
 PHY-18 uses no scenario. The other PHY tests use REF-01 or scenarios constructed inside the test.
 
-To be specified before these files are written: the scenario format (PROJECT_STRUCTURE §5) has no field for an initial altitude or velocity (`v0`, drop height), and no way to describe an unpowered vehicle (FR-SCN-05 rejects non-positive masses, and the mass formula in ARCHITECTURE §4.7 divides by the total impulse).
+Initial conditions and unpowered vehicles (decided 2026-11-11): a normal launch scenario starts at rest on the pad. The initial altitude and velocity of a verification run (`v0`, drop height) are simulator settings supplied by the test, not scenario-file fields (ARCHITECTURE §4.8). A vehicle without a thrust table keeps its initial mass, and zero propellant is valid (ARCHITECTURE §4.7). PHY-06 to PHY-08, PHY-10 and PHY-12 are implemented this way, directly against the simulator; the scenario files VER-01 to VER-03 are still to be written.
 
 ## 5. Flight-event detection (EVT)
 
@@ -179,7 +179,7 @@ To be specified before these files are written: the scenario format (PROJECT_STR
 | SEN-09 | Stream independence | Changing barometer σ, or disabling the gyroscope, leaves the accelerometer noise sequence bit-identical |
 | SEN-10 | Reproducibility | Same seed gives identical samples; different seed gives different samples |
 | SEN-11 | Metadata | Every sample has a valid sensor ID, channel and unit from the allowed set |
-| SEN-12 | Gaussian generator | Box–Muller output over 100 000 draws: mean within 0.02, standard deviation within 1 % of 1; first 10 values for a fixed seed match a stored vector (cross-platform check) |
+| SEN-12 | Gaussian generator | Box–Muller output over 100 000 draws: mean within 0.02, standard deviation within 1 % of 1; first 10 values for a fixed seed match a stored vector within 1×10⁻¹² relative (cross-platform check; bit-for-bit equality across platforms is not required); identical seeds give bit-identical sequences within one environment |
 | SEN-13 | Order of error stages | A constructed case where order matters (large bias near the range limit) gives the result of bias → noise → saturate → quantize |
 
 ## 7. Telemetry integrity (TLM)

@@ -2,6 +2,7 @@
 
 ARCHITECTURE section 4.7. All vehicle numbers are fictional simulation parameters.
 """
+import math
 from bisect import bisect_right
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -104,7 +105,10 @@ class Vehicle:
     """Mass, thrust and drag area of the (fictional) vehicle.
 
     `cd_area_m2` is drag coefficient times reference area. Propellant is consumed in proportion to
-    delivered impulse. A vehicle with no thrust keeps its initial mass.
+    delivered impulse. A vehicle without a thrust table keeps its initial mass.
+
+    Validation is strict: every value must be a finite number, the dry mass must be positive, and
+    the propellant mass and drag area must not be negative. Zero propellant is valid.
     """
 
     dry_mass_kg: float
@@ -113,6 +117,10 @@ class Vehicle:
     thrust_curve: ThrustCurve = field(default_factory=lambda: ThrustCurve(()))
 
     def __post_init__(self) -> None:
+        for name in ("dry_mass_kg", "propellant_mass_kg", "cd_area_m2"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise ValueError(f"{name} must be a finite number, got {value!r}")
         if self.dry_mass_kg <= 0.0:
             raise ValueError("dry_mass_kg must be positive")
         if self.propellant_mass_kg < 0.0:

@@ -63,6 +63,19 @@ def test_unpowered_vehicle_keeps_its_mass(unpowered_vehicle: Vehicle) -> None:
     assert unpowered_vehicle.mass_kg(50.0) == 15.0
 
 
+def test_zero_propellant_is_valid_and_mass_validation_is_strict() -> None:
+    assert Vehicle(dry_mass_kg=15.0, propellant_mass_kg=0.0, cd_area_m2=0.005).mass_kg(0.0) == 15.0
+    for bad in (
+        {"dry_mass_kg": 0.0}, {"dry_mass_kg": -1.0}, {"dry_mass_kg": math.nan}, {"dry_mass_kg": math.inf},
+        {"dry_mass_kg": "15"}, {"dry_mass_kg": True},
+        {"propellant_mass_kg": -0.001}, {"propellant_mass_kg": math.nan}, {"propellant_mass_kg": math.inf},
+        {"cd_area_m2": -0.005}, {"cd_area_m2": math.nan},
+    ):
+        values = {"dry_mass_kg": 15.0, "propellant_mass_kg": 5.0, "cd_area_m2": 0.005} | bad
+        with pytest.raises(ValueError):
+            Vehicle(**values)
+
+
 def test_thrust_breakpoints_must_be_integer_milliseconds_in_order() -> None:
     with pytest.raises(ValueError):
         ThrustCurve([(0, 0.0), (100.5, 1500.0)])  # type: ignore[list-item]

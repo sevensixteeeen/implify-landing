@@ -12,7 +12,7 @@ Every model enforces the 0-20 km range and raises `ModelRangeFault` outside it.
 import math
 from dataclasses import dataclass
 
-from aerosat.core.constants import G0_MPS2, GAMMA, LAPSE_RATE, P0_PA, R0_M, R_AIR, T0_K
+from aerosat.core.constants import G0_MPS2, GAMMA, LAPSE_RATE_KPM, P0_PA, R0_M, R_AIR_JPKGK, T0_K
 from aerosat.core.faults import ModelRangeFault
 
 H_TROPOPAUSE_M = 11_000.0
@@ -21,11 +21,11 @@ H_TROPOPAUSE_M = 11_000.0
 H_MAX_M = 20_000.0
 """Upper limit of the model, geopotential altitude, m."""
 
-_PRESSURE_EXPONENT = G0_MPS2 / (R_AIR * LAPSE_RATE)  # dimensionless, about 5.25588
-_T11_K = T0_K - LAPSE_RATE * H_TROPOPAUSE_M
+_PRESSURE_EXPONENT = G0_MPS2 / (R_AIR_JPKGK * LAPSE_RATE_KPM)  # dimensionless, about 5.25588
+_T11_K = T0_K - LAPSE_RATE_KPM * H_TROPOPAUSE_M
 _P11_PA = P0_PA * (_T11_K / T0_K) ** _PRESSURE_EXPONENT
 
-REFERENCE_SPEED_OF_SOUND_MPS = math.sqrt(GAMMA * R_AIR * T0_K)
+REFERENCE_SPEED_OF_SOUND_MPS = math.sqrt(GAMMA * R_AIR_JPKGK * T0_K)
 """Speed of sound at T0, about 340.3 m/s. Used by the simplified reference atmospheres."""
 
 
@@ -68,16 +68,16 @@ def standard_air_at_geopotential(geopotential_m: float) -> AirState:
             f"Altitude left the 0-20 km model range (geopotential altitude {geopotential_m:.3f} m)."
         )
     if geopotential_m <= H_TROPOPAUSE_M:
-        temperature_k = T0_K - LAPSE_RATE * geopotential_m
+        temperature_k = T0_K - LAPSE_RATE_KPM * geopotential_m
         pressure_pa = P0_PA * (temperature_k / T0_K) ** _PRESSURE_EXPONENT
     else:
         temperature_k = _T11_K
-        pressure_pa = _P11_PA * math.exp(-G0_MPS2 * (geopotential_m - H_TROPOPAUSE_M) / (R_AIR * _T11_K))
+        pressure_pa = _P11_PA * math.exp(-G0_MPS2 * (geopotential_m - H_TROPOPAUSE_M) / (R_AIR_JPKGK * _T11_K))
     return AirState(
         temperature_k=temperature_k,
         pressure_pa=pressure_pa,
-        density_kgpm3=pressure_pa / (R_AIR * temperature_k),
-        speed_of_sound_mps=math.sqrt(GAMMA * R_AIR * temperature_k),
+        density_kgpm3=pressure_pa / (R_AIR_JPKGK * temperature_k),
+        speed_of_sound_mps=math.sqrt(GAMMA * R_AIR_JPKGK * temperature_k),
     )
 
 
@@ -120,8 +120,9 @@ class ConstantDensityAtmosphere:
 class VacuumAtmosphere:
     """No air: density and pressure are zero, so there is no drag.
 
-    Temperature and speed of sound keep the reference values T0 and sqrt(gamma*R*T0) so that the
-    truth record and the Mach diagnostic stay finite.
+    Temperature and speed of sound keep the sea-level reference values T0 and sqrt(gamma*R*T0).
+    This is a computational convention only, so that the truth record and the Mach diagnostic
+    stay finite. It is not a physical model of sound speed in a vacuum.
     """
 
     name = "vacuum"

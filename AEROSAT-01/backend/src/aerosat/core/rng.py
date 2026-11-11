@@ -11,7 +11,11 @@ import random
 
 
 def derive_seed(master_seed: int, stream_name: str) -> int:
-    """Seed for one named stream: the first 8 bytes of the SHA-256 digest, read big-endian."""
+    """Seed for one named stream.
+
+    The text "{master_seed}:{stream_name}" is encoded as UTF-8 and hashed with SHA-256. The first
+    eight bytes of the digest are interpreted as a big-endian unsigned integer (0 to 2^64 - 1).
+    """
     digest = hashlib.sha256(f"{master_seed}:{stream_name}".encode("utf-8")).digest()
     return int.from_bytes(digest[:8], "big")
 

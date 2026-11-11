@@ -20,7 +20,10 @@ MACH_VALIDITY_LIMIT = 0.8
 
 @dataclass(frozen=True)
 class DragDevice:
-    """Descent drag device. `cd_area_m2` replaces the vehicle's drag area once deployed."""
+    """Descent drag device.
+
+    On deployment `cd_area_m2` replaces the vehicle's drag area (C_d*A). It is not added to it.
+    """
 
     enabled: bool = False
     cd_area_m2: float = 0.0
@@ -30,8 +33,9 @@ class DragDevice:
 class SimulatorConfig:
     """Everything the simulator needs. Built from a scenario by the mission layer.
 
-    `initial_altitude_agl_m` and `initial_velocity_mps` start the run already in flight. They exist
-    for verification against closed-form solutions and are not scenario parameters.
+    A normal launch scenario starts at rest on the pad (both initial values zero).
+    `initial_altitude_agl_m` and `initial_velocity_mps` start a verification run already in flight,
+    for comparison with closed-form solutions. They are simulator settings, not scenario-file fields.
     """
 
     vehicle: Vehicle

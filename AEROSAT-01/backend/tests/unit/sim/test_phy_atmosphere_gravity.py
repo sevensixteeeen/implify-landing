@@ -15,9 +15,18 @@ from aerosat.sim.atmosphere import (
 )
 from aerosat.sim.gravity import constant_gravity_mps2, inverse_square_gravity_mps2
 
-# Oracle for PHY-01: ICAO Standard Atmosphere (ICAO Doc 7488/3, "Manual of the ICAO Standard
-# Atmosphere"), Table 1, values tabulated against geopotential altitude H. Entered by hand.
-# Pressure is tabulated in hPa and converted here to Pa.
+# Oracle for PHY-01: the ICAO Standard Atmosphere (ICAO Doc 7488, same model as ISO 2533:1975),
+# tabulated against geopotential altitude H. Entered by hand; pressure converted from hPa to Pa.
+#
+# Verification status (2026-11-11): Doc 7488 itself was not available to check against. The rows
+# were compared with secondary published tables instead:
+#   - H = 0, 11 000, 20 000 m: agree with the ISA layer table (288.15 K, 101 325 Pa, 1.225;
+#     216.65 K, 22 632 Pa, 0.3639; 216.65 K, 5 474.9 Pa, 0.0880) to the digits printed there.
+#   - H = 1 000 m: 281.65 K, 89 874.6 Pa and 1.11164 kg/m^3 each appear in a published ISA table
+#     (one table prints 89 874.4 Pa, a 2e-6 relative difference).
+#   - H = 5 000 m: only the temperature (255.65 K) was confirmed. Tables found for pressure and
+#     density at 5 km were indexed by geometric altitude, which is a different quantity.
+# The remaining digits still need checking against the printed document.
 #   H (m)     T (K)     p (Pa)      rho (kg/m^3)
 ICAO_TABLE = [
     (0.0, 288.150, 101_325.0, 1.22500),

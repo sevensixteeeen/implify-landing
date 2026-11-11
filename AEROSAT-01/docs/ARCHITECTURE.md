@@ -91,7 +91,7 @@ Using distinct types (not one shared dictionary) means a truth value cannot be p
 | R | 287.05287 | J/(kg·K) | Specific gas constant of dry air |
 | γ | 1.4 | – | Ratio of specific heats (for speed of sound) |
 
-These are standard published constants, not fictional parameters.
+These are standard published constants, not fictional parameters. In code they are named `G0_MPS2`, `R0_M`, `T0_K`, `P0_PA`, `LAPSE_RATE_KPM`, `R_AIR_JPKGK` and `GAMMA` (PROJECT_STRUCTURE §4).
 
 ### 4.3 Equations of motion
 
@@ -161,6 +161,8 @@ Values the formulas produce (used as a self-consistency check; the independent o
 
 The density is never applied as a hidden default: the scenario must state `environment.air_density_kgpm3`, and validation is strict (FR-SCN-05). A missing, non-numeric, non-finite or non-positive value is rejected, and so is the parameter in a scenario that uses any other atmosphere model. Nothing is silently ignored. The constant-density verification scenario sets 1.225 kg/m³ (TEST_PLAN §4). The 0–20 km model range (§4.10) still applies in this mode.
 
+**Vacuum mode** (`atmosphere_model: "vacuum"`, FR-SIM-10). Density and pressure are zero at every altitude, so there is no drag. Temperature and speed of sound keep the sea-level reference values (288.15 K, ≈ 340.3 m/s). This is a computational convention only, so that the truth record and the Mach number stay finite. It is not a physical model of sound speed in a vacuum. The 0–20 km model range still applies.
+
 ### 4.6 Drag
 
 ```
@@ -169,7 +171,7 @@ F_D = ½ · ρ(h) · (C_d·A) · v · |v|
 
 The `v·|v|` form makes drag always oppose motion, on ascent and descent, with no branching. Unit check: kg/m³ · m² · m²/s² = N ✓.
 
-`C_d·A` (drag coefficient × reference area, m²) is one constant per configuration: `C_d·A` for the vehicle, and a larger value after `DEPLOY_DRAG_DEVICE`.
+`C_d·A` (drag coefficient × reference area, m²) is one constant per configuration: `C_d·A` for the vehicle, and a larger value after `DEPLOY_DRAG_DEVICE`. On deployment the drag device's `C_d·A` (1.5 m² in REF-01) replaces the vehicle's value; it is not added to it.
 
 ### 4.7 Thrust and mass (fictional input)
 
@@ -180,12 +182,13 @@ J(t)  = ∫₀ᵗ F_T dτ                               delivered impulse, N·s 
 m(t)  = m_dry + m_prop · ( 1 − J(t) / J_total )
 ```
 
-Mass is an algebraic function of time, not an integrated state. This assumes propellant is consumed in proportion to thrust, i.e. a constant effective exhaust velocity `J_total / m_prop`, which for fictional inputs is itself a fictional number with no engineering meaning.
+Mass is an algebraic function of time, not an integrated state. A vehicle without a thrust table (`J_total = 0`) keeps its initial mass `m_dry + m_prop`. Zero propellant is valid. Mass validation is strict: the dry mass must be finite and positive, and the propellant mass finite and not negative. This assumes propellant is consumed in proportion to thrust, i.e. a constant effective exhaust velocity `J_total / m_prop`, which for fictional inputs is itself a fictional number with no engineering meaning.
 
 Breakpoints are integer milliseconds so every thrust discontinuity lands exactly on a tick. RK4 loses accuracy when a slope discontinuity falls inside a step.
 
 ### 4.8 Ground constraints
 
+- **Initial conditions:** a normal launch scenario starts at rest on the pad at tick 0. A verification run may instead be initialised in flight, with an initial altitude above the pad and an initial velocity, so that it can be compared with a closed-form solution. These two values are simulator settings (`initial_altitude_agl_m`, `initial_velocity_mps`) supplied by the test. They are not scenario-file fields.
 - **Pad hold:** while the vehicle has never left the pad, if the computed `a < 0` then `a = 0`, `v = 0`, `h = h_pad`.
 - **Touchdown:** when `h` crosses `h_pad` with `v < 0`, the touchdown time is linearly interpolated inside the step, the impact velocity is recorded as a truth event, and the state is set to `h = h_pad`, `v = 0`, `a = 0`. The run continues for the post-touchdown hold (default 5 s) so the avionics can detect landing.
 - **Range check scope:** the `MODEL_RANGE` check applies to accepted states at the end of a step. Intermediate RK4 stage evaluations that dip fractionally below the pad use the pad-altitude atmosphere.
@@ -212,7 +215,7 @@ Explicit Euler (`y + Δt·k1`) is selectable so the difference in accuracy can b
 | Limit | Handling |
 |---|---|
 | 0 ≤ H ≤ 20 km | Hard stop with `MODEL_RANGE` fault outside |
-| Constant C_d, credible only well below Mach 1 | `VALIDITY` warning recorded when M > 0.8 |
+| Constant C_d, credible only well below Mach 1 | One `VALIDITY` warning recorded on each upward crossing of M = 0.8; not repeated on every tick while M stays above it |
 | No wind, no lateral motion, no rotation dynamics | Stated limitation; roll is scripted (D-1) |
 | Standard atmosphere only (no weather) | Stated limitation |
 | Constant-density mode is a fixed reference atmosphere, not altitude-dependent (§4.5) | Stated limitation; for verification against closed-form solutions only |
@@ -291,7 +294,7 @@ Notes:
 ### 5.3 Random number generation
 
 - Standard library only. One `random.Random` instance per stream.
-- Stream seed = first 8 bytes of `SHA-256("{master_seed}:{stream_name}")`. Stream names look like `baro.noise`, `baro.bias`, `accel.z.noise`.
+- Stream seed = first 8 bytes of `SHA-256("{master_seed}:{stream_name}")`, where the text is encoded as UTF-8 and the eight bytes are interpreted as a big-endian unsigned integer (0 to 2⁶⁴ − 1). Stream names look like `baro.noise`, `baro.bias`, `accel.z.noise`.
 - Gaussian values are produced by a project-owned Box–Muller transform on `Random.random()`. Python guarantees the reproducibility of `random()` for a given seed across versions; it does not guarantee that for `gauss()`.
 
 ---

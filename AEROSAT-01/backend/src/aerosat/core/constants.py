@@ -15,11 +15,11 @@ T0_K = 288.15
 P0_PA = 101_325.0
 """Sea-level standard pressure, Pa."""
 
-LAPSE_RATE = 0.0065
-"""Temperature lapse rate L for 0-11 km, in K/m (no unit suffix exists for K/m)."""
+LAPSE_RATE_KPM = 0.0065
+"""Temperature lapse rate L for 0-11 km, K/m."""
 
-R_AIR = 287.05287
-"""Specific gas constant of dry air R, in J/(kg*K) (no unit suffix exists for J/(kg*K))."""
+R_AIR_JPKGK = 287.05287
+"""Specific gas constant of dry air R, J/(kg*K)."""
 
 GAMMA = 1.4
 """Ratio of specific heats of air. Dimensionless."""

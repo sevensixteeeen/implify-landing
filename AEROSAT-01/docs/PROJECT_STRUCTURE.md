@@ -190,7 +190,7 @@ App, main   -> components, state, net, react
 | Rule | Example |
 |---|---|
 | Physical quantities carry a unit suffix everywhere: variables, JSON keys, CSV columns | `altitude_m`, `thrust_n`, `density_kgpm3` |
-| Allowed suffixes | `_m`, `_mps`, `_mps2`, `_s`, `_ms`, `_kg`, `_n`, `_ns` (N·s), `_pa`, `_k`, `_kgpm3`, `_m2`, `_rad`, `_radps`, `_hz` |
+| Allowed suffixes | `_m`, `_mps`, `_mps2`, `_s`, `_ms`, `_kg`, `_n`, `_ns` (N·s), `_pa`, `_k`, `_kgpm3`, `_m2`, `_rad`, `_radps`, `_hz`, `_kpm` (K/m, lapse rate), `_jpkgk` (J/(kg·K), specific gas constant) |
 | Altitude always states its reference | `altitude_msl_m`, `altitude_agl_m` (telemetry `altitude_m` is defined as AGL in the protocol) |
 | Truth, measurement and estimate never share a name | `TruthState.velocity_mps` vs `AvionicsEstimate.velocity_mps`: different types, different files |
 | Dimensionless values say so in a docstring | `mach`, `drag_coefficient` |
