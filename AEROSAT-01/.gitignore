@@ -1,0 +1,14 @@
+# Recorded flights (PROJECT_STRUCTURE section 1: "data/ Not committed")
+/data/
+
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/

@@ -1,0 +1,57 @@
+{
+  "scenario_id": "REF-01",
+  "schema_version": "1.0",
+  "fictional": true,
+  "description": "Reference vertical flight. Fictional parameters for education only.",
+  "seed": 42,
+  "timing": {
+    "physics_rate_hz": 1000,
+    "integrator": "rk4",
+    "t_ignition_ms": 3000,
+    "post_touchdown_hold_ms": 5000,
+    "max_duration_ms": 600000,
+    "truth_log_rate_hz": 200
+  },
+  "environment": {
+    "pad_altitude_msl_m": 0.0,
+    "atmosphere_model": "standard",
+    "gravity_model": "inverse_square"
+  },
+  "vehicle": {
+    "dry_mass_kg": 15.0,
+    "propellant_mass_kg": 5.0,
+    "drag_coefficient": 0.5,
+    "reference_area_m2": 0.01,
+    "thrust_curve": [
+      { "t_ms": 0,    "thrust_n": 0.0 },
+      { "t_ms": 100,  "thrust_n": 1500.0 },
+      { "t_ms": 3000, "thrust_n": 1500.0 },
+      { "t_ms": 3200, "thrust_n": 0.0 }
+    ],
+    "drag_device": { "enabled": true, "cd_area_m2": 1.5, "deploy_delay_after_apogee_ms": 1000 },
+    "roll_profile": [
+      { "t_ms": 0,    "roll_rate_radps": 0.0 },
+      { "t_ms": 3000, "roll_rate_radps": 0.0 },
+      { "t_ms": 6200, "roll_rate_radps": 0.5 }
+    ]
+  },
+  "sensors": {
+    "ideal": false,
+    "baro":  { "rate_hz": 50,  "noise_sigma_pa": 3.0,      "bias_sigma_pa": 30.0,     "resolution_pa": 1.0,      "range_pa": [1000.0, 110000.0] },
+    "accel": { "rate_hz": 200, "noise_sigma_mps2": 0.05,   "bias_sigma_mps2": 0.10,   "resolution_mps2": 0.005,  "range_mps2": [-160.0, 160.0] },
+    "gyro":  { "rate_hz": 200, "noise_sigma_radps": 0.002, "bias_sigma_radps": 0.005, "resolution_radps": 0.001, "range_radps": [-35.0, 35.0] },
+    "temp":  { "rate_hz": 10,  "noise_sigma_k": 0.05,      "bias_sigma_k": 0.5,       "resolution_k": 0.01,      "range_k": [200.0, 330.0], "lag_tau_s": 2.0 }
+  },
+  "avionics": {
+    "rate_hz": 200,
+    "telemetry_rate_hz": 20,
+    "calibration_duration_ms": 1000,
+    "liftoff_specific_force_mps2": 15.0,
+    "debounce_samples": 10,
+    "apogee_lockout_after_burnout_ms": 1000,
+    "touchdown_window_ms": 2000,
+    "touchdown_altitude_range_m": 3.0,
+    "touchdown_speed_mps": 2.0
+  },
+  "link": { "profile": "ideal" }
+}

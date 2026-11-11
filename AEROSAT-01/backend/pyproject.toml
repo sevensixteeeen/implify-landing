@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aerosat"
+version = "0.1.0"
+description = "AEROSAT-01: software-only virtual rocket avionics and telemetry laboratory. All data is simulated."
+requires-python = ">=3.11"
+# Allow-list: docs/ARCHITECTURE.md section 11. Nothing else may be added without a written justification (NFR-06).
+dependencies = [
+    "fastapi",
+    # [standard] supplies the WebSocket protocol implementation Uvicorn needs to serve
+    # FastAPI/Starlette WebSocket endpoints (approved decision, 2026-11-11).
+    "uvicorn[standard]",
+    "pydantic",
+]
+
+# Development dependencies. Installed by default by `uv sync`. Exact versions are pinned in uv.lock.
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    # Starlette's test client (wrapped by FastAPI's) uses httpx2.
+    "httpx2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib", "--strict-markers", "--strict-config"]
+markers = [
+    "slow: multi-seed and long-running tests (slow tier, TEST_PLAN section 2)",
+    "perf: performance measurements (slow tier, TEST_PLAN section 11)",
+]
+
+# Coverage is reported on request: `uv run pytest --cov`. No threshold is enforced here.
+[tool.coverage.run]
+source = ["aerosat"]
+
+[tool.coverage.report]
+show_missing = true
