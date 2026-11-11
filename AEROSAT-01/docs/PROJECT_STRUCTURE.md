@@ -25,6 +25,7 @@ aerosat-01/
 ├── scenarios/                     Reproducible run definitions (all "fictional": true)
 │   ├── ref-01.json                Reference flight
 │   └── verification/              Vacuum, constant-density and other analytic cases
+│                                  (empty until Phase 2; planned cases VER-01...03 in TEST_PLAN §4.1)
 │
 ├── schemas/                       Generated from backend message models; committed
 │   ├── telemetry.schema.json
@@ -166,6 +167,7 @@ Key consequences:
 
 - `avionics` cannot import `sim` or `sensors`: it can only receive `SensorSample` values handed to it. This is what keeps truth out of the flight computer.
 - `sim`, `sensors`, `avionics` have no third-party imports and no I/O, so they run and test anywhere.
+- File access uses only the standard Python file APIs (`open`, `pathlib`, `io`, `os`, `shutil`, `tempfile`). They are permitted in `recorder`, `playback`, `mission`, `server`, `cli` and in tests, and not in `sim`, `sensors` or `avionics` (TEST_PLAN §3.6, ARCH-02).
 - `playback` cannot reach `sim`, `sensors`, `avionics` or `mission`.
 - Only `server` knows FastAPI. Only `mission.pacing` and `server` know the wall clock. The recorder never reads a clock: `mission` passes it the wall-clock timestamps for the manifest and triggers its periodic flush.
 - `recorder` does not serialize messages: it is handed the line already serialized by `telemetry.encoder`.

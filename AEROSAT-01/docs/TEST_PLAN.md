@@ -68,6 +68,13 @@ Two runs are "identical" when the SHA-256 hashes match for:
 - A diff in a golden file fails the build until a reviewer accepts the regeneration.
 - Backend-generated golden telemetry is also the fixture for frontend tests, so both sides test against the same bytes.
 
+### 3.6 File access
+
+- The standard Python file APIs are the built-in `open` and the modules `pathlib`, `io`, `os`, `shutil` and `tempfile`. No other file-access mechanism is used.
+- They are permitted in the outer layers (`recorder`, `playback`, `mission`, `server`, `cli`) and in tests. They are not permitted in `sim`, `sensors` or `avionics` (FR-SIM-12, ARCH-02).
+- Tests write only to temporary directories (Pytest's `tmp_path`, or `tempfile`) or to the designated project test locations: `backend/tests/golden/` and the frontend fixtures in `frontend/src/__tests__/`, both changed only by the documented golden-file command (§3.5).
+- Tests never write to `data/`, `scenarios/`, `schemas/`, `docs/` or any location outside the project, and never modify files they did not create.
+
 ---
 
 ## 4. Physics calculations (PHY)
@@ -114,6 +121,20 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 | PHY-16 | Command timing | Constraint | `C_d·A` changes exactly one tick after `DEPLOY_DRAG_DEVICE` |
 | PHY-17 | Scenario validation | Constructed bad files | Each rule in FR-SCN-03 and FR-SCN-05 rejected with the field named |
 | PHY-18 | Numerical integrator stress test, 300 s. **Not a flight scenario.** RK4 is applied directly to the bounded synthetic equation `dv/dt = −g − (g / v_t²)·v·\|v\|` with constants `g = 9.80665`, `v_t = 219.1633`, `v(0) = 0`, `Δt = 1 ms` (300 000 steps). Velocity is the only state, so every value stays within `\|v\| ≤ v_t`; altitude is not integrated. The atmosphere model, the simulator and the 0–20 km range check are not involved. | Closed-form limit `v_t` | Speed within 1×10⁻⁶ relative of `v_t` after 300 s; every intermediate value finite |
+
+### 4.1 Planned verification scenarios
+
+`scenarios/verification/` stays empty until Phase 2. The files below are planned, not yet written, and no result exists for any of them. Each is a simplified environment (FR-SIM-10) with a closed-form or invariant oracle; none describes a realistic flight. All carry `"fictional": true`.
+
+| ID | Environment | Configuration | Tests | Acceptance criteria (fixed above) |
+|---|---|---|---|---|
+| VER-01 | Vacuum (no drag), constant gravity g₀ | `m = 15 kg`, no thrust | PHY-06, PHY-12 | PHY-06: from `v0 = 50 m/s` over 10 s, \|h error\| ≤ 1×10⁻⁹ m and \|v error\| ≤ 1×10⁻⁹ m/s against the parabola. PHY-12: drop from 100 m, touchdown time within 1×10⁻³ s and impact velocity within 1×10⁻³ m/s |
+| VER-02 | Constant density, `environment.air_density_kgpm3 = 1.225` stated explicitly; constant gravity g₀ | `m = 15 kg`, `C_d·A = 0.005 m²`, no thrust | PHY-07, PHY-08, PHY-09 | PHY-07: from `v0 = 200 m/s`, \|v error\| ≤ 1×10⁻⁶ m/s and \|h error\| ≤ 1×10⁻⁶ m at 8 s; apogee time within 1 ms of 16.5314 s; apogee height within 1×10⁻³ m of 1483.659 m. PHY-08: fall from rest, errors ≤ 1×10⁻⁶ at 10 s. PHY-09: observed order 0.8–1.2 (Euler), 3.5–4.5 (RK4) |
+| VER-03 | Vacuum (no drag), inverse-square gravity | No thrust | PHY-10 | Relative drift of `v²/2 − g₀·r₀²/(r₀+h)` ≤ 1×10⁻⁹ over 60 s |
+
+PHY-18 uses no scenario. The other PHY tests use REF-01 or scenarios constructed inside the test.
+
+To be specified before these files are written: the scenario format (PROJECT_STRUCTURE §5) has no field for an initial altitude or velocity (`v0`, drop height), and no way to describe an unpowered vehicle (FR-SCN-05 rejects non-positive masses, and the mass formula in ARCHITECTURE §4.7 divides by the total impulse).
 
 ## 5. Flight-event detection (EVT)
 
@@ -234,7 +255,7 @@ Not automated in v1 (inspection or demonstration): visual layout, chart appearan
 | ID | Test | Pass criterion |
 |---|---|---|
 | ARCH-01 | Import rules | Static scan of import statements matches PROJECT_STRUCTURE §3 |
-| ARCH-02 | Pure core | `sim`, `sensors`, `avionics` import only the standard library and `aerosat.core`; no `time`, `datetime`, `asyncio`, `socket`, file access, or module-level `random` functions |
+| ARCH-02 | Pure core | `sim`, `sensors`, `avionics` import only the standard library and `aerosat.core`; no `time`, `datetime`, `asyncio`, `socket`, file access, or module-level `random` functions. "File access" means the standard Python file APIs: the built-in `open`, and the modules `pathlib`, `io`, `os`, `shutil` and `tempfile` (§3.6) |
 | ARCH-03 | Dependency allow-list | Declared backend and frontend dependencies are a subset of ARCHITECTURE §11 |
 | ARCH-04 | Headless independence | A full batch run succeeds with FastAPI imports blocked |
 | PERF-01 | Batch speed (PR-02) | Measured and reported; asserted ≥ 20× real time on the reference machine |

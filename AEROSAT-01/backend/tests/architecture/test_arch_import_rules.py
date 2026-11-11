@@ -32,7 +32,7 @@ RULES: dict[str, tuple[frozenset[str], frozenset[str]]] = {
 # datetime, asyncio, socket, file access, or module-level random functions".
 PURE_PACKAGES = ("sim", "sensors", "avionics")
 FORBIDDEN_STDLIB = frozenset({"time", "datetime", "asyncio", "socket"})
-# Interpretation of "file access": the built-in open() and the standard file-system modules.
+# TEST_PLAN section 3.6: "file access" is the built-in open() and these standard modules.
 FILE_ACCESS_MODULES = frozenset({"io", "os", "pathlib", "shutil", "tempfile"})
 
 
