@@ -4,6 +4,7 @@ Oracles: hand-built sample sequences (EVT-01 to EVT-03), the truth events record
 simulator (EVT-05, EVT-06, EVT-08, EVT-12), known injected values (EVT-09), and the atmosphere
 model (EVT-11). Detection tolerances are the ones fixed in TEST_PLAN section 5.
 """
+import copy
 import math
 import random
 
@@ -11,9 +12,17 @@ import pytest
 
 from aerosat.avionics.calibration import PadCalibration
 from aerosat.avionics.estimator import ComplementaryFilter, baro_altitude_agl_m
-from aerosat.avionics.flight_computer import FlightComputer, avionics_config_from_scenario
+from aerosat.avionics.flight_computer import (
+    REQUIRED_SENSORS,
+    FlightComputer,
+    avionics_config_from_scenario,
+    check_estimator_gains,
+    load_avionics_config,
+)
 from aerosat.avionics.state_machine import FlightStateMachine, StateMachineConfig
 from aerosat.core.constants import G0_MPS2, P0_PA, T0_K
+from aerosat.core.faults import ConfigurationFault, FaultCode
+from aerosat.core.faults import ConfigurationReason as Reason
 from aerosat.core.types import FlightEventType as Event
 from aerosat.core.types import FlightState as State
 from aerosat.core.types import SensorSample, TruthState, VehicleCommand
@@ -260,6 +269,38 @@ def test_evt_12_no_command_when_the_drag_device_is_disabled() -> None:
     assert d.commands == [] and Event.DRAG_DEVICE_DEPLOYED not in [e.event for e in d.events]
 
 
+# ---------------------------------------------------------------- EVT-13: REF-01 pinned
+
+# Detection ticks of (LIFTOFF, BURNOUT, APOGEE, DRAG_DEVICE_DEPLOYED, TOUCHDOWN) for REF-01, recorded
+# on 2026-11-11 from commit 18f99ea (Python 3.14.10, Windows x86-64), after EVT-05 and EVT-06 passed.
+# This is a regression pin, not an oracle: it proves nothing about correctness. Its job is to show
+# that a later change to the avionics leaves the reference flight exactly as it was. A change to
+# these numbers must be deliberate and explained.
+REF01_PINNED_EVENT_TICKS = {
+    "ideal": (3065, 6230, 24295, 25295, 187200),
+    0: (3065, 6230, 24265, 25265, 187180),
+    1: (3065, 6230, 24285, 25285, 187260),
+    2: (3070, 6230, 24285, 25285, 187200),
+    3: (3070, 6230, 24285, 25285, 187200),
+    4: (3070, 6230, 24255, 25255, 187200),
+    5: (3070, 6230, 24325, 25325, 187160),
+    6: (3065, 6230, 24310, 25310, 187200),
+    7: (3070, 6230, 24330, 25330, 187160),
+    8: (3070, 6230, 24325, 25325, 187240),
+    9: (3070, 6230, 24245, 25245, 187240),
+}
+
+
+@pytest.mark.parametrize("which", list(REF01_PINNED_EVENT_TICKS))
+def test_evt_13_ref01_event_ticks_are_unchanged(which) -> None:
+    record = flight(0, True) if which == "ideal" else flight(which)
+    assert [e.event for e in record.events] == ORDER
+    assert tuple(e.tick for e in record.events) == REF01_PINNED_EVENT_TICKS[which]
+    deploy_tick = REF01_PINNED_EVENT_TICKS[which][3]
+    assert record.commands == [(deploy_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert record.drag_area_change_tick == deploy_tick + 1
+
+
 # ---------------------------------------------------------------- EVT-07
 
 def test_evt_07_pressure_spike_during_boost_does_not_trigger_apogee() -> None:
@@ -400,3 +441,226 @@ def test_avionics_configuration_is_read_strictly() -> None:
         FlightComputer(ref01_avionics_config(telemetry_rate_hz=125))
     with pytest.raises(ValueError):
         FlightComputer(ref01_avionics_config()).tick(3, [])
+
+
+# ---------------------------------------------------------------- EVT-14: configuration validation
+
+def scenario_with(path: str, value: object) -> dict:
+    """A copy of REF-01 with one dotted field replaced. `...` as the value deletes the field."""
+    scenario = copy.deepcopy(REF01)
+    node = scenario
+    *parents, leaf = path.split(".")
+    for key in parents:
+        node = node[key]
+    if value is ...:
+        del node[leaf]
+    else:
+        node[leaf] = value
+    return scenario
+
+
+def rejected(scenario: dict) -> ConfigurationFault:
+    with pytest.raises(ConfigurationFault) as raised:
+        load_avionics_config(scenario)
+    assert raised.value.code is FaultCode.INVALID_CONFIGURATION
+    assert isinstance(raised.value, ValueError)
+    assert raised.value.field in str(raised.value) and raised.value.reason.value in str(raised.value)
+    return raised.value
+
+
+def test_evt_14_ref01_is_accepted_unchanged() -> None:
+    config = load_avionics_config(REF01)
+    assert config == avionics_config_from_scenario(REF01["avionics"], REF01["vehicle"]["drag_device"])
+    assert (config.estimator_gain_h, config.estimator_gain_v_hz) == (0.24, 0.72)
+    assert (config.calibration_duration_ms, config.drag_device_enabled, config.deploy_delay_after_apogee_ms) == (1000, True, 1000)
+    FlightComputer(config)
+
+
+@pytest.mark.parametrize("sensor", ["baro", "accel", "gyro", "temp"])
+def test_evt_14_a_disabled_required_sensor_is_rejected(sensor: str) -> None:
+    assert sensor in REQUIRED_SENSORS and len(REQUIRED_SENSORS) == 4
+    fault = rejected(scenario_with(f"sensors.{sensor}.enabled", False))
+    assert (fault.reason, fault.field) == (Reason.REQUIRED_SENSOR_DISABLED, f"sensors.{sensor}.enabled")
+    assert sensor in fault.detail
+
+
+@pytest.mark.parametrize("sensor", ["baro", "accel", "gyro", "temp"])
+def test_evt_14_sensor_enabled_true_or_omitted_is_accepted_and_other_values_are_not(sensor: str) -> None:
+    assert "enabled" not in REF01["sensors"][sensor]                      # REF-01 omits it: enabled
+    load_avionics_config(scenario_with(f"sensors.{sensor}.enabled", True))
+    for bad in ("true", 1, 0, None):
+        fault = rejected(scenario_with(f"sensors.{sensor}.enabled", bad))
+        assert (fault.reason, fault.field) == (Reason.INVALID_TYPE, f"sensors.{sensor}.enabled")
+    fault = rejected(scenario_with(f"sensors.{sensor}", ...))
+    assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, f"sensors.{sensor}")
+
+
+AVIONICS_FIELDS = sorted(REF01["avionics"])
+
+
+@pytest.mark.parametrize("name", AVIONICS_FIELDS)
+def test_evt_14_every_avionics_field_is_required(name: str) -> None:
+    fault = rejected(scenario_with(f"avionics.{name}", ...))
+    assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, f"avionics.{name}")
+
+
+@pytest.mark.parametrize(
+    ("path", "reason", "field"),
+    [
+        ("vehicle.drag_device.enabled", Reason.MISSING_FIELD, "vehicle.drag_device.enabled"),
+        ("vehicle.drag_device.deploy_delay_after_apogee_ms", Reason.MISSING_FIELD, "vehicle.drag_device.deploy_delay_after_apogee_ms"),
+        ("vehicle.drag_device", Reason.MISSING_FIELD, "vehicle.drag_device"),
+        ("avionics", Reason.MISSING_FIELD, "avionics"),
+        ("sensors", Reason.MISSING_FIELD, "sensors"),
+        ("timing", Reason.MISSING_FIELD, "timing"),
+        ("timing.t_ignition_ms", Reason.MISSING_FIELD, "timing.t_ignition_ms"),
+        ("sensors.baro.rate_hz", Reason.MISSING_FIELD, "sensors.baro.rate_hz"),
+    ],
+)
+def test_evt_14_missing_sections_and_fields_are_rejected(path: str, reason: Reason, field: str) -> None:
+    fault = rejected(scenario_with(path, ...))
+    assert (fault.reason, fault.field) == (reason, field)
+
+
+def test_evt_14_unknown_avionics_field_is_rejected() -> None:
+    fault = rejected(scenario_with("avionics.kalman", True))
+    assert (fault.reason, fault.field) == (Reason.UNKNOWN_FIELD, "avionics.kalman")
+
+
+def test_evt_14_unknown_drag_device_field_is_rejected() -> None:
+    assert set(REF01["vehicle"]["drag_device"]) == {"enabled", "cd_area_m2", "deploy_delay_after_apogee_ms"}
+    fault = rejected(scenario_with("vehicle.drag_device.deploy_altitude_m", 300.0))
+    assert (fault.reason, fault.field) == (Reason.UNKNOWN_FIELD, "vehicle.drag_device.deploy_altitude_m")
+
+
+@pytest.mark.parametrize(
+    ("path", "value", "reason"),
+    [
+        ("avionics.rate_hz", 0, Reason.OUT_OF_RANGE),
+        ("avionics.rate_hz", -200, Reason.OUT_OF_RANGE),
+        ("avionics.rate_hz", 200.0, Reason.INVALID_TYPE),
+        ("avionics.rate_hz", True, Reason.INVALID_TYPE),
+        ("avionics.rate_hz", 300, Reason.INCONSISTENT_RATES),          # does not divide 1000 Hz
+        ("avionics.telemetry_rate_hz", 0, Reason.OUT_OF_RANGE),
+        ("avionics.telemetry_rate_hz", 30, Reason.INCONSISTENT_RATES),
+        ("avionics.telemetry_rate_hz", 125, Reason.INCONSISTENT_RATES),  # 8 ms is not a multiple of 5 ms
+        ("avionics.calibration_duration_ms", 0, Reason.OUT_OF_RANGE),
+        ("avionics.calibration_duration_ms", 1000.5, Reason.INVALID_TYPE),
+        ("avionics.debounce_samples", 0, Reason.OUT_OF_RANGE),
+        ("avionics.debounce_samples", 2.5, Reason.INVALID_TYPE),
+        ("avionics.apogee_lockout_after_burnout_ms", -1, Reason.OUT_OF_RANGE),
+        ("avionics.touchdown_window_ms", 0, Reason.OUT_OF_RANGE),
+        ("avionics.touchdown_window_ms", 4, Reason.OUT_OF_RANGE),       # shorter than one 5 ms avionics period
+        ("avionics.liftoff_specific_force_mps2", 0.0, Reason.OUT_OF_RANGE),
+        ("avionics.liftoff_specific_force_mps2", math.nan, Reason.INVALID_TYPE),
+        ("avionics.liftoff_specific_force_mps2", "15", Reason.INVALID_TYPE),
+        ("avionics.touchdown_altitude_range_m", -3.0, Reason.OUT_OF_RANGE),
+        ("avionics.touchdown_speed_mps", math.inf, Reason.INVALID_TYPE),
+        ("avionics.estimator_gain_h", 0.0, Reason.OUT_OF_RANGE),
+        ("avionics.estimator_gain_h", -0.24, Reason.OUT_OF_RANGE),
+        ("avionics.estimator_gain_h", None, Reason.INVALID_TYPE),
+        ("avionics.estimator_gain_v_hz", 0.0, Reason.OUT_OF_RANGE),
+        ("avionics.estimator_gain_v_hz", -0.72, Reason.OUT_OF_RANGE),
+        ("avionics.estimator_gain_v_hz", math.nan, Reason.INVALID_TYPE),
+        ("vehicle.drag_device.enabled", "yes", Reason.INVALID_TYPE),
+        ("vehicle.drag_device.deploy_delay_after_apogee_ms", -1, Reason.OUT_OF_RANGE),
+        ("vehicle.drag_device.deploy_delay_after_apogee_ms", 1000.0, Reason.INVALID_TYPE),
+        ("timing.t_ignition_ms", 3000.0, Reason.INVALID_TYPE),
+        ("sensors.baro.rate_hz", 0, Reason.OUT_OF_RANGE),
+        ("sensors.baro.rate_hz", -50, Reason.OUT_OF_RANGE),
+        ("sensors.baro.rate_hz", 60, Reason.INCONSISTENT_RATES),       # does not divide the 1000 Hz physics clock
+        ("sensors.baro.rate_hz", 50.0, Reason.INVALID_TYPE),
+        ("sensors.baro.rate_hz", "50", Reason.INVALID_TYPE),
+        ("sensors.baro.rate_hz", True, Reason.INVALID_TYPE),
+        ("sensors.baro.rate_hz", None, Reason.INVALID_TYPE),
+    ],
+)
+def test_evt_14_invalid_values_are_rejected_with_the_field_named(path: str, value: object, reason: Reason) -> None:
+    fault = rejected(scenario_with(path, value))
+    assert (fault.reason, fault.field) == (reason, path)
+
+
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        ("avionics.debounce_samples", 1),
+        ("avionics.apogee_lockout_after_burnout_ms", 0),
+        ("avionics.touchdown_window_ms", 5),                 # exactly one avionics period
+        ("vehicle.drag_device.deploy_delay_after_apogee_ms", 0),
+        ("avionics.calibration_duration_ms", 1),
+        ("avionics.calibration_duration_ms", 3000),          # exactly the ignition time
+        ("avionics.telemetry_rate_hz", 200),                 # equal to the avionics rate
+        ("avionics.rate_hz", 1000),                          # every tick; 50 ms telemetry is a multiple
+    ],
+)
+def test_evt_14_boundary_values_are_accepted(path: str, value: object) -> None:
+    load_avionics_config(scenario_with(path, value))
+
+
+def test_evt_14_calibration_must_finish_by_ignition() -> None:
+    fault = rejected(scenario_with("avionics.calibration_duration_ms", 3001))
+    assert (fault.reason, fault.field) == (Reason.CALIBRATION_EXCEEDS_PRE_IGNITION, "avionics.calibration_duration_ms")
+    fault = rejected(scenario_with("timing.t_ignition_ms", 999))
+    assert fault.reason is Reason.CALIBRATION_EXCEEDS_PRE_IGNITION
+
+
+@pytest.mark.parametrize(
+    ("gain_h", "gain_v_hz", "stable"),
+    [
+        (0.24, 0.72, True),          # REF-01
+        (1.99, 0.72, True),          # 0.72 * 0.02 = 0.0144 < 4 - 3.98 = 0.02
+        (1.999, 0.72, False),        # 0.0144 > 0.002
+        (2.0, 0.72, False),
+        (2.5, 0.72, False),
+        (0.24, 175.0, True),         # 175 * 0.02 = 3.50 < 4 - 0.48 = 3.52
+        (0.24, 177.0, False),        # 3.54 > 3.52
+        (1.0, 99.0, True),           # 1.98 < 2
+        (1.0, 101.0, False),         # 2.02 > 2
+    ],
+)
+def test_evt_14_estimator_gains_must_be_stable(gain_h: float, gain_v_hz: float, stable: bool) -> None:
+    """Oracle: the spectral radius of the error-update matrix, computed here independently."""
+    period_s = 1 / REF01["sensors"]["baro"]["rate_hz"]
+    a, b = 1 - gain_h, (1 - gain_h) * period_s
+    c, d = -gain_v_hz, 1 - gain_v_hz * period_s
+    trace, det = a + d, a * d - b * c
+    disc = trace * trace - 4 * det
+    radius = max(abs((trace + math.sqrt(disc)) / 2), abs((trace - math.sqrt(disc)) / 2)) if disc >= 0 else math.sqrt(det)
+    assert (radius < 1) == stable                            # the table itself agrees with the matrix
+
+    scenario = scenario_with("avionics.estimator_gain_h", gain_h)
+    scenario["avionics"]["estimator_gain_v_hz"] = gain_v_hz
+    if stable:
+        load_avionics_config(scenario)
+        check_estimator_gains(gain_h, gain_v_hz, period_s)
+    else:
+        assert rejected(scenario).reason is Reason.UNSTABLE_ESTIMATOR_GAINS
+
+
+def test_evt_14_gain_stability_depends_on_the_barometer_rate() -> None:
+    scenario = scenario_with("avionics.estimator_gain_v_hz", 300.0)   # stable at 100 Hz (3.0 < 3.52), not at 50 Hz (6.0)
+    assert rejected(scenario).reason is Reason.UNSTABLE_ESTIMATOR_GAINS
+    scenario["sensors"]["baro"]["rate_hz"] = 100
+    load_avionics_config(scenario)
+
+
+def test_evt_14_invalid_configuration_fails_before_any_tick_is_simulated(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Loading fails without a simulator, a sensor suite or a flight computer ever being built."""
+    import aerosat.avionics.flight_computer as module
+    from aerosat.sim import simulator
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("a simulation component was constructed for an invalid configuration")
+
+    monkeypatch.setattr(simulator.Simulator, "__init__", forbidden)
+    monkeypatch.setattr(simulator.Simulator, "step", forbidden)
+    monkeypatch.setattr(SensorSuite, "__init__", forbidden)
+    monkeypatch.setattr(module.FlightComputer, "__init__", forbidden)
+    monkeypatch.setattr(module.FlightComputer, "tick", forbidden)
+    for scenario in (
+        scenario_with("sensors.gyro.enabled", False),
+        scenario_with("avionics.estimator_gain_h", -1.0),
+        scenario_with("avionics.calibration_duration_ms", 5000),
+        scenario_with("avionics.touchdown_speed_mps", ...),
+    ):
+        rejected(scenario)

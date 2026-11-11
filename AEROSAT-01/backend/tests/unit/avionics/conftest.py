@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from aerosat.avionics.flight_computer import AvionicsConfig, FlightComputer, avionics_config_from_scenario
+from aerosat.avionics.flight_computer import AvionicsConfig, FlightComputer, load_avionics_config
 from aerosat.core.types import AvionicsEstimate, FlightEvent, FlightEventType, VehicleCommand
 from aerosat.sensors.suite import SensorSuite, suite_config_from_scenario
 from aerosat.sim.simulator import DragDevice, Simulator, SimulatorConfig, TruthEvents
@@ -24,7 +24,8 @@ AVIONICS_PERIOD_TICKS = 5
 
 
 def ref01_avionics_config(**overrides) -> AvionicsConfig:
-    return replace(avionics_config_from_scenario(REF01["avionics"], REF01["vehicle"]["drag_device"]), **overrides)
+    """REF-01 avionics configuration, loaded and fully validated the way a mission will load it."""
+    return replace(load_avionics_config(REF01), **overrides)
 
 
 def ref01_simulator_config() -> SimulatorConfig:
