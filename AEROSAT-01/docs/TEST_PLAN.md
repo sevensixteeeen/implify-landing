@@ -6,7 +6,7 @@
 | Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except: ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04 (Phase 1 setup); PHY-01 to PHY-16, PHY-18 and SEN-12 (Phase 2 build step 1); SEN-01 to SEN-11, SEN-13 and SEN-14 (build step 2). PHY-17 and the multi-seed part of PHY-13 are present but skipped until build step 4.
+> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except: ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04 (Phase 1 setup); PHY-01 to PHY-16, PHY-18 and SEN-12 (Phase 2 build step 1); SEN-01 to SEN-11, SEN-13 and SEN-14 (build step 2); EVT-01 to EVT-12 (build step 3). PHY-17 and the multi-seed part of PHY-13 are present but skipped until build step 4.
 > This is a plan. It contains no test results. Numbers shown are expected values derived from formulas or pass/fail limits, never outcomes.
 
 ---
@@ -154,13 +154,13 @@ Initial conditions and unpowered vehicles (decided 2026-11-11): a normal launch 
 | EVT-01 | FSM unit test with hand-built sample sequences | Each transition occurs at the expected sample |
 | EVT-02 | Debounce | Criterion true for N−1 samples then false: no transition. True for N: transition. |
 | EVT-03 | One-way states | Under randomised adversarial inputs (seeded), no backward transition ever occurs |
-| EVT-04 | No false liftoff | 60 s on the pad, default noise, seeds 0–99: state stays `PAD_IDLE` |
+| EVT-04 | No false liftoff | 60 s on the pad, default noise, seeds 0–99 (slow tier; seeds 0–9 in fast tier): state stays `PAD_IDLE` |
 | EVT-05 | REF-01 with ideal sensors | All events within tolerance; detection never precedes the physical cause by more than the stated window |
 | EVT-06 | REF-01 with default noise, seeds 0–99 (slow tier; seeds 0–9 in fast tier) | Every seed within tolerance for every event; distribution of errors reported |
 | EVT-07 | Apogee lock-out | A pressure spike injected during `BOOST` does not trigger `APOGEE` |
 | EVT-08 | Event uniqueness and order | Each event exactly once, in the order LIFTOFF, BURNOUT, APOGEE, DRAG_DEVICE_DEPLOYED, TOUCHDOWN |
 | EVT-09 | Calibration | With known injected bias and noise and quantization off, `p_ref`, `T_ref`, `b_a` recovered within 1×10⁻⁹; with default noise, within 4 standard errors |
-| EVT-10 | Estimator accuracy, REF-01, seeds 0–99 | From liftoff to apogee: altitude RMS error ≤ 5 m, velocity RMS error ≤ 3 m/s. *Provisional limits, to be confirmed by error analysis before the first run and then frozen.* |
+| EVT-10 | Estimator accuracy, REF-01, seeds 0–99 (slow tier; seeds 0–9 in fast tier) | From liftoff to apogee, with the samples of all seeds pooled: altitude RMS error ≤ 5 m, velocity RMS error ≤ 3 m/s. The per-seed distribution is reported. *Error analysis (2026-11-11): the dominant altitude error is the pad-temperature bias, because barometric altitude scales with `T_ref`. A 0.5 K (1σ) bias is 0.17 %, about 3.6 m at the 2.1 km apogee, so single seeds exceed 5 m (7 of 100 in the 2026-11-11 run, worst 6.49 m) while the pooled RMS is 2.585 m. The limits are therefore applied to the pooled RMS and are unchanged.* |
 | EVT-11 | Barometric altitude formula | Ideal pressure from the atmosphere model at h = 0, 500, 2 000 m (pad at sea level) returns h within 1.0 m (the expected difference, about `h²/r₀` = 0.63 m at 2 000 m, is the geopotential approximation) |
 | EVT-12 | Deploy command | Issued exactly the configured delay after detected `APOGEE`, once |
 

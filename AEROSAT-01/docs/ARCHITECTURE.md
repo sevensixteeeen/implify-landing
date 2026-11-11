@@ -335,7 +335,7 @@ correct, 50 Hz:    r = h_baro − h_est
                    v_est += K_v · r                      K_v in 1/s
 ```
 
-Gains `K_h`, `K_v` will be chosen by analysis in Phase 2 and stored in the scenario. A Kalman filter is a possible later replacement behind the same interface; it is not justified for v1.
+Gains `K_h`, `K_v` are stored in the scenario as `avionics.estimator_gain_h` and `avionics.estimator_gain_v_hz`. REF-01 uses `K_h = 0.24` and `K_v = 0.72 s⁻¹`, chosen by this analysis. With corrections every `T_b = 0.02 s`, the estimate error behaves like a second-order system with `2ζωₙ = K_h / T_b` and `ωₙ² = K_v / T_b`; these gains give `ωₙ = 6 rad/s`, `ζ = 1` (critically damped, no overshoot). At touchdown the true velocity stops instantly but the accelerometer sees no impulse, so the velocity estimate starts about 12.7 m/s in error and decays as `(1 + ωₙt)·e^(−ωₙt)`. It falls below the 2 m/s touchdown criterion after about 0.55 s, so `TOUCHDOWN` is detected about 2.55 s after ground contact, inside the 3.0 s tolerance. The lower gains first tried (`ωₙ = 3 rad/s`) detected it 3.05 to 3.13 s after contact and were rejected. A Kalman filter is a possible later replacement behind the same interface; it is not justified for v1.
 
 ### 6.3 Flight state machine
 

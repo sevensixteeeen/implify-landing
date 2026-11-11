@@ -51,7 +51,9 @@
     "apogee_lockout_after_burnout_ms": 1000,
     "touchdown_window_ms": 2000,
     "touchdown_altitude_range_m": 3.0,
-    "touchdown_speed_mps": 2.0
+    "touchdown_speed_mps": 2.0,
+    "estimator_gain_h": 0.24,
+    "estimator_gain_v_hz": 0.72
   },
   "link": { "profile": "ideal" }
 }

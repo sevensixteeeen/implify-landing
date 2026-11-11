@@ -6,7 +6,7 @@
 | Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. Phase 2 build steps 1 and 2 are implemented: `core` (constants, clock, rng, faults, and the truth and measurement types), `sim` and `sensors`. Every other backend module is still a placeholder. `schemas/` and `scenarios/verification/` are still empty, and `data/` is created at run time. Test status is listed at the top of TEST_PLAN.md.
+> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. Phase 2 build steps 1 to 3 are implemented: `core` (constants, clock, rng, faults, and the truth, measurement and estimate types), `sim`, `sensors` and `avionics`. Every other backend module is still a placeholder. `schemas/` and `scenarios/verification/` are still empty, and `data/` is created at run time. Test status is listed at the top of TEST_PLAN.md.
 
 ---
 
@@ -259,7 +259,9 @@ Unit conversions for display (K → °C, m/s² → g, rad/s → deg/s) happen on
     "apogee_lockout_after_burnout_ms": 1000,
     "touchdown_window_ms": 2000,
     "touchdown_altitude_range_m": 3.0,
-    "touchdown_speed_mps": 2.0
+    "touchdown_speed_mps": 2.0,
+    "estimator_gain_h": 0.24,
+    "estimator_gain_v_hz": 0.72
   },
   "link": { "profile": "ideal" }
 }
@@ -267,7 +269,7 @@ Unit conversions for display (K → °C, m/s² → g, rad/s → deg/s) happen on
 
 Each sensor section (`baro`, `accel`, `gyro`, `temp`) may carry `"enabled": true` or `"enabled": false`. It defaults to true when omitted, as in REF-01. A disabled sensor generates no samples.
 
-Estimator gains are added to `avionics` in Phase 2 once chosen by analysis. The roll profile is linearly interpolated between points and held after the last one.
+The estimator gains `estimator_gain_h` (dimensionless) and `estimator_gain_v_hz` (1/s) were chosen by the analysis in ARCHITECTURE §6.2. The roll profile is linearly interpolated between points and held after the last one.
 
 Time references: `thrust_curve` `t_ms` is time since ignition. `roll_profile` `t_ms` is time since scenario start (in REF-01, 3000 is ignition and 6200 is the end of the thrust table).
 
