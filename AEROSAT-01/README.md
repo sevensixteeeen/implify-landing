@@ -11,7 +11,9 @@ software, sensors, telemetry and ground systems fit together.
 ## Status
 
 Initial project setup only. The folder layout, toolchains and test runners are in place; no
-subsystem is implemented and no test from `docs/TEST_PLAN.md` exists yet.
+subsystem is implemented. The only tests that exist are the architecture rules (ARCH-01 to
+ARCH-03) and the setup checks (SET-01 to SET-04) from `docs/TEST_PLAN.md`. They verify the
+scaffold and toolchain, not system behaviour.
 
 ## Documents
 
@@ -41,7 +43,7 @@ The requirement is Python 3.11 or newer (SRS NFR-08). What has actually been che
 "Verified" means: the install succeeds, `pip check` reports no broken requirements, all stub
 modules import, the FastAPI test client (on `httpx2`) makes a REST call and a WebSocket
 connection with no warnings, and a real Uvicorn server completes a WebSocket handshake on
-127.0.0.1. No project test exists yet, so nothing more than that is claimed. The five-version
+127.0.0.1. No project test existed when this check was run, so nothing more than that is claimed. The five-version
 check was run with `pip` before the project moved to `uv`; the current `uv.lock` environment has
 been checked on 3.14.10 only.
 
@@ -73,7 +75,8 @@ uv run pytest -m "slow or perf"              # slow tier
 uv run pytest --cov                          # with a coverage report
 ```
 
-`pytest` exits with code 5 ("no tests ran") until the first project test is written.
+The slow tier has no tests yet, so that command exits with code 5 ("no tests ran"). That is an
+empty run, not a pass.
 
 Dependency maintenance:
 
@@ -89,8 +92,7 @@ Commit `uv.lock` together with any change to `pyproject.toml`.
 
 ### Frontend
 
-Node.js (checked on 26.13.0). `npm test` exits with code 1 ("No test files found") until the
-first project test is written.
+Node.js (checked on 26.13.0).
 
 ```
 cd frontend

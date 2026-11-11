@@ -5,7 +5,7 @@
 | Document | SRS.md |
 | Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
-| Phase | 1 (requirements and architecture). No application code exists yet. |
+| Phase | 1 (requirements and architecture). No subsystem is implemented yet; only the project scaffold, placeholder modules and setup tests exist. |
 | Related | ARCHITECTURE.md, TELEMETRY_PROTOCOL.md, TEST_PLAN.md, PROJECT_STRUCTURE.md |
 
 ---
@@ -72,7 +72,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-SCN-02 | Every physical quantity in a scenario shall use a unit-suffixed key (e.g. `dry_mass_kg`). | T, I |
 | FR-SCN-03 | Every scenario shall carry `"fictional": true`; the loader shall reject scenarios without it. | T |
 | FR-SCN-04 | A scenario shall contain one master seed from which all random streams are derived. | T |
-| FR-SCN-05 | The loader shall reject: non-positive masses, thrust breakpoints not on the 1 ms tick grid, sensor/avionics/telemetry rates that do not divide the physics rate exactly, ignition earlier than 2 s after scenario start (pad calibration time), a constant-density scenario without a positive `environment.air_density_kgpm3`, and that parameter present in a scenario that uses any other atmosphere model. | T |
+| FR-SCN-05 | The loader shall reject: non-positive masses, thrust breakpoints not on the 1 ms tick grid, sensor/avionics/telemetry rates that do not divide the physics rate exactly, ignition earlier than 2 s after scenario start (pad calibration time), a constant-density scenario whose `environment.air_density_kgpm3` is missing, non-numeric, non-finite or not positive, and that parameter present in a scenario that uses any other atmosphere model. Unsupported or unexpected density parameters shall be rejected, never silently ignored. | T |
 
 ### 4.2 Flight simulator (SIM)
 
@@ -87,7 +87,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-SIM-07 | The simulator shall accept vehicle commands (v1: `DEPLOY_DRAG_DEVICE`) and apply them on the next tick. | T |
 | FR-SIM-08 | Each tick the simulator shall expose a truth record: time, altitude, velocity, acceleration, specific force, mass, thrust, drag, pressure, temperature, density, Mach number, roll rate and roll angle. | T |
 | FR-SIM-09 | The simulator shall record a `VALIDITY` warning whenever Mach exceeds 0.8 (constant drag coefficient no longer credible). | T |
-| FR-SIM-10 | Simplified environment modes (vacuum, constant density, constant gravity) shall be selectable so results can be checked against closed-form solutions. Constant-density mode shall take its density from the explicit scenario parameter `environment.air_density_kgpm3`; no default density shall be applied. | T |
+| FR-SIM-10 | Simplified environment modes (vacuum, constant density, constant gravity) shall be selectable so results can be checked against closed-form solutions. Constant-density mode is a simplified reference atmosphere, not a realistic altitude-dependent model: density, pressure, temperature and speed of sound shall each hold one fixed reference value at all altitudes (ARCHITECTURE.md §4.5). Its density shall come from the explicit scenario parameter `environment.air_density_kgpm3`; no default density shall be applied. | T |
 | FR-SIM-11 | A scenario may define a scripted roll-rate profile. It is kinematic only (prescribed, not computed from torques) and shall be labelled as such. *(Decision D-1.)* | T |
 | FR-SIM-12 | The simulator package shall perform no file, network or wall-clock access. | T |
 

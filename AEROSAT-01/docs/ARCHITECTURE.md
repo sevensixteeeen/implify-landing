@@ -150,7 +150,16 @@ Values the formulas produce (used as a self-consistency check; the independent o
 | 11 000 | 216.65 | 22 632.1 | 0.363918 |
 | 20 000 | 216.65 | 5 474.88 | 0.0880347 |
 
-**Constant-density mode** (`atmosphere_model: "constant_density"`, FR-SIM-10). The density `ρ` used in the drag equation (§4.6) is the scenario parameter `environment.air_density_kgpm3` at every altitude. The scenario always states this value explicitly: the model has no built-in default, and the parameter is rejected in scenarios that use any other atmosphere model (FR-SCN-05). The constant-density verification scenario sets it to 1.225 kg/m³ (TEST_PLAN §4).
+**Constant-density mode** (`atmosphere_model: "constant_density"`, FR-SIM-10). This is a simplified reference atmosphere for checking results against closed-form solutions. It is not a realistic altitude-dependent atmospheric model: every atmospheric property keeps one fixed educational reference value at all altitudes.
+
+| Quantity | Constant value | Origin |
+|---|---|---|
+| Density ρ | 1.225 kg/m³ | Scenario parameter `environment.air_density_kgpm3`, stated explicitly in the scenario |
+| Pressure p | 101 325 Pa | p₀ (§4.2) |
+| Temperature T | 288.15 K | T₀ (§4.2) |
+| Speed of sound c | ≈ 340.3 m/s | `sqrt(γ·R·T₀)` |
+
+The density is never applied as a hidden default: the scenario must state `environment.air_density_kgpm3`, and validation is strict (FR-SCN-05). A missing, non-numeric, non-finite or non-positive value is rejected, and so is the parameter in a scenario that uses any other atmosphere model. Nothing is silently ignored. The constant-density verification scenario sets 1.225 kg/m³ (TEST_PLAN §4). The 0–20 km model range (§4.10) still applies in this mode.
 
 ### 4.6 Drag
 
@@ -206,6 +215,7 @@ Explicit Euler (`y + Δt·k1`) is selectable so the difference in accuracy can b
 | Constant C_d, credible only well below Mach 1 | `VALIDITY` warning recorded when M > 0.8 |
 | No wind, no lateral motion, no rotation dynamics | Stated limitation; roll is scripted (D-1) |
 | Standard atmosphere only (no weather) | Stated limitation |
+| Constant-density mode is a fixed reference atmosphere, not altitude-dependent (§4.5) | Stated limitation; for verification against closed-form solutions only |
 | Instantaneous drag-device deployment | Stated limitation; deployment occurs near zero velocity in REF-01 |
 
 ### 4.11 Reference scenario REF-01 (fictional)

@@ -6,7 +6,7 @@
 | Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN.**
+> **Status of every test in this document: NOT IMPLEMENTED, NOT RUN**, except ARCH-01, ARCH-02, ARCH-03 and SET-01 to SET-04, which are implemented as part of Phase 1 setup.
 > This is a plan. It contains no test results. Numbers shown are expected values derived from formulas or pass/fail limits, never outcomes.
 
 ---
@@ -103,7 +103,7 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 | PHY-05 | Thrust table, impulse and mass (REF-01) | Trapezoid arithmetic | `J_total = 4575 N·s`; `m(0) = 20 kg`; `m(after burn) = 15 kg`; mass never increases; thrust 0 outside the table |
 | PHY-06 | Vacuum, constant g, v0 = 50 m/s, 10 s | Parabola `h = v0·t − ½·g·t²` | \|h error\| ≤ 1×10⁻⁹ m, \|v error\| ≤ 1×10⁻⁹ m/s |
 | PHY-07 | Upward coast with quadratic drag, v0 = 200 m/s | Closed form above | \|v error\| ≤ 1×10⁻⁶ m/s and \|h error\| ≤ 1×10⁻⁶ m at t = 8 s; apogee time within 1 ms; apogee height within 1×10⁻³ m |
-| PHY-08 | Fall from rest, 10 s and long-run limit | Closed form; `v_t` | \|v error\|, \|h error\| ≤ 1×10⁻⁶ at 10 s; speed within 1×10⁻⁶ relative of `v_t` after 300 s |
+| PHY-08 | Fall from rest, 10 s | Closed form | \|v error\|, \|h error\| ≤ 1×10⁻⁶ at 10 s |
 | PHY-09 | Convergence order on the PHY-07 case | Theory: Euler order 1, RK4 order 4 | With coarse steps (0.4, 0.2, 0.1 s) so truncation dominates round-off: observed order 0.8–1.2 for Euler and 3.5–4.5 for RK4 |
 | PHY-10 | Energy conservation: no thrust, no drag, inverse-square gravity, 60 s | Invariant `v²/2 − g₀·r₀²/(r₀+h)` | Relative drift ≤ 1×10⁻⁹ |
 | PHY-11 | Pad hold: thrust below weight for 5 s | Constraint | h and v exactly 0; specific force equals `g(h_pad)` |
@@ -113,6 +113,7 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 | PHY-15 | Validity handling | Constructed scenarios | `VALIDITY` warning recorded when Mach > 0.8; run stops with `MODEL_RANGE` above 20 km |
 | PHY-16 | Command timing | Constraint | `C_d·A` changes exactly one tick after `DEPLOY_DRAG_DEVICE` |
 | PHY-17 | Scenario validation | Constructed bad files | Each rule in FR-SCN-03 and FR-SCN-05 rejected with the field named |
+| PHY-18 | Numerical integrator stress test, 300 s. **Not a flight scenario.** RK4 is applied directly to the bounded synthetic equation `dv/dt = −g − (g / v_t²)·v·\|v\|` with constants `g = 9.80665`, `v_t = 219.1633`, `v(0) = 0`, `Δt = 1 ms` (300 000 steps). Velocity is the only state, so every value stays within `\|v\| ≤ v_t`; altitude is not integrated. The atmosphere model, the simulator and the 0–20 km range check are not involved. | Closed-form limit `v_t` | Speed within 1×10⁻⁶ relative of `v_t` after 300 s; every intermediate value finite |
 
 ## 5. Flight-event detection (EVT)
 
@@ -245,6 +246,17 @@ Not automated in v1 (inspection or demonstration): visual layout, chart appearan
 
 Performance tests report measurements. They gate acceptance (AC-10) but are not part of the fast tier, because timing on shared machines is unreliable.
 
+### 11.1 Phase 1 setup and configuration (SET)
+
+These check that the project scaffold and toolchain match the specification. They verify setup, not system behaviour, and run no simulation code. Expected values are copied by hand from the documents named.
+
+| ID | Test | Pass criterion |
+|---|---|---|
+| SET-01 | Project layout | Backend packages contain exactly the modules in PROJECT_STRUCTURE §1; test folders, frontend folders and files, the five documents, `uv.lock` and `.python-version` exist |
+| SET-02 | Reference scenario file | `scenarios/ref-01.json` parses and equals ARCHITECTURE §4.11 and §5.2 and PR-01; total impulse by trapezoids is 4575 N·s; rates divide the physics rate; `fictional` is true; no `air_density_kgpm3` under the standard atmosphere |
+| SET-03 | Backend toolchain | Python ≥ 3.11; `slow` and `perf` markers registered with strict markers; coverage plugin installed; the test client uses `httpx2` and completes a REST and a WebSocket round trip against a throwaway application; a WebSocket implementation is installed for Uvicorn |
+| SET-04 | Frontend toolchain (Vitest) | TypeScript strict mode is on; the application shell module compiles; Three.js resolves |
+
 ## 12. Traceability
 
 | Requirements | Tests |
@@ -252,7 +264,7 @@ Performance tests report measurements. They gate acceptance (AC-10) but are not 
 | FR-SCN-01…05 | PHY-17, PHY-13, SEN-10 |
 | FR-SIM-01, 02 | PHY-04, PHY-06, PHY-07, PHY-08, PHY-10 |
 | FR-SIM-03, 09 | PHY-01, PHY-02, PHY-15 |
-| FR-SIM-04 | PHY-09, PHY-14 |
+| FR-SIM-04 | PHY-09, PHY-14, PHY-18 |
 | FR-SIM-05 | PHY-05 |
 | FR-SIM-06 | PHY-11, PHY-12 |
 | FR-SIM-07 | PHY-16 |

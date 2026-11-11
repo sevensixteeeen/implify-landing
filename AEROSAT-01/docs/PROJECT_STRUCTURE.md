@@ -6,7 +6,7 @@
 | Version | 0.1 — DRAFT FOR REVIEW |
 | Date | 2026-11-10 |
 
-> This describes the **planned** layout. Nothing below exists yet except the `docs/` folder.
+> The layout below exists as a Phase 1 scaffold: the folders, configuration and lock files, the REF-01 scenario, placeholder (docstring-only) backend modules and a placeholder frontend shell. No subsystem is implemented. `schemas/` and `scenarios/verification/` are empty until Phase 2, and `data/` is created at run time. The only tests that exist are ARCH-01 to ARCH-03 and SET-01 to SET-04.
 
 ---
 
@@ -109,8 +109,8 @@ aerosat-01/
 │       │   ├── telemetry/         TLM-01...08
 │       │   ├── recorder/          REC-*
 │       │   └── playback/          PBK-*
-│       ├── integration/           Full runs, WebSocket, REST (TLM-09...14)
-│       ├── architecture/          ARCH-*
+│       ├── integration/           Full runs, WebSocket, REST (TLM-09...14); SET-03
+│       ├── architecture/          ARCH-*; SET-01, SET-02
 │       ├── perf/                  PERF-* (slow tier)
 │       └── golden/                Frozen reference outputs + generation metadata
 │
@@ -128,7 +128,7 @@ aerosat-01/
 │       ├── components/            React panels, charts, controls, SIMULATED banner
 │       ├── App.tsx
 │       ├── main.tsx
-│       └── __tests__/             DSH-* (fixtures copied from backend golden files)
+│       └── __tests__/             DSH-* (fixtures copied from backend golden files); SET-04
 │
 └── data/                          Not committed
     └── flights/{mission_id}/      One folder per recorded mission
@@ -273,7 +273,9 @@ Allowed values:
 | `timing.integrator` | `"rk4"` (default), `"euler"` (FR-SIM-04) |
 | `environment.atmosphere_model` | `"standard"`, `"constant_density"`, `"vacuum"` (FR-SIM-10) |
 | `environment.gravity_model` | `"inverse_square"`, `"constant"` (constant = g₀) (FR-SIM-10) |
-| `environment.air_density_kgpm3` | Number > 0, in kg/m³. Required when `atmosphere_model` is `"constant_density"`; not allowed otherwise. No default. REF-01 does not contain it. The constant-density verification scenario sets 1.225. |
+| `environment.air_density_kgpm3` | Finite number > 0, in kg/m³. Required when `atmosphere_model` is `"constant_density"`; rejected under any other atmosphere model (strict validation, FR-SCN-05). No default. REF-01 does not contain it. The constant-density verification scenario sets 1.225. |
+
+In `"constant_density"` mode pressure, temperature and speed of sound are fixed reference constants (101 325 Pa, 288.15 K, about 340.3 m/s; ARCHITECTURE §4.5). They are not scenario parameters.
 
 ## 6. Flight record layout
 
