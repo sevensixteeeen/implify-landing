@@ -88,7 +88,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-SIM-08 | Each tick the simulator shall expose a truth record: time, altitude, velocity, acceleration, specific force, mass, thrust, drag, pressure, temperature, density, Mach number, roll rate and roll angle. | T |
 | FR-SIM-09 | The simulator shall record a `VALIDITY` warning whenever Mach exceeds 0.8 (constant drag coefficient no longer credible). | T |
 | FR-SIM-10 | Simplified environment modes (vacuum, constant density, constant gravity) shall be selectable so results can be checked against closed-form solutions. Constant-density mode shall take its density from the explicit scenario parameter `environment.air_density_kgpm3`; no default density shall be applied. | T |
-| FR-SIM-11 | A scenario may define a scripted roll-rate profile. It is kinematic only (prescribed, not computed from torques) and shall be labelled as such. *(Open decision D-1.)* | T |
+| FR-SIM-11 | A scenario may define a scripted roll-rate profile. It is kinematic only (prescribed, not computed from torques) and shall be labelled as such. *(Decision D-1.)* | T |
 | FR-SIM-12 | The simulator package shall perform no file, network or wall-clock access. | T |
 
 ### 4.3 Synthetic sensors (SEN)
@@ -112,7 +112,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-AVI-03 | It shall calibrate pad reference pressure, pad temperature and accelerometer bias while in `PAD_IDLE`. | T |
 | FR-AVI-04 | It shall implement the flight states `PAD_IDLE → BOOST → COAST → DESCENT → LANDED`. Transitions shall be one-way. | T |
 | FR-AVI-05 | It shall detect `LIFTOFF`, `BURNOUT`, `APOGEE` and `TOUCHDOWN` using debounced criteria, emitting each event exactly once with its sim time. | T |
-| FR-AVI-06 | If the scenario enables the drag device, it shall issue `DEPLOY_DRAG_DEVICE` a configured delay after `APOGEE` and emit `DRAG_DEVICE_DEPLOYED`. *(Open decision D-5.)* | T |
+| FR-AVI-06 | If the scenario enables the drag device, it shall issue `DEPLOY_DRAG_DEVICE` a configured delay after `APOGEE` and emit `DRAG_DEVICE_DEPLOYED`. *(Decision D-5.)* | T |
 | FR-AVI-07 | It shall produce one telemetry frame every 50 ms of sim time (20 Hz). | T |
 
 ### 4.5 Telemetry infrastructure (TLM)
@@ -127,7 +127,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | FR-TLM-06 | Each client shall have a bounded send queue. A slow client shall lose its oldest queued messages (counted and reported) without delaying other clients. | T |
 | FR-TLM-07 | On connect the server shall send a `hello` message describing protocol version, mission, rates and units; it shall send a `heartbeat` every 1 s. | T |
 | FR-TLM-08 | A REST API shall create, start, pause, resume and abort missions, list scenarios and recorded flights, and start playback. | T |
-| FR-TLM-09 | An optional seeded link-impairment model (drop, duplicate, delay) shall be available, off by default. *(Open decision D-4.)* | T |
+| FR-TLM-09 | An optional seeded link-impairment model (drop, duplicate, delay) shall be available, off by default. *(Decision D-4.)* | T |
 
 ### 4.6 Flight data recorder and playback (FDR, PBK)
 
@@ -169,7 +169,7 @@ Six subsystems, each independently testable (detail in ARCHITECTURE.md):
 | NFR-04 Units | SI units throughout. Every variable, field and column holding a physical quantity carries a unit suffix. Physical constants live in one module. | I, T |
 | NFR-05 Data labelling | Simulated data shall be labelled at every layer: scenario, messages, files, UI. Fictional parameters shall never be described as real vehicle specifications. | T, I |
 | NFR-06 Dependencies | Third-party packages are limited to the allow-list in ARCHITECTURE.md §11. Each addition needs a written justification. | T, I |
-| NFR-07 Testability | The simulation core (simulator, sensors, avionics) shall use the Python standard library only. Target line coverage for backend domain modules: ≥ 90%. | T |
+| NFR-07 Testability | The simulation core (simulator, sensors, avionics) shall use the Python standard library only. Target line coverage for backend domain modules (`core`, `sim`, `sensors`, `avionics`): ≥ 90%. | T |
 | NFR-08 Portability | Backend: Python 3.11 or newer on Windows, macOS, Linux. Frontend: current Chrome, Firefox, Edge with WebGL2. Exact versions pinned in Phase 2. | D |
 | NFR-09 Security | Server binds to `127.0.0.1` by default; no authentication (local lab use only). CORS limited to the dev origin. File downloads are resolved from a fixed set of names, never from client-supplied paths. | T, I |
 | NFR-10 Robustness | Client disconnects, malformed input and disk errors shall produce explicit faults, never silent data loss or a crashed server. | T |
@@ -202,9 +202,9 @@ Feasibility note for PR-02: a throwaway calculation of the physics step alone to
 | C-02 | Software only. No hardware I/O of any kind. |
 | C-03 | Vertical 1-DOF model; atmosphere valid 0–20 km; constant drag coefficient (subsonic use). |
 | C-04 | No database. Storage is flat files under one data directory. |
-| C-05 | Single machine, single server process, one active mission at a time *(open decision D-8)*. |
+| C-05 | Single machine, single server process, one active mission at a time *(decision D-8)*. |
 | C-06 | Simulation code and visualization code share only the telemetry protocol. |
-| C-07 | Frontend tests need a JavaScript test runner; Pytest cannot execute TypeScript *(open decision D-7)*. |
+| C-07 | Frontend tests need a JavaScript test runner; Pytest cannot execute TypeScript *(decision D-7)*. |
 
 ## 8. Assumptions
 
@@ -239,17 +239,17 @@ Feasibility note for PR-02: a throwaway calculation of the physics step alone to
 | AC-10 | Every performance target in §6 is measured and reported with hardware details. Misses are documented, not hidden. |
 | AC-11 | The test report is tool-generated and tied to a commit hash. |
 
-## 10. Open decisions requiring approval
+## 10. Decisions
 
-| ID | Decision | Recommendation |
-|---|---|---|
-| D-1 | A vertical-only model has no rotation, so the gyroscope and 3D attitude have nothing physical to show. Options: (a) gyro outputs bias + noise only; (b) scripted kinematic roll profile; (c) upgrade to 3-DOF. | **(b)**. Cheap, honest if labelled, gives the gyro and 3D view real content. (c) roughly doubles the physics and test scope. |
-| D-2 | Telemetry carries avionics estimates and raw measurements. Truth is recorded only by the FDR and never downlinked. | **Approve.** Otherwise the avionics computer is a pass-through and there is nothing to estimate or validate. |
-| D-3 | "Timestamp" is sim time (`t_sim_s`). Wall-clock time is an informational extra added by the server. | **Approve.** A wall-clock timestamp makes runs non-reproducible. |
-| D-4 | WebSocket runs over TCP, which never loses or reorders data, so sequence numbers would never detect anything. Add a seeded link-impairment model (drop, duplicate, delay)? | **Yes, off by default.** It is what makes "telemetry integrity" testable. Corruption/CRC deferred. |
-| D-5 | Include a simulated descent drag device commanded by the avionics. | **Yes.** It closes the loop so that event-detection quality affects the flight. It is a single drag-area parameter change. |
-| D-6 | Storage: CSV for time series, JSON Lines (one JSON object per line) for messages, JSON manifest. | **Approve.** A single JSON document cannot be appended safely; bare CSV loses units and metadata. |
-| D-7 | Frontend tooling: Vitest for tests; uPlot for charts; plain Three.js (no react-three-fiber); no state-management library. | **Approve.** Smallest set that works. |
-| D-8 | One active mission at a time. | **Approve** for v1. |
-| D-9 | Reference hardware and browser for performance targets. | **Decided 2026-11-11:** ASUS TUF A15 (the development machine), Windows 11, Google Chrome Stable. The actual CPU, GPU, RAM, operating-system version and browser version are recorded at measurement time, together with the results. |
-| D-10 | No NumPy/SciPy/pandas in the simulation core. | **Approve.** The model is two scalar equations; the standard library is enough and removes a determinism variable. |
+| ID | Decision | Recommendation | Outcome |
+|---|---|---|---|
+| D-1 | A vertical-only model has no rotation, so the gyroscope and 3D attitude have nothing physical to show. Options: (a) gyro outputs bias + noise only; (b) scripted kinematic roll profile; (c) upgrade to 3-DOF. | **(b)**. Cheap, honest if labelled, gives the gyro and 3D view real content. (c) roughly doubles the physics and test scope. | **Approved 2026-11-11**, as recommended. |
+| D-2 | Telemetry carries avionics estimates and raw measurements. Truth is recorded only by the FDR and never downlinked. | **Approve.** Otherwise the avionics computer is a pass-through and there is nothing to estimate or validate. | **Approved 2026-11-11**, as recommended. |
+| D-3 | "Timestamp" is sim time (`t_sim_s`). Wall-clock time is an informational extra added by the server. | **Approve.** A wall-clock timestamp makes runs non-reproducible. | **Approved 2026-11-11**, as recommended. |
+| D-4 | WebSocket runs over TCP, which never loses or reorders data, so sequence numbers would never detect anything. Add a seeded link-impairment model (drop, duplicate, delay)? | **Yes, off by default.** It is what makes "telemetry integrity" testable. Corruption/CRC deferred. | **Approved 2026-11-11**, as recommended. |
+| D-5 | Include a simulated descent drag device commanded by the avionics. | **Yes.** It closes the loop so that event-detection quality affects the flight. It is a single drag-area parameter change. | **Approved 2026-11-11**, as recommended. |
+| D-6 | Storage: CSV for time series, JSON Lines (one JSON object per line) for messages, JSON manifest. | **Approve.** A single JSON document cannot be appended safely; bare CSV loses units and metadata. | **Approved 2026-11-11**, as recommended. |
+| D-7 | Frontend tooling: Vitest for tests; uPlot for charts; plain Three.js (no react-three-fiber); no state-management library. | **Approve.** Smallest set that works. | **Approved 2026-11-11**, as recommended. |
+| D-8 | One active mission at a time. | **Approve** for v1. | **Approved 2026-11-11**, as recommended. |
+| D-9 | Reference hardware and browser for performance targets. | Needs your input: the machine you will develop on. | **Decided 2026-11-11:** ASUS TUF A15 (the development machine), Windows 11, Google Chrome Stable. The actual CPU, GPU, RAM, operating-system version and browser version are recorded at measurement time, together with the results. |
+| D-10 | No NumPy/SciPy/pandas in the simulation core. | **Approve.** The model is two scalar equations; the standard library is enough and removes a determinism variable. | **Approved 2026-11-11**, as recommended. |

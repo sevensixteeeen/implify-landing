@@ -175,7 +175,7 @@ For `v0 = 200 m/s` these give `t_apogee = 16.5314 s` and `h_apogee = 1483.659 m`
 | TLM-09 | WebSocket session | `hello` arrives first with correct `next_seq`; messages arrive in order; `heartbeat` at 1 s intervals |
 | TLM-10 | Fan-out | Five clients receive identical message sequences |
 | TLM-11 | Slow client | A stalled client's queue stays bounded, oldest messages are dropped and counted, a `status` reports it, other clients are unaffected |
-| TLM-12 | Link impairment (if D-4 approved) | With a seeded profile, the receiver's `lost` count equals the injected drop count exactly; duplicates discarded; delayed messages keep their content |
+| TLM-12 | Link impairment (D-4) | With a seeded profile, the receiver's `lost` count equals the injected drop count exactly; duplicates discarded; delayed messages keep their content |
 | TLM-13 | REST lifecycle | Valid transitions succeed; invalid ones return 409; unknown IDs 404; invalid bodies 422; second concurrent mission 409 |
 | TLM-14 | Server robustness | Abrupt client disconnect during a run does not stop the mission or the recorder |
 

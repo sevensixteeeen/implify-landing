@@ -54,7 +54,7 @@
 | `pressure_pa` | number | Pa | yes | Most recent barometer reading |
 | `temperature_k` | number | K | yes | Most recent temperature-sensor reading |
 | `flight_state` | string | – | yes | `PAD_IDLE`, `BOOST`, `COAST`, `DESCENT`, `LANDED` |
-| `roll_rate_radps` | number | rad/s | yes | Most recent z-gyroscope reading. *Addition to the requested field list, needed to drive the 3D view; depends on decision D-1.* |
+| `roll_rate_radps` | number | rad/s | yes | Most recent z-gyroscope reading. *Addition to the requested field list, needed to drive the 3D view (decision D-1).* |
 
 All of `altitude_m`, `velocity_mps`, `acceleration_mps2` are **estimates**. They are 0.0 until pad calibration completes (§8). `pressure_pa`, `temperature_k`, `roll_rate_radps` are **measurements**. Neither is truth.
 

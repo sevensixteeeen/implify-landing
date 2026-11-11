@@ -469,7 +469,7 @@ Flight record: `data/flights/{mission_id}/`
 
 ## 11. Dependency allow-list
 
-Exact versions are pinned in Phase 2 lock files.
+Exact versions are pinned in `backend/uv.lock` (uv) and `frontend/package-lock.json` (npm); both are committed.
 
 | Area | Package | Why needed |
 |---|---|---|
@@ -478,7 +478,7 @@ Exact versions are pinned in Phase 2 lock files.
 | | Pydantic | Comes with FastAPI; message models and JSON Schema export |
 | Backend dev | Pytest | Required stack |
 | | httpx2 | Required by Starlette's test client, which FastAPI's test client wraps (Starlette 1.10 deprecates `httpx` for this) (approved 2026-11-11). |
-| | pytest-cov | Only if the coverage target (NFR-07) is approved |
+| | pytest-cov | Coverage reporting for NFR-07 |
 | Frontend runtime | React, React DOM | Required stack |
 | | Three.js | Required stack |
 | | uPlot | Small canvas chart library (D-7) |

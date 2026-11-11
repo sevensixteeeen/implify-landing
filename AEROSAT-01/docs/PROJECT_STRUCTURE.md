@@ -37,6 +37,8 @@ aerosat-01/
 │
 ├── backend/
 │   ├── pyproject.toml             Dependencies (allow-list) and tool configuration
+│   ├── uv.lock                    Exact pinned versions (uv); committed
+│   ├── .python-version            Python version uv uses for the environment
 │   ├── src/aerosat/
 │   │   ├── core/                  Shared foundations (standard library only)
 │   │   │   ├── constants.py       g0, r0, T0, p0, L, R, gamma: the only place they appear
@@ -114,6 +116,7 @@ aerosat-01/
 │
 ├── frontend/                      6. Ground station
 │   ├── package.json
+│   ├── package-lock.json          Exact pinned versions (npm); committed
 │   ├── tsconfig.json              strict mode
 │   ├── vite.config.ts
 │   ├── index.html
@@ -292,11 +295,13 @@ data/flights/AS01-7F3A9C2E/
 
 | Purpose | Command |
 |---|---|
-| Headless run | `python -m aerosat.cli run scenarios/ref-01.json` |
-| Export schemas | `python -m aerosat.cli export-schemas` |
-| Backend tests, fast tier | `pytest -m "not slow and not perf"` |
-| Backend tests, slow tier | `pytest -m "slow or perf"` |
-| Start server | `uvicorn aerosat.server.app:create_app --factory` |
+| Install or synchronize backend dependencies | `uv sync` |
+| Headless run | `uv run python -m aerosat.cli run scenarios/ref-01.json` |
+| Export schemas | `uv run python -m aerosat.cli export-schemas` |
+| Backend tests, fast tier | `uv run pytest -m "not slow and not perf"` |
+| Backend tests, slow tier | `uv run pytest -m "slow or perf"` |
+| Backend coverage report | `uv run pytest --cov` |
+| Start server | `uv run uvicorn aerosat.server.app:create_app --factory` |
 | Frontend dev server | `npm run dev` |
 | Frontend tests | `npm test` |
 
@@ -318,7 +323,7 @@ Each step is finished when its tests pass. Later steps do not start on top of fa
 
 **Nice to have (only after the above)**
 
-- Link-impairment profiles beyond `ideal` (if D-4 is approved, the model itself is in step 5).
+- Link-impairment profiles beyond `ideal` (per D-4, the model itself is in step 5).
 - Mid-flight history backfill for late-joining clients.
 - Browser end-to-end smoke test.
 - Truth-versus-estimate comparison view, clearly labelled as an instructor/debug tool.
