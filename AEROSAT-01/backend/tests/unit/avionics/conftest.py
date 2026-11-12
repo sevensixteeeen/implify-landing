@@ -28,18 +28,19 @@ def ref01_avionics_config(**overrides) -> AvionicsConfig:
     return replace(load_avionics_config(REF01), **overrides)
 
 
-def ref01_simulator_config() -> SimulatorConfig:
-    vehicle = REF01["vehicle"]
+def ref01_simulator_config(scenario: dict | None = None) -> SimulatorConfig:
+    scenario = REF01 if scenario is None else scenario
+    vehicle = scenario["vehicle"]
     return SimulatorConfig(
         vehicle=Vehicle(vehicle["dry_mass_kg"], vehicle["propellant_mass_kg"],
                         vehicle["drag_coefficient"] * vehicle["reference_area_m2"],
                         ThrustCurve([(p["t_ms"], p["thrust_n"]) for p in vehicle["thrust_curve"]])),
-        t_ignition_ms=REF01["timing"]["t_ignition_ms"],
-        pad_altitude_msl_m=REF01["environment"]["pad_altitude_msl_m"],
+        t_ignition_ms=scenario["timing"]["t_ignition_ms"],
+        pad_altitude_msl_m=scenario["environment"]["pad_altitude_msl_m"],
         drag_device=DragDevice(vehicle["drag_device"]["enabled"], vehicle["drag_device"]["cd_area_m2"]),
         roll_profile=RollProfile([(p["t_ms"], p["roll_rate_radps"]) for p in vehicle["roll_profile"]]),
-        post_touchdown_hold_ms=REF01["timing"]["post_touchdown_hold_ms"],
-        max_duration_ms=REF01["timing"]["max_duration_ms"],
+        post_touchdown_hold_ms=scenario["timing"]["post_touchdown_hold_ms"],
+        max_duration_ms=scenario["timing"]["max_duration_ms"],
     )
 
 
@@ -66,13 +67,21 @@ class FlightRecord:
 
 
 def run_flight(seed: int, *, ideal: bool = False, pressure_spike: tuple[int, float] | None = None,
-               stop_tick: int | None = None) -> FlightRecord:
-    """Fly REF-01 once. `pressure_spike` = (tick, added Pa) corrupts one barometer sample."""
-    sensors = copy.deepcopy(REF01["sensors"])
+               stop_tick: int | None = None, avionics: AvionicsConfig | None = None,
+               scenario: dict | None = None) -> FlightRecord:
+    """Fly REF-01 once. `pressure_spike` = (tick, added Pa) corrupts one barometer sample.
+
+    `avionics` replaces the REF-01 avionics configuration (the simulator and sensors stay REF-01).
+    `scenario` replaces REF-01 altogether: simulator, sensors and avionics are all built from it.
+    """
+    scenario = REF01 if scenario is None else scenario
+    if avionics is None:
+        avionics = load_avionics_config(scenario)
+    sensors = copy.deepcopy(scenario["sensors"])
     sensors["ideal"] = ideal
-    sim = Simulator(ref01_simulator_config())
+    sim = Simulator(ref01_simulator_config(scenario))
     suite = SensorSuite(suite_config_from_scenario(sensors), master_seed=seed)
-    computer = FlightComputer(ref01_avionics_config())
+    computer = FlightComputer(avionics)
     record = FlightRecord(truth_events=sim.truth_events)
 
     state = sim.state

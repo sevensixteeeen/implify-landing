@@ -28,6 +28,8 @@ _AVIONICS_KEYS = {
     "rate_hz", "telemetry_rate_hz", "calibration_duration_ms", "liftoff_specific_force_mps2",
     "debounce_samples", "apogee_lockout_after_burnout_ms", "touchdown_window_ms",
     "touchdown_altitude_range_m", "touchdown_speed_mps", "estimator_gain_h", "estimator_gain_v_hz",
+    "backup_deployment_delay_ms", "expected_coast_duration_ms",
+    "burnout_fallback_specific_force_mps2", "burnout_fallback_samples",
 }
 
 
@@ -48,18 +50,27 @@ class AvionicsConfig:
     """Complementary-filter altitude gain K_h. Dimensionless."""
     estimator_gain_v_hz: float
     """Complementary-filter velocity gain K_v, 1/s."""
+    backup_deployment_delay_ms: int
+    """Backup timer: time after detected BURNOUT at which apogee is inferred and the drag device deployed."""
+    expected_coast_duration_ms: int
+    """Expected time from burnout to apogee for this scenario. The backup timer must be longer."""
+    burnout_fallback_specific_force_mps2: float
+    """Fallback BURNOUT criterion: specific force below this value, m/s^2."""
+    burnout_fallback_samples: int
+    """Fallback BURNOUT criterion: consecutive accelerometer samples required."""
     drag_device_enabled: bool
     deploy_delay_after_apogee_ms: int
 
     def __post_init__(self) -> None:
         """Validate every value on its own. Raises `ConfigurationFault` naming the field."""
-        for name in ("rate_hz", "telemetry_rate_hz", "calibration_duration_ms", "debounce_samples"):
+        for name in ("rate_hz", "telemetry_rate_hz", "calibration_duration_ms", "debounce_samples",
+                     "backup_deployment_delay_ms", "expected_coast_duration_ms", "burnout_fallback_samples"):
             _require_int(self, name, minimum=1)
         for name in ("apogee_lockout_after_burnout_ms", "deploy_delay_after_apogee_ms"):
             _require_int(self, name, minimum=0)
         _require_int(self, "touchdown_window_ms", minimum=1)
         for name in ("liftoff_specific_force_mps2", "touchdown_altitude_range_m", "touchdown_speed_mps",
-                     "estimator_gain_h", "estimator_gain_v_hz"):
+                     "estimator_gain_h", "estimator_gain_v_hz", "burnout_fallback_specific_force_mps2"):
             _require_positive_number(self, name)
         if not isinstance(self.drag_device_enabled, bool):
             raise ConfigurationFault(Reason.INVALID_TYPE, "vehicle.drag_device.enabled", "must be true or false")
@@ -79,6 +90,24 @@ class AvionicsConfig:
         if self.touchdown_window_ms < period_ms:
             raise ConfigurationFault(
                 Reason.OUT_OF_RANGE, "avionics.touchdown_window_ms", "must span at least one avionics period"
+            )
+        if self.burnout_fallback_specific_force_mps2 >= self.liftoff_specific_force_mps2:
+            raise ConfigurationFault(
+                Reason.OUT_OF_RANGE, "avionics.burnout_fallback_specific_force_mps2",
+                f"must be below the liftoff threshold of {self.liftoff_specific_force_mps2} m/s^2, "
+                f"got {self.burnout_fallback_specific_force_mps2}",
+            )
+        if self.burnout_fallback_samples < self.debounce_samples:
+            raise ConfigurationFault(
+                Reason.OUT_OF_RANGE, "avionics.burnout_fallback_samples",
+                f"must be at least debounce_samples ({self.debounce_samples}), got {self.burnout_fallback_samples}: "
+                "the primary criterion must be able to fire first",
+            )
+        if self.backup_deployment_delay_ms <= self.expected_coast_duration_ms:
+            raise ConfigurationFault(
+                Reason.OUT_OF_RANGE, "avionics.backup_deployment_delay_ms",
+                f"must exceed the expected coast duration of {self.expected_coast_duration_ms} ms, "
+                f"got {self.backup_deployment_delay_ms} ms: the backup timer would fire during ascent",
             )
         if self.estimator_gain_h >= 2.0:
             raise ConfigurationFault(
@@ -259,6 +288,9 @@ class FlightComputer:
             period_ticks=self._period_ticks,
             drag_device_enabled=config.drag_device_enabled,
             deploy_delay_ticks=ms_to_ticks(config.deploy_delay_after_apogee_ms),
+            backup_deployment_ticks=ms_to_ticks(config.backup_deployment_delay_ms),
+            burnout_fallback_specific_force_mps2=config.burnout_fallback_specific_force_mps2,
+            burnout_fallback_samples=config.burnout_fallback_samples,
         ))
         self._latest: dict[tuple[str, str], float] = {}
         self._acceleration_mps2 = 0.0

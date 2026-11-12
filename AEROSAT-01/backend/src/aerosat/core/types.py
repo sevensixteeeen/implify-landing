@@ -32,9 +32,32 @@ class FlightEventType(StrEnum):
     TOUCHDOWN = "TOUCHDOWN"
 
 
+class EventSource(StrEnum):
+    """How the avionics arrived at a flight event."""
+
+    DETECTED = "DETECTED"
+    """Directly detected from estimates or measurements by the event's primary criterion."""
+    FALLBACK_CRITERION = "FALLBACK_CRITERION"
+    """Directly detected from measurements, but by the event's fallback criterion."""
+    BACKUP_TIMER = "BACKUP_TIMER"
+    """Inferred: the backup deployment timer expired before the event was detected."""
+
+
+class DataQuality(StrEnum):
+    """How far an estimate or event can be trusted."""
+
+    NOMINAL = "NOMINAL"
+    DEGRADED = "DEGRADED"
+    UNRELIABLE = "UNRELIABLE"
+
+
 @dataclass(frozen=True, slots=True)
 class FlightEvent:
-    """A flight event as detected by the avionics. `t_sim_s` is the detection time, not the true event time."""
+    """A flight event recorded by the avionics. `t_sim_s` is the time it was recorded, not the true event time.
+
+    `source` separates a directly detected event from an inferred one. An inferred event carries
+    quality UNRELIABLE and a `reason` saying why it was inferred.
+    """
 
     event: FlightEventType
     tick: int
@@ -43,6 +66,10 @@ class FlightEvent:
     """State after the event."""
     detail: Mapping[str, float] = field(default_factory=dict)
     """Event-specific estimates, for example {"altitude_m": ...} for APOGEE. May be empty."""
+    source: EventSource = EventSource.DETECTED
+    quality: DataQuality = DataQuality.NOMINAL
+    reason: str | None = None
+    """Why the event was inferred. None for a directly detected event."""
 
 
 @dataclass(frozen=True, slots=True)

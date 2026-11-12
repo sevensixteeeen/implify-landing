@@ -23,6 +23,7 @@ from aerosat.avionics.state_machine import FlightStateMachine, StateMachineConfi
 from aerosat.core.constants import G0_MPS2, P0_PA, T0_K
 from aerosat.core.faults import ConfigurationFault, FaultCode
 from aerosat.core.faults import ConfigurationReason as Reason
+from aerosat.core.types import DataQuality, EventSource
 from aerosat.core.types import FlightEventType as Event
 from aerosat.core.types import FlightState as State
 from aerosat.core.types import SensorSample, TruthState, VehicleCommand
@@ -64,7 +65,8 @@ def machine(**overrides) -> FlightStateMachine:
     values = dict(
         liftoff_specific_force_mps2=15.0, debounce_samples=10, apogee_lockout_ticks=1000,
         touchdown_window_ticks=2000, touchdown_altitude_range_m=3.0, touchdown_speed_mps=2.0,
-        period_ticks=5, drag_device_enabled=True, deploy_delay_ticks=1000,
+        period_ticks=5, drag_device_enabled=True, deploy_delay_ticks=1000, backup_deployment_ticks=20_000,
+        burnout_fallback_specific_force_mps2=1.0, burnout_fallback_samples=20,
     )
     values.update(overrides)
     return FlightStateMachine(StateMachineConfig(**values))
@@ -299,6 +301,351 @@ def test_evt_13_ref01_event_ticks_are_unchanged(which) -> None:
     deploy_tick = REF01_PINNED_EVENT_TICKS[which][3]
     assert record.commands == [(deploy_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
     assert record.drag_area_change_tick == deploy_tick + 1
+
+
+# ---------------------------------------------------------------- EVT-19: backup deployment timer
+
+def coasting_driver(**overrides) -> tuple[Driver, int]:
+    """A machine driven through LIFTOFF and BURNOUT. Returns it with the BURNOUT detection tick."""
+    d = Driver(machine(**overrides))
+    d.feed(10, force=30.0)
+    d.feed(10, force=-2.0, velocity=200.0)
+    assert d.fsm.state is State.COAST and d.events[-1].event is Event.BURNOUT
+    return d, d.events[-1].tick
+
+
+def test_evt_19_backup_timer_does_not_run_before_burnout() -> None:
+    d = Driver(machine(backup_deployment_ticks=100))
+    d.feed(400, force=9.8)                               # 2 s on the pad
+    assert d.fsm.state is State.PAD_IDLE and d.events == []
+    d.feed(10, force=30.0)
+    d.feed(400, force=30.0, velocity=100.0)              # 2 s of boost, far longer than the 100 ms timer
+    assert d.fsm.state is State.BOOST and [e.event for e in d.events] == [Event.LIFTOFF]
+    assert d.commands == []
+
+
+def test_evt_19_backup_timer_expires_exactly_the_delay_after_detected_burnout() -> None:
+    d, burnout_tick = coasting_driver()
+    d.feed(3_999, force=0.0, velocity=50.0, altitude=1_800.0)       # still ascending: no apogee detected
+    assert d.tick - 5 == burnout_tick + 19_995
+    assert d.fsm.state is State.COAST and d.commands == []
+    assert [e.event for e in d.events] == [Event.LIFTOFF, Event.BURNOUT]
+    d.feed(1, force=0.0, velocity=50.0, altitude=1_812.5)           # burnout + 20 000 ticks
+    expiry_tick = burnout_tick + 20_000
+    assert d.fsm.state is State.DESCENT
+    assert [e.event for e in d.events] == [Event.LIFTOFF, Event.BURNOUT, Event.APOGEE, Event.DRAG_DEVICE_DEPLOYED]
+    assert d.commands == [(expiry_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+
+
+def test_evt_19_inferred_apogee_metadata() -> None:
+    d, burnout_tick = coasting_driver()
+    d.feed(4_000, force=0.0, velocity=50.0, altitude=1_812.5)
+    apogee, deployed = d.events[-2], d.events[-1]
+    expiry_tick = burnout_tick + 20_000
+
+    assert apogee.event is Event.APOGEE
+    assert apogee.source is EventSource.BACKUP_TIMER                # inferred, not detected
+    assert apogee.quality is DataQuality.UNRELIABLE
+    assert (apogee.tick, apogee.t_sim_s) == (expiry_tick, expiry_tick / 1000)   # the actual time it was recorded
+    assert apogee.flight_state is State.DESCENT
+    assert apogee.detail == {"altitude_m": 1_812.5}
+    assert "backup deployment timer expired" in apogee.reason
+    assert "20000 ms" in apogee.reason and f"tick {burnout_tick}" in apogee.reason
+
+    assert deployed.event is Event.DRAG_DEVICE_DEPLOYED
+    assert (deployed.source, deployed.quality, deployed.tick) == (EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE, expiry_tick)
+    assert deployed.reason == apogee.reason
+
+
+def test_evt_19_detected_events_are_marked_detected_and_nominal() -> None:
+    d, _ = coasting_driver()
+    d.feed(250, force=0.0, velocity=50.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=2_000.0)          # directly detected apogee
+    d.feed(200, force=0.0, velocity=-12.0, altitude=1_990.0)        # normal deployment after the delay
+    assert [e.event for e in d.events] == [Event.LIFTOFF, Event.BURNOUT, Event.APOGEE, Event.DRAG_DEVICE_DEPLOYED]
+    for event in d.events:
+        assert (event.source, event.quality, event.reason) == (EventSource.DETECTED, DataQuality.NOMINAL, None)
+
+
+def test_evt_19_directly_detected_apogee_takes_precedence_and_cancels_the_timer() -> None:
+    d, burnout_tick = coasting_driver()
+    d.feed(250, force=0.0, velocity=50.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=2_000.0)
+    (apogee,) = [e for e in d.events if e.event is Event.APOGEE]
+    assert apogee.source is EventSource.DETECTED and apogee.tick < burnout_tick + 20_000
+    d.feed(6_000, force=0.0, velocity=-12.0, altitude=1_500.0)      # run well past burnout + 20 s, still descending
+    assert d.tick > burnout_tick + 20_000
+    assert [e.event for e in d.events].count(Event.APOGEE) == 1     # no second, inferred apogee
+    assert d.commands == [(apogee.tick + 1000, VehicleCommand.DEPLOY_DRAG_DEVICE)]   # normal path only, once
+    assert all(e.source is EventSource.DETECTED for e in d.events)
+
+
+def test_evt_19_detection_wins_when_both_conditions_hold_on_the_same_tick() -> None:
+    """The tenth negative-velocity tick lands exactly on the timer's expiry tick."""
+    d, burnout_tick = coasting_driver(backup_deployment_ticks=2_000)
+    d.feed(390, force=0.0, velocity=50.0)                           # up to burnout + 1 950
+    d.feed(10, force=0.0, velocity=-1.0, altitude=900.0)            # tenth is at burnout + 2 000
+    (apogee,) = [e for e in d.events if e.event is Event.APOGEE]
+    assert apogee.tick == burnout_tick + 2_000
+    assert apogee.source is EventSource.DETECTED and apogee.quality is DataQuality.NOMINAL
+    assert d.commands == []                                         # normal delay has not elapsed yet
+
+
+def test_evt_19_inferred_apogee_never_triggers_the_normal_deployment_path() -> None:
+    """Drag device disabled in the avionics: the timer infers apogee but nothing may be commanded,
+    neither at expiry nor one normal delay later."""
+    d, burnout_tick = coasting_driver(drag_device_enabled=False)
+    d.feed(4_000, force=0.0, velocity=50.0, altitude=1_800.0)
+    assert d.fsm.state is State.DESCENT and d.events[-1].source is EventSource.BACKUP_TIMER
+    d.feed(1_000, force=0.0, velocity=-12.0, altitude=1_700.0)
+    assert d.commands == [] and Event.DRAG_DEVICE_DEPLOYED not in [e.event for e in d.events]
+
+    # Device enabled: exactly one command, at expiry, and none at expiry + the normal 1000-tick delay.
+    d, burnout_tick = coasting_driver()
+    d.feed(4_000, force=0.0, velocity=50.0, altitude=1_800.0)
+    d.feed(1_000, force=0.0, velocity=-12.0, altitude=1_700.0)
+    assert d.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert [e.event for e in d.events].count(Event.DRAG_DEVICE_DEPLOYED) == 1
+
+
+def test_evt_19_touchdown_is_still_detected_after_an_inferred_apogee() -> None:
+    d, _ = coasting_driver()
+    d.feed(4_000, force=0.0, velocity=50.0, altitude=1_800.0)
+    d.feed(401, force=9.8, velocity=0.0, altitude=0.0)
+    assert d.fsm.state is State.LANDED
+    assert d.events[-1].event is Event.TOUCHDOWN and d.events[-1].source is EventSource.DETECTED
+
+
+def test_evt_19_ref01_never_reaches_the_backup_timer() -> None:
+    """In REF-01 apogee is detected about 18 s after burnout, before the 20 s timer."""
+    for record in (flight(0, True), *(flight(seed) for seed in range(10))):
+        burnout_tick = record.detected(Event.BURNOUT)[0].tick
+        (apogee,) = record.detected(Event.APOGEE)
+        assert apogee.tick < burnout_tick + 20_000
+        assert all(e.source is EventSource.DETECTED and e.quality is DataQuality.NOMINAL and e.reason is None
+                   for e in record.events)
+
+
+def test_evt_19_flight_with_apogee_detection_suppressed_deploys_on_the_backup_timer() -> None:
+    """Closed loop, REF-01, seed 0, with the apogee debounce made unreachable so only the timer can act."""
+    blind = ref01_avionics_config(apogee_lockout_after_burnout_ms=599_000)   # lock-out outlasts the flight
+    record = run_flight(0, avionics=blind)
+    burnout_tick = record.detected(Event.BURNOUT)[0].tick
+    (apogee,) = record.detected(Event.APOGEE)
+    assert (apogee.tick, apogee.source, apogee.quality) == (burnout_tick + 20_000, EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE)
+    assert record.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert record.drag_area_change_tick == burnout_tick + 20_001
+    assert apogee.tick > record.truth_events.apogee_tick                    # after true apogee, not during ascent
+    assert [e.event for e in record.events] == ORDER
+    touchdown_error_s = record.detection_time_s(Event.TOUCHDOWN) - record.truth_events.touchdown_time_s
+    assert 0.0 <= touchdown_error_s <= 3.0
+
+
+def test_evt_19_backup_delay_configuration() -> None:
+    assert (REF01["avionics"]["backup_deployment_delay_ms"], REF01["avionics"]["expected_coast_duration_ms"]) == (20_000, 18_047)
+    config = load_avionics_config(REF01)
+    assert (config.backup_deployment_delay_ms, config.expected_coast_duration_ms) == (20_000, 18_047)
+    for name in ("backup_deployment_delay_ms", "expected_coast_duration_ms"):      # required: no default
+        fault = rejected(scenario_with(f"avionics.{name}", ...))
+        assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, f"avionics.{name}")
+        for bad, reason in ((0, Reason.OUT_OF_RANGE), (-1, Reason.OUT_OF_RANGE), (20000.0, Reason.INVALID_TYPE),
+                            ("20000", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE), (None, Reason.INVALID_TYPE)):
+            fault = rejected(scenario_with(f"avionics.{name}", bad))
+            assert (fault.reason, fault.field) == (reason, f"avionics.{name}")
+    # The timer must exceed the expected coast duration: equal is rejected, one millisecond more is accepted.
+    for too_short in (18_047, 18_046, 1):
+        fault = rejected(scenario_with("avionics.backup_deployment_delay_ms", too_short))
+        assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, "avionics.backup_deployment_delay_ms")
+    load_avionics_config(scenario_with("avionics.backup_deployment_delay_ms", 18_048))
+    fault = rejected(scenario_with("avionics.expected_coast_duration_ms", 20_000))
+    assert fault.field == "avionics.backup_deployment_delay_ms"
+
+
+def test_evt_19_ref01_expected_coast_duration_matches_the_simulated_flight(ideal_flight: FlightRecord) -> None:
+    """18047 ms is the true burnout-to-apogee time of REF-01 (truth ticks 6200 and 24247)."""
+    truth = ideal_flight.truth_events
+    assert truth.apogee_tick - truth.burnout_tick == REF01["avionics"]["expected_coast_duration_ms"]
+
+
+def test_evt_19_inferred_apogee_cannot_activate_normal_deployment_independently() -> None:
+    """White-box regression for the `_apogee_inferred` guard.
+
+    After the backup timer has inferred apogee and deployed, the deployment latch is cleared by hand,
+    as if the backup deployment had not latched. The normal apogee-plus-delay path must still refuse
+    to act, because the apogee was inferred, not detected. Without the guard it would issue a command
+    one normal delay (1000 ticks) after the inferred apogee.
+    """
+    d, burnout_tick = coasting_driver()
+    d.feed(4_000, force=0.0, velocity=50.0, altitude=1_800.0)
+    assert d.events[-2].source is EventSource.BACKUP_TIMER and d.fsm._apogee_inferred is True
+    assert d.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    d.fsm._deployed = False
+    d.feed(400, force=0.0, velocity=-12.0, altitude=1_700.0)        # 2 s: twice the normal delay
+    assert d.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert [e.event for e in d.events].count(Event.DRAG_DEVICE_DEPLOYED) == 1
+
+
+# ---------------------------------------------------------------- EVT-15: burnout fallback
+
+def boosting_driver(**overrides) -> Driver:
+    d = Driver(machine(**overrides))
+    d.feed(10, force=30.0)
+    assert d.fsm.state is State.BOOST
+    d.feed(100, force=40.0, velocity=100.0)
+    return d
+
+
+def test_evt_15_nineteen_qualifying_samples_then_one_not_gives_no_burnout() -> None:
+    d = boosting_driver()
+    for _ in range(3):                                              # repeated interrupted attempts
+        d.feed(19, force=0.5, velocity=200.0)                       # below 1.0 but not below 0
+        d.feed(1, force=1.5, velocity=200.0)                        # breaks the run
+        assert d.fsm.state is State.BOOST
+    assert [e.event for e in d.events] == [Event.LIFTOFF]
+
+
+def test_evt_15_exactly_twenty_qualifying_samples_give_fallback_burnout() -> None:
+    d = boosting_driver()
+    start_tick = d.tick
+    d.feed(19, force=0.5, velocity=200.0)
+    assert d.fsm.state is State.BOOST
+    d.feed(1, force=0.5, velocity=200.0)                            # the twentieth
+    burnout = d.events[-1]
+    assert d.fsm.state is State.COAST
+    assert (burnout.event, burnout.tick) == (Event.BURNOUT, start_tick + 19 * 5)
+    assert burnout.source is EventSource.FALLBACK_CRITERION
+    assert burnout.quality is DataQuality.NOMINAL
+    assert "1.0 m/s^2" in burnout.reason and "20 consecutive samples" in burnout.reason
+
+
+def test_evt_15_threshold_is_strict_and_counts_accelerometer_samples_only() -> None:
+    d = boosting_driver()
+    d.feed(40, force=1.0, velocity=200.0)                           # exactly at the threshold: does not qualify
+    assert d.fsm.state is State.BOOST
+    for _ in range(19):                                             # ticks with no accelerometer sample do not count
+        d.feed(1, force=0.5, velocity=200.0)
+        d.feed(1, force=None, velocity=200.0)
+    assert d.fsm.state is State.BOOST
+    d.feed(1, force=0.5, velocity=200.0)
+    assert d.fsm.state is State.COAST and d.events[-1].source is EventSource.FALLBACK_CRITERION
+
+
+def test_evt_15_primary_criterion_takes_precedence() -> None:
+    """Negative specific force satisfies both criteria; the primary one fires at its tenth sample."""
+    d = boosting_driver()
+    start_tick = d.tick
+    d.feed(30, force=-2.0, velocity=200.0)
+    (burnout,) = [e for e in d.events if e.event is Event.BURNOUT]
+    assert burnout.tick == start_tick + 9 * 5
+    assert (burnout.source, burnout.quality, burnout.reason) == (EventSource.DETECTED, DataQuality.NOMINAL, None)
+
+
+def test_evt_15_primary_wins_when_both_complete_on_the_same_sample() -> None:
+    d = boosting_driver()
+    d.feed(10, force=0.5, velocity=200.0)                           # fallback count 10, primary 0
+    d.feed(10, force=-2.0, velocity=200.0)                          # fallback reaches 20 as primary reaches 10
+    (burnout,) = [e for e in d.events if e.event is Event.BURNOUT]
+    assert burnout.source is EventSource.DETECTED
+
+
+def test_evt_15_powered_flight_transients_shorter_than_twenty_samples_are_ignored() -> None:
+    """Thrust at 40 m/s^2 with dips below the threshold of 1, 5, 10 and 19 samples."""
+    d = boosting_driver()
+    for dip in (1, 5, 10, 19):
+        d.feed(dip, force=0.2, velocity=150.0)
+        d.feed(50, force=40.0, velocity=150.0)
+        assert d.fsm.state is State.BOOST
+    assert [e.event for e in d.events] == [Event.LIFTOFF]
+    d.feed(9, force=-5.0, velocity=150.0)                           # a negative dip shorter than the primary debounce
+    d.feed(50, force=40.0, velocity=150.0)
+    assert d.fsm.state is State.BOOST
+
+
+def zero_drag_scenario(backup_ms: int = 26_000, coast_ms: int = 23_665) -> dict:
+    """REF-01 with no aerodynamic drag, with its real coast duration declared."""
+    scenario = copy.deepcopy(REF01)
+    scenario["vehicle"]["drag_coefficient"] = 0.0
+    scenario["avionics"]["expected_coast_duration_ms"] = coast_ms
+    scenario["avionics"]["backup_deployment_delay_ms"] = backup_ms
+    return scenario
+
+
+@pytest.mark.parametrize("seed", range(10))
+def test_evt_15_zero_drag_burnout_is_detected_within_tolerance(seed: int) -> None:
+    record = run_flight(seed, scenario=zero_drag_scenario(), stop_tick=8_000)
+    (burnout,) = record.detected(Event.BURNOUT)
+    error_s = burnout.t_sim_s - record.truth_events.burnout_tick / 1000
+    low, high = TOLERANCE_S[Event.BURNOUT]
+    assert low <= error_s <= high, f"seed {seed}: BURNOUT detected {error_s:+.3f} s from truth"
+    assert burnout.source is EventSource.FALLBACK_CRITERION and burnout.quality is DataQuality.NOMINAL
+    assert [e.event for e in record.events] == [Event.LIFTOFF, Event.BURNOUT]
+
+
+def test_evt_15_ref01_burnout_is_still_found_by_the_primary_criterion() -> None:
+    for record in (flight(0, True), *(flight(seed) for seed in range(10))):
+        (burnout,) = record.detected(Event.BURNOUT)
+        assert (burnout.tick, burnout.source, burnout.reason) == (6_230, EventSource.DETECTED, None)
+
+
+def test_evt_15_timer_with_a_correctly_declared_coast_duration() -> None:
+    """Zero drag coasts for 23 665 ms, so the 20 000 ms REF-01 timer is rejected at load."""
+    fault = rejected(zero_drag_scenario(backup_ms=20_000))
+    assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, "avionics.backup_deployment_delay_ms")
+
+    # With a 26 000 ms timer: burnout by the fallback, apogee detected directly, the timer never fires.
+    record = run_flight(0, scenario=zero_drag_scenario(), stop_tick=33_500)
+    truth = record.truth_events
+    assert truth.apogee_tick - truth.burnout_tick == 23_665           # the declared coast duration is the real one
+    (burnout,) = record.detected(Event.BURNOUT)
+    (apogee,) = record.detected(Event.APOGEE)
+    assert burnout.source is EventSource.FALLBACK_CRITERION
+    assert apogee.source is EventSource.DETECTED and apogee.tick < burnout.tick + 26_000
+    assert abs(apogee.t_sim_s - truth.apogee_tick / 1000) <= 1.0
+    assert record.commands == [(apogee.tick + 1000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+
+
+def test_evt_15_backup_timer_starts_from_the_fallback_burnout() -> None:
+    """Apogee detection suppressed: the timer expires exactly 26 000 ticks after the fallback burnout."""
+    scenario = zero_drag_scenario()
+    scenario["avionics"]["apogee_lockout_after_burnout_ms"] = 599_000
+    record = run_flight(0, scenario=scenario, stop_tick=33_500)
+    (burnout,) = record.detected(Event.BURNOUT)
+    (apogee,) = record.detected(Event.APOGEE)
+    assert burnout.source is EventSource.FALLBACK_CRITERION
+    assert (apogee.tick, apogee.source, apogee.quality) == (burnout.tick + 26_000, EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE)
+    assert apogee.tick > record.truth_events.apogee_tick             # after true apogee, not during ascent
+    assert record.commands == [(apogee.tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+
+
+def test_evt_15_configuration() -> None:
+    avionics = REF01["avionics"]
+    assert (avionics["burnout_fallback_specific_force_mps2"], avionics["burnout_fallback_samples"]) == (1.0, 20)
+    config = load_avionics_config(REF01)
+    assert (config.burnout_fallback_specific_force_mps2, config.burnout_fallback_samples) == (1.0, 20)
+
+    threshold, samples = "avionics.burnout_fallback_specific_force_mps2", "avionics.burnout_fallback_samples"
+    for path in (threshold, samples):                                 # required: no default
+        fault = rejected(scenario_with(path, ...))
+        assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, path)
+    for bad, reason in ((0.0, Reason.OUT_OF_RANGE), (-1.0, Reason.OUT_OF_RANGE), (math.nan, Reason.INVALID_TYPE),
+                        (math.inf, Reason.INVALID_TYPE), ("1.0", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE),
+                        (None, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(threshold, bad))
+        assert (fault.reason, fault.field) == (reason, threshold)
+    for bad, reason in ((0, Reason.OUT_OF_RANGE), (-20, Reason.OUT_OF_RANGE), (20.0, Reason.INVALID_TYPE),
+                        ("20", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE), (None, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(samples, bad))
+        assert (fault.reason, fault.field) == (reason, samples)
+
+    # The threshold must be below the liftoff threshold (15.0): equal is rejected.
+    for too_high in (15.0, 20.0):
+        fault = rejected(scenario_with(threshold, too_high))
+        assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, threshold)
+    load_avionics_config(scenario_with(threshold, 14.9))
+    # The sample count must be at least debounce_samples (10): 9 is rejected, 10 is accepted.
+    fault = rejected(scenario_with(samples, 9))
+    assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, samples)
+    load_avionics_config(scenario_with(samples, 10))
 
 
 # ---------------------------------------------------------------- EVT-07
