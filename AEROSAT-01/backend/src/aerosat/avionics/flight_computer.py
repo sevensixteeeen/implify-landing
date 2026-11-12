@@ -30,6 +30,7 @@ _AVIONICS_KEYS = {
     "touchdown_altitude_range_m", "touchdown_speed_mps", "estimator_gain_h", "estimator_gain_v_hz",
     "backup_deployment_delay_ms", "expected_coast_duration_ms",
     "burnout_fallback_specific_force_mps2", "burnout_fallback_samples",
+    "touchdown_fallback_window_ms", "touchdown_fallback_acceleration_mps2",
 }
 
 
@@ -58,19 +59,25 @@ class AvionicsConfig:
     """Fallback BURNOUT criterion: specific force below this value, m/s^2."""
     burnout_fallback_samples: int
     """Fallback BURNOUT criterion: consecutive accelerometer samples required."""
+    touchdown_fallback_window_ms: int
+    """Fallback TOUCHDOWN criterion: window over which the barometer must be still."""
+    touchdown_fallback_acceleration_mps2: float
+    """Fallback TOUCHDOWN criterion: limit on |gravity-compensated estimated vertical acceleration|, m/s^2."""
     drag_device_enabled: bool
     deploy_delay_after_apogee_ms: int
 
     def __post_init__(self) -> None:
         """Validate every value on its own. Raises `ConfigurationFault` naming the field."""
         for name in ("rate_hz", "telemetry_rate_hz", "calibration_duration_ms", "debounce_samples",
-                     "backup_deployment_delay_ms", "expected_coast_duration_ms", "burnout_fallback_samples"):
+                     "backup_deployment_delay_ms", "expected_coast_duration_ms", "burnout_fallback_samples",
+                     "touchdown_fallback_window_ms"):
             _require_int(self, name, minimum=1)
         for name in ("apogee_lockout_after_burnout_ms", "deploy_delay_after_apogee_ms"):
             _require_int(self, name, minimum=0)
         _require_int(self, "touchdown_window_ms", minimum=1)
         for name in ("liftoff_specific_force_mps2", "touchdown_altitude_range_m", "touchdown_speed_mps",
-                     "estimator_gain_h", "estimator_gain_v_hz", "burnout_fallback_specific_force_mps2"):
+                     "estimator_gain_h", "estimator_gain_v_hz", "burnout_fallback_specific_force_mps2",
+                     "touchdown_fallback_acceleration_mps2"):
             _require_positive_number(self, name)
         if not isinstance(self.drag_device_enabled, bool):
             raise ConfigurationFault(Reason.INVALID_TYPE, "vehicle.drag_device.enabled", "must be true or false")
@@ -90,6 +97,12 @@ class AvionicsConfig:
         if self.touchdown_window_ms < period_ms:
             raise ConfigurationFault(
                 Reason.OUT_OF_RANGE, "avionics.touchdown_window_ms", "must span at least one avionics period"
+            )
+        if self.touchdown_fallback_window_ms < self.touchdown_window_ms:
+            raise ConfigurationFault(
+                Reason.OUT_OF_RANGE, "avionics.touchdown_fallback_window_ms",
+                f"must be at least touchdown_window_ms ({self.touchdown_window_ms}), got "
+                f"{self.touchdown_fallback_window_ms}: the fallback must not undercut the primary criterion",
             )
         if self.burnout_fallback_specific_force_mps2 >= self.liftoff_specific_force_mps2:
             raise ConfigurationFault(
@@ -285,6 +298,8 @@ class FlightComputer:
             touchdown_window_ticks=ms_to_ticks(config.touchdown_window_ms),
             touchdown_altitude_range_m=config.touchdown_altitude_range_m,
             touchdown_speed_mps=config.touchdown_speed_mps,
+            touchdown_fallback_window_ticks=ms_to_ticks(config.touchdown_fallback_window_ms),
+            touchdown_fallback_acceleration_mps2=config.touchdown_fallback_acceleration_mps2,
             period_ticks=self._period_ticks,
             drag_device_enabled=config.drag_device_enabled,
             deploy_delay_ticks=ms_to_ticks(config.deploy_delay_after_apogee_ms),
@@ -338,6 +353,8 @@ class FlightComputer:
                 specific_force_mps2=specific_force if new_accel else None,
                 altitude_m=self._filter.altitude_agl_m,
                 velocity_mps=self._filter.velocity_mps,
+                baro_altitude_m=self._baro_altitude_m,
+                acceleration_mps2=self._acceleration_mps2,
             )
 
         t_sim_s = tick_to_seconds(tick)

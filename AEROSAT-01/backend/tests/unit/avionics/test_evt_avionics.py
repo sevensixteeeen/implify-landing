@@ -67,6 +67,7 @@ def machine(**overrides) -> FlightStateMachine:
         touchdown_window_ticks=2000, touchdown_altitude_range_m=3.0, touchdown_speed_mps=2.0,
         period_ticks=5, drag_device_enabled=True, deploy_delay_ticks=1000, backup_deployment_ticks=20_000,
         burnout_fallback_specific_force_mps2=1.0, burnout_fallback_samples=20,
+        touchdown_fallback_window_ticks=2800, touchdown_fallback_acceleration_mps2=2.0,
     )
     values.update(overrides)
     return FlightStateMachine(StateMachineConfig(**values))
@@ -78,9 +79,16 @@ class Driver:
     def __init__(self, fsm: FlightStateMachine) -> None:
         self.fsm, self.tick, self.events, self.commands = fsm, 0, [], []
 
-    def feed(self, count: int, *, force: float | None = 9.8, altitude: float = 0.0, velocity: float = 0.0) -> None:
+    def feed(self, count: int, *, force: float | None = 9.8, altitude: float = 0.0, velocity: float = 0.0,
+             baro: float | None = None, accel: float = 9.0) -> None:
+        """`baro` is the barometric altitude (defaults to `altitude`) and `accel` the gravity-compensated
+        estimated acceleration. Both feed only the touchdown fallback. `accel` defaults to 9.0 m/s^2,
+        which never qualifies, so tests of other criteria cannot trip the fallback by accident."""
         for _ in range(count):
-            events, commands = self.fsm.update(self.tick, specific_force_mps2=force, altitude_m=altitude, velocity_mps=velocity)
+            events, commands = self.fsm.update(
+                self.tick, specific_force_mps2=force, altitude_m=altitude, velocity_mps=velocity,
+                baro_altitude_m=altitude if baro is None else baro, acceleration_mps2=accel,
+            )
             self.events += events
             self.commands += [(self.tick, command) for command in commands]
             self.tick += 5
@@ -646,6 +654,181 @@ def test_evt_15_configuration() -> None:
     fault = rejected(scenario_with(samples, 9))
     assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, samples)
     load_avionics_config(scenario_with(samples, 10))
+
+
+# ---------------------------------------------------------------- EVT-16: touchdown fallback
+
+FALLBACK_SAMPLES = 561            # 2800 ms at one sample per 5 ms, inclusive of both ends
+
+
+def descending_driver(**overrides) -> Driver:
+    """A machine driven into DESCENT and falling fast, so that neither touchdown criterion is close."""
+    d = Driver(machine(**overrides))
+    d.feed(10, force=30.0)
+    d.feed(10, force=-2.0, velocity=200.0)
+    d.feed(250, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=1_000.0)
+    assert d.fsm.state is State.DESCENT
+    d.feed(50, force=0.0, velocity=-150.0, altitude=500.0, accel=-9.0)
+    return d
+
+
+def still(d: Driver, count: int, *, baro: float = 0.0, accel: float = 0.0) -> None:
+    """On the ground after a hard impact: barometer still, no acceleration, velocity estimate still wrong."""
+    d.feed(count, force=9.8, velocity=-150.0, altitude=-40.0, baro=baro, accel=accel)
+
+
+def test_evt_16_one_sample_short_of_the_window_does_not_fire() -> None:
+    d = descending_driver()
+    still(d, FALLBACK_SAMPLES - 1)
+    assert d.fsm.state is State.DESCENT
+    assert Event.TOUCHDOWN not in [e.event for e in d.events]
+
+
+def test_evt_16_a_complete_qualifying_window_fires() -> None:
+    d = descending_driver()
+    first_tick = d.tick
+    still(d, FALLBACK_SAMPLES)
+    touchdown = d.events[-1]
+    assert d.fsm.state is State.LANDED
+    assert (touchdown.event, touchdown.tick) == (Event.TOUCHDOWN, first_tick + 2_800)   # spans exactly 2800 ms
+    assert touchdown.source is EventSource.FALLBACK_CRITERION
+    assert touchdown.quality is DataQuality.NOMINAL
+    assert touchdown.flight_state is State.LANDED
+    assert "3.0 m" in touchdown.reason and "2.0 m/s^2" in touchdown.reason and "2800 ms" in touchdown.reason
+
+
+def test_evt_16_a_single_large_acceleration_sample_resets_the_window() -> None:
+    """The window is emptied; a new one starts at the next qualifying sample and needs the full 2800 ms."""
+    d = descending_driver()
+    still(d, 400)
+    still(d, 1, accel=2.0)                       # exactly at the limit: disqualifies
+    restart_tick = d.tick                        # the next sample starts the new window
+    still(d, FALLBACK_SAMPLES - 1)
+    assert d.fsm.state is State.DESCENT          # 400 earlier samples did not count
+    still(d, 1)
+    assert d.fsm.state is State.LANDED and d.events[-1].tick == restart_tick + 2_800
+
+    d = descending_driver()                      # the sign of the acceleration does not matter
+    still(d, 400)
+    still(d, 1, accel=-7.5)
+    still(d, FALLBACK_SAMPLES - 1)
+    assert d.fsm.state is State.DESCENT
+
+
+def test_evt_16_a_barometric_altitude_step_resets_the_window() -> None:
+    """A step that takes the range to the 3 m limit starts a new window at the step sample itself."""
+    d = descending_driver()
+    still(d, 400, baro=0.0)
+    step_tick = d.tick
+    still(d, 1, baro=3.0)                        # range exactly 3.0 m: not within the limit
+    still(d, FALLBACK_SAMPLES - 2, baro=3.0)
+    assert d.fsm.state is State.DESCENT
+    still(d, 1, baro=3.0)                        # the step sample plus 560 more
+    assert d.fsm.state is State.LANDED and d.events[-1].tick == step_tick + 2_800
+
+    d = descending_driver()                      # changes inside the limit do not reset
+    first_tick = d.tick
+    for k in range(FALLBACK_SAMPLES):
+        still(d, 1, baro=2.9 * (k % 2))
+    assert d.fsm.state is State.LANDED and d.events[-1].tick == first_tick + 2_800
+
+
+def test_evt_16_steady_descent_never_qualifies() -> None:
+    """Falling at 12.7 m/s with no acceleration: the barometer moves 3 m every 0.24 s."""
+    d = descending_driver()
+    for k in range(4_000):
+        altitude = 500.0 - 12.7 * 0.005 * k
+        d.feed(1, force=0.0, velocity=-12.7, altitude=altitude, accel=0.0)
+    assert d.fsm.state is State.DESCENT
+
+
+def test_evt_16_primary_criterion_takes_precedence() -> None:
+    """Both criteria satisfied from the same tick: the primary needs 2000 ms, the fallback 2800 ms."""
+    d = descending_driver()
+    first_tick = d.tick
+    d.feed(FALLBACK_SAMPLES, force=9.8, velocity=0.0, altitude=0.0, accel=0.0)
+    (touchdown,) = [e for e in d.events if e.event is Event.TOUCHDOWN]
+    assert touchdown.tick == first_tick + 2_000
+    assert (touchdown.source, touchdown.quality, touchdown.reason) == (EventSource.DETECTED, DataQuality.NOMINAL, None)
+
+
+def test_evt_16_primary_wins_when_both_complete_on_the_same_tick() -> None:
+    d = descending_driver()
+    still(d, 160)                                                    # fallback window 160 samples ahead
+    d.feed(401, force=9.8, velocity=0.0, altitude=0.0, baro=0.0, accel=0.0)   # both complete on the last one
+    (touchdown,) = [e for e in d.events if e.event is Event.TOUCHDOWN]
+    assert touchdown.source is EventSource.DETECTED
+
+
+def no_drag_device_scenario() -> dict:
+    scenario = copy.deepcopy(REF01)
+    scenario["vehicle"]["drag_device"]["enabled"] = False
+    return scenario
+
+
+def assert_hard_impact_touchdown(record: FlightRecord, label: str) -> None:
+    truth = record.truth_events
+    assert truth.impact_velocity_mps < -150.0, f"{label}: expected a hard impact"
+    (touchdown,) = record.detected(Event.TOUCHDOWN)
+    error_s = touchdown.t_sim_s - truth.touchdown_time_s
+    low, high = TOLERANCE_S[Event.TOUCHDOWN]
+    assert low <= error_s <= high, f"{label}: TOUCHDOWN detected {error_s:+.3f} s from truth"
+    assert touchdown.source is EventSource.FALLBACK_CRITERION and touchdown.quality is DataQuality.NOMINAL
+    assert record.last_estimate.flight_state is State.LANDED
+    print(f"\nEVT-16 {label}: impact {truth.impact_velocity_mps:.1f} m/s, TOUCHDOWN {error_s:+.3f} s after contact")
+
+
+@pytest.mark.parametrize("seed", range(3))
+def test_evt_16_drag_device_disabled(seed: int) -> None:
+    """No drag device anywhere: ballistic descent and a hard impact."""
+    record = run_flight(seed, scenario=no_drag_device_scenario())
+    assert record.commands == [] and record.drag_area_change_tick is None
+    assert_hard_impact_touchdown(record, f"drag device disabled, seed {seed}")
+
+
+@pytest.mark.parametrize("seed", range(3))
+def test_evt_16_deployment_commanded_but_ignored_by_the_simulator(seed: int) -> None:
+    """Failed deployment: the avionics issues the command, the vehicle does not respond."""
+    record = run_flight(seed, scenario=no_drag_device_scenario(), avionics=ref01_avionics_config())
+    assert [command for _, command in record.commands] == [VehicleCommand.DEPLOY_DRAG_DEVICE]
+    assert record.drag_area_change_tick is None                      # the simulator ignored it
+    assert_hard_impact_touchdown(record, f"deployment failed, seed {seed}")
+
+
+def test_evt_16_ref01_touchdown_stays_primary_and_fallback_never_fires_early() -> None:
+    """Eleven nominal flights: touchdown is found by the primary criterion, after true contact."""
+    for label, record in [("ideal", flight(0, True)), *((seed, flight(seed)) for seed in range(10))]:
+        (touchdown,) = record.detected(Event.TOUCHDOWN)
+        assert touchdown.tick == REF01_PINNED_EVENT_TICKS[label][4]
+        assert (touchdown.source, touchdown.reason) == (EventSource.DETECTED, None), label
+        assert touchdown.t_sim_s > record.truth_events.touchdown_time_s, label
+
+
+def test_evt_16_configuration() -> None:
+    avionics = REF01["avionics"]
+    assert (avionics["touchdown_fallback_window_ms"], avionics["touchdown_fallback_acceleration_mps2"]) == (2_800, 2.0)
+    assert avionics["touchdown_altitude_range_m"] == 3.0             # reused by the fallback
+    config = load_avionics_config(REF01)
+    assert (config.touchdown_fallback_window_ms, config.touchdown_fallback_acceleration_mps2) == (2_800, 2.0)
+
+    window, limit = "avionics.touchdown_fallback_window_ms", "avionics.touchdown_fallback_acceleration_mps2"
+    for path in (window, limit):                                     # required: no default
+        fault = rejected(scenario_with(path, ...))
+        assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, path)
+    for bad, reason in ((0, Reason.OUT_OF_RANGE), (-2800, Reason.OUT_OF_RANGE), (2800.0, Reason.INVALID_TYPE),
+                        ("2800", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE), (None, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(window, bad))
+        assert (fault.reason, fault.field) == (reason, window)
+    for bad, reason in ((0.0, Reason.OUT_OF_RANGE), (-2.0, Reason.OUT_OF_RANGE), (math.nan, Reason.INVALID_TYPE),
+                        (math.inf, Reason.INVALID_TYPE), ("2.0", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE),
+                        (None, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(limit, bad))
+        assert (fault.reason, fault.field) == (reason, limit)
+    # The fallback window may not be shorter than the primary window (2000 ms): equal is accepted.
+    fault = rejected(scenario_with(window, 1_999))
+    assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, window)
+    load_avionics_config(scenario_with(window, 2_000))
 
 
 # ---------------------------------------------------------------- EVT-07

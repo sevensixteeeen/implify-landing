@@ -57,7 +57,9 @@
     "backup_deployment_delay_ms": 20000,
     "expected_coast_duration_ms": 18047,
     "burnout_fallback_specific_force_mps2": 1.0,
-    "burnout_fallback_samples": 20
+    "burnout_fallback_samples": 20,
+    "touchdown_fallback_window_ms": 2800,
+    "touchdown_fallback_acceleration_mps2": 2.0
   },
   "link": { "profile": "ideal" }
 }
