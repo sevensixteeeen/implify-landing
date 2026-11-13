@@ -8,6 +8,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from aerosat.core.constants import G0_MPS2
+from aerosat.core.faults import ConfigurationFault, ConfigurationReason
 from aerosat.core.types import SensorSample
 
 
@@ -36,12 +37,17 @@ class PadCalibration:
                 self._count[key] += 1
 
     def result(self) -> CalibrationResult:
-        """Means over the readings added so far. Raises ValueError if a required sensor gave none."""
+        """Means over the valid readings added so far.
+
+        The caller adds only valid samples: a saturated or non-finite reading never reaches a
+        mean. Raises `ConfigurationFault` if a required sensor gave no valid reading.
+        """
         missing = [f"{sensor}.{channel}" for (sensor, channel), count in self._count.items() if count == 0]
         if missing:
-            raise ValueError(
-                f"pad calibration needs readings from {', '.join(missing)}; "
-                "the sensor is disabled or produced no samples during calibration"
+            raise ConfigurationFault(
+                ConfigurationReason.NO_VALID_CALIBRATION_SAMPLES, f"sensors.{missing[0].split('.')[0]}",
+                f"pad calibration needs valid readings from {', '.join(missing)}; the sensor is disabled, "
+                "produced no samples, or produced only saturated or non-finite samples during calibration",
             )
         mean = {key: self._sum[key] / self._count[key] for key in self._CHANNELS}
         return CalibrationResult(

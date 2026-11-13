@@ -17,6 +17,9 @@ from aerosat.core.faults import ConfigurationFault
 from aerosat.core.faults import ConfigurationReason as Reason
 from aerosat.core.types import (
     AvionicsEstimate,
+    DataQuality,
+    RejectedSample,
+    RejectionReason,
     FlightEvent,
     FlightState,
     SensorSample,
@@ -31,6 +34,7 @@ _AVIONICS_KEYS = {
     "backup_deployment_delay_ms", "expected_coast_duration_ms",
     "burnout_fallback_specific_force_mps2", "burnout_fallback_samples",
     "touchdown_fallback_window_ms", "touchdown_fallback_acceleration_mps2",
+    "deploy_confirm_baro_descent_m", "deploy_confirm_samples",
 }
 
 
@@ -63,6 +67,10 @@ class AvionicsConfig:
     """Fallback TOUCHDOWN criterion: window over which the barometer must be still."""
     touchdown_fallback_acceleration_mps2: float
     """Fallback TOUCHDOWN criterion: limit on |gravity-compensated estimated vertical acceleration|, m/s^2."""
+    deploy_confirm_baro_descent_m: float
+    """Deployment after an unreliable apogee: required barometric descent below the filtered peak, m."""
+    deploy_confirm_samples: int
+    """Deployment after an unreliable apogee: consecutive valid barometer samples required."""
     drag_device_enabled: bool
     deploy_delay_after_apogee_ms: int
 
@@ -70,14 +78,14 @@ class AvionicsConfig:
         """Validate every value on its own. Raises `ConfigurationFault` naming the field."""
         for name in ("rate_hz", "telemetry_rate_hz", "calibration_duration_ms", "debounce_samples",
                      "backup_deployment_delay_ms", "expected_coast_duration_ms", "burnout_fallback_samples",
-                     "touchdown_fallback_window_ms"):
+                     "touchdown_fallback_window_ms", "deploy_confirm_samples"):
             _require_int(self, name, minimum=1)
         for name in ("apogee_lockout_after_burnout_ms", "deploy_delay_after_apogee_ms"):
             _require_int(self, name, minimum=0)
         _require_int(self, "touchdown_window_ms", minimum=1)
         for name in ("liftoff_specific_force_mps2", "touchdown_altitude_range_m", "touchdown_speed_mps",
                      "estimator_gain_h", "estimator_gain_v_hz", "burnout_fallback_specific_force_mps2",
-                     "touchdown_fallback_acceleration_mps2"):
+                     "touchdown_fallback_acceleration_mps2", "deploy_confirm_baro_descent_m"):
             _require_positive_number(self, name)
         if not isinstance(self.drag_device_enabled, bool):
             raise ConfigurationFault(Reason.INVALID_TYPE, "vehicle.drag_device.enabled", "must be true or false")
@@ -277,6 +285,27 @@ class AvionicsOutput:
     commands: tuple[VehicleCommand, ...]
     frame: TelemetryFrame | None
     """A telemetry frame every 50 ms of sim time, otherwise None."""
+    rejected: tuple[RejectedSample, ...] = ()
+    """Samples refused on this tick: which source, when, what it read and why."""
+
+
+DEGRADED_WINDOW_TICKS = 1000
+"""A rejection keeps the data quality at DEGRADED for this long (1000 ms)."""
+
+BARO_MAX_AGE_TICKS = 1000
+"""Without a valid barometer sample for longer than this (1000 ms) the estimate is UNRELIABLE."""
+
+ACCEL_MAX_AGE_TICKS = 100
+"""The last valid acceleration is held for at most this long (100 ms). After that the estimator
+predicts from velocity alone and the estimate is UNRELIABLE."""
+
+ACCEL_Z, BARO, TEMP, GYRO_Z = ("accel", "z"), ("baro", "pressure"), ("temp", "temperature"), ("gyro", "z")
+SOURCES = (ACCEL_Z, BARO, TEMP, GYRO_Z)
+"""The sensor channels the avionics uses, in the order they are listed in `invalid_sources`."""
+
+
+def source_name(source: tuple[str, str]) -> str:
+    return f"{source[0]}.{source[1]}"
 
 
 class FlightComputer:
@@ -306,8 +335,16 @@ class FlightComputer:
             backup_deployment_ticks=ms_to_ticks(config.backup_deployment_delay_ms),
             burnout_fallback_specific_force_mps2=config.burnout_fallback_specific_force_mps2,
             burnout_fallback_samples=config.burnout_fallback_samples,
+            deploy_confirm_baro_descent_m=config.deploy_confirm_baro_descent_m,
+            deploy_confirm_samples=config.deploy_confirm_samples,
         ))
-        self._latest: dict[tuple[str, str], float] = {}
+        # Last finite reading per source, for telemetry. 0.0 until a finite reading arrives.
+        self._latest: dict[tuple[str, str], float] = {source: 0.0 for source in SOURCES}
+        # Sources whose most recent sample was rejected, or that have never delivered a valid one.
+        self._invalid: set[tuple[str, str]] = set(SOURCES)
+        self._last_valid_tick: dict[tuple[str, str], int | None] = {source: None for source in SOURCES}
+        self._last_rejection_tick: dict[tuple[str, str], int | None] = {source: None for source in SOURCES}
+        self._valid_accel_z: float | None = None
         self._acceleration_mps2 = 0.0
         self._baro_altitude_m = 0.0
 
@@ -320,32 +357,65 @@ class FlightComputer:
         if tick % self._period_ticks != 0:
             raise ValueError(f"tick {tick} is not an avionics tick (period {self._period_ticks} ticks)")
 
-        new_accel = new_baro = False
+        t_sim_s = tick_to_seconds(tick)
+
+        # 1. Classify every sample of a used source. A rejected sample is never used below.
+        valid: list[SensorSample] = []
+        rejected: list[RejectedSample] = []
+        arrived: set[tuple[str, str]] = set()
         for sample in samples:
-            self._latest[(sample.sensor_id, sample.channel)] = sample.value
-            new_accel = new_accel or (sample.sensor_id == "accel" and sample.channel == "z")
-            new_baro = new_baro or sample.sensor_id == "baro"
+            source = (sample.sensor_id, sample.channel)
+            if source not in self._latest:
+                continue                                  # a channel the avionics does not use
+            arrived.add(source)
+            finite = isinstance(sample.value, (int, float)) and math.isfinite(sample.value)
+            if finite:
+                self._latest[source] = sample.value       # the raw reading, clipped or not, for telemetry
+            if finite and not sample.saturated:
+                valid.append(sample)
+                self._invalid.discard(source)
+                self._last_valid_tick[source] = tick
+            else:
+                reason = RejectionReason.SATURATED if finite else RejectionReason.NON_FINITE
+                rejected.append(RejectedSample(tick, t_sim_s, source_name(source), sample.value, reason))
+                self._invalid.add(source)
+                self._last_rejection_tick[source] = tick
+        valid_sources = {(sample.sensor_id, sample.channel) for sample in valid}
+        new_accel, new_baro = ACCEL_Z in valid_sources, BARO in valid_sources
+        accel_rejected = ACCEL_Z in arrived and not new_accel
+        baro_rejected = BARO in arrived and not new_baro
+        if new_accel:
+            self._valid_accel_z = self._latest[ACCEL_Z]
 
         events: list[FlightEvent] = []
         commands: list[VehicleCommand] = []
         just_calibrated = False
         if self.calibration is None:
             if tick < self._calibration_ticks:
-                self._calibration.add(samples)
+                self._calibration.add(valid)
             else:
                 self.calibration = self._calibration.result()
                 just_calibrated = True
 
+        estimate_quality = self._estimate_quality(tick)
         if self.calibration is not None:
             calibration = self.calibration
-            specific_force = self._latest[("accel", "z")] - calibration.accel_bias_mps2
-            self._acceleration_mps2 = estimated_acceleration_mps2(self._latest[("accel", "z")], calibration.accel_bias_mps2)
+            # 2. Prediction. The last valid acceleration is held for at most ACCEL_MAX_AGE_TICKS;
+            #    after that the estimator predicts from velocity alone (zero acceleration).
+            accel_age = tick - self._last_valid_tick[ACCEL_Z]
+            specific_force = self._valid_accel_z - calibration.accel_bias_mps2
+            if accel_age <= ACCEL_MAX_AGE_TICKS:
+                self._acceleration_mps2 = estimated_acceleration_mps2(self._valid_accel_z, calibration.accel_bias_mps2)
+                predicted_with = self._acceleration_mps2
+            else:
+                predicted_with = 0.0
             if not just_calibrated:
-                self._filter.predict(self._acceleration_mps2)
+                self._filter.predict(predicted_with)
+            # 3. Correction, only from a valid barometer sample.
+            baro_sample_m = None
             if new_baro:
-                self._baro_altitude_m = baro_altitude_agl_m(
-                    self._latest[("baro", "pressure")], calibration.reference_pressure_pa,
-                    calibration.reference_temperature_k,
+                self._baro_altitude_m = baro_sample_m = baro_altitude_agl_m(
+                    self._latest[BARO], calibration.reference_pressure_pa, calibration.reference_temperature_k,
                 )
                 self._filter.correct(self._baro_altitude_m)
             events, commands = self._fsm.update(
@@ -355,28 +425,49 @@ class FlightComputer:
                 velocity_mps=self._filter.velocity_mps,
                 baro_altitude_m=self._baro_altitude_m,
                 acceleration_mps2=self._acceleration_mps2,
+                estimate_quality=estimate_quality,
+                accel_rejected=accel_rejected,
+                baro_sample_m=baro_sample_m,
+                baro_rejected=baro_rejected,
             )
 
-        t_sim_s = tick_to_seconds(tick)
         state = self._fsm.state
         estimate = AvionicsEstimate(
             tick, t_sim_s, self._filter.altitude_agl_m, self._filter.velocity_mps, self._acceleration_mps2,
-            self._baro_altitude_m, state,
+            self._baro_altitude_m, state, estimate_quality,
         )
         frame = None
         if tick % self._telemetry_ticks == 0:
             frame = TelemetryFrame(
                 tick, t_sim_s, estimate.altitude_agl_m, estimate.velocity_mps, estimate.acceleration_mps2,
-                self._reading("baro", "pressure"), self._reading("temp", "temperature"), state,
-                self._reading("gyro", "z"),
+                self._latest[BARO], self._latest[TEMP], state, self._latest[GYRO_Z],
+                data_quality=self._frame_quality(tick, estimate_quality),
+                invalid_sources=tuple(source_name(source) for source in SOURCES if source in self._invalid),
             )
-        return AvionicsOutput(estimate, state, tuple(events), tuple(commands), frame)
+        return AvionicsOutput(estimate, state, tuple(events), tuple(commands), frame, tuple(rejected))
 
-    def _reading(self, sensor_id: str, channel: str) -> float:
-        try:
-            return self._latest[(sensor_id, channel)]
-        except KeyError:
-            raise ValueError(
-                f"telemetry needs a reading from {sensor_id}.{channel}, but none has arrived; "
-                "the sensor is disabled or has not sampled yet"
-            ) from None
+    def _too_old(self, source: tuple[str, str], tick: int, max_age_ticks: int) -> bool:
+        last = self._last_valid_tick[source]
+        return last is None or tick - last > max_age_ticks
+
+    def _recently_rejected(self, sources: Sequence[tuple[str, str]], tick: int) -> bool:
+        return any(
+            source in self._invalid
+            or (self._last_rejection_tick[source] is not None
+                and tick - self._last_rejection_tick[source] < DEGRADED_WINDOW_TICKS)
+            for source in sources
+        )
+
+    def _estimate_quality(self, tick: int) -> DataQuality:
+        """Reliability of the estimate. Only the estimator's inputs count: accel.z and baro.pressure."""
+        if self._too_old(ACCEL_Z, tick, ACCEL_MAX_AGE_TICKS) or self._too_old(BARO, tick, BARO_MAX_AGE_TICKS):
+            return DataQuality.UNRELIABLE
+        if self._recently_rejected((ACCEL_Z, BARO), tick):
+            return DataQuality.DEGRADED
+        return DataQuality.NOMINAL
+
+    def _frame_quality(self, tick: int, estimate_quality: DataQuality) -> DataQuality:
+        """Quality of a telemetry frame: UNRELIABLE estimates first, then any rejection on any source."""
+        if estimate_quality is DataQuality.UNRELIABLE:
+            return DataQuality.UNRELIABLE
+        return DataQuality.DEGRADED if self._recently_rejected(SOURCES, tick) else DataQuality.NOMINAL

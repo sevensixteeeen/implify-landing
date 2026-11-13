@@ -76,7 +76,9 @@ All of `altitude_m`, `velocity_mps`, `acceleration_mps2` are **estimates**. They
   "pressure_pa": 79120.0,
   "temperature_k": 275.44,
   "flight_state": "COAST",
-  "roll_rate_radps": 0.52
+  "roll_rate_radps": 0.52,
+  "data_quality": "NOMINAL",
+  "invalid_sources": []
 }
 ```
 
@@ -92,7 +94,8 @@ All of `altitude_m`, `velocity_mps`, `acceleration_mps2` are **estimates**. They
   "required": [
     "type", "schema_version", "data_origin", "source", "mission_id", "seq",
     "t_sim_s", "t_wall_utc", "altitude_m", "velocity_mps", "acceleration_mps2",
-    "pressure_pa", "temperature_k", "flight_state", "roll_rate_radps"
+    "pressure_pa", "temperature_k", "flight_state", "roll_rate_radps",
+    "data_quality", "invalid_sources"
   ],
   "properties": {
     "type":              { "const": "telemetry" },
@@ -109,12 +112,65 @@ All of `altitude_m`, `velocity_mps`, `acceleration_mps2` are **estimates**. They
     "pressure_pa":       { "type": "number", "minimum": 1000, "maximum": 110000 },
     "temperature_k":     { "type": "number", "minimum": 200, "maximum": 330 },
     "flight_state":      { "enum": ["PAD_IDLE", "BOOST", "COAST", "DESCENT", "LANDED"] },
-    "roll_rate_radps":   { "type": "number", "minimum": -35, "maximum": 35 }
+    "roll_rate_radps":   { "type": "number", "minimum": -35, "maximum": 35 },
+    "data_quality":      { "enum": ["NOMINAL", "DEGRADED", "UNRELIABLE"] },
+    "invalid_sources":   {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["accel.z", "baro.pressure", "temp.temperature", "gyro.z"] }
+    }
   }
 }
 ```
 
 Numeric limits are sanity bounds (sensor ranges for measurements, generous envelopes for estimates), not expected flight values. The authoritative schema file will be exported from the backend message models to `schemas/` in Phase 2; this listing is the specification it must match.
+
+### 3.4 Data quality
+
+Every `telemetry` message carries two required fields that say how far its contents can be trusted.
+
+| Field | JSON type | Required | Definition |
+|---|---|---|---|
+| `data_quality` | string | yes | `NOMINAL`, `DEGRADED` or `UNRELIABLE` (below) |
+| `invalid_sources` | array of strings | yes | Sources whose most recent sample was rejected. Empty when there are none |
+
+**Sources.** A source is one sensor channel the avionics uses: `accel.z`, `baro.pressure`, `temp.temperature`, `gyro.z`. Each appears at most once, in that order.
+
+**Rejection.** The avionics rejects a sample that is saturated (clipped at the sensor's range limit, reason `SATURATED`) or not a finite number (reason `NON_FINITE`). A rejected sample is never used for calibration, estimation or event detection.
+
+**`invalid_sources`.** A source is listed from the moment one of its samples is rejected until a new valid sample from it arrives. A source that has never delivered a valid sample is also listed.
+
+**`data_quality`.** The first rule that applies, in this order:
+
+1. `UNRELIABLE`: a required estimator input is too old. No valid `baro.pressure` sample for more than 1000 ms, or no valid `accel.z` sample for more than 100 ms. The estimates cannot be trusted.
+2. `DEGRADED`: `invalid_sources` is not empty, or a sample from any source was rejected in the previous 1000 ms. A valid replacement sample removes the source from `invalid_sources`, but `DEGRADED` persists until the 1000 ms have passed.
+3. `NOMINAL`: otherwise.
+
+Consequently, if `invalid_sources` is not empty, `data_quality` is never `NOMINAL`.
+
+**What the reading fields carry when their source is invalid.** The field still holds a number, because v1 has no nulls (§8):
+
+- After a saturated sample: the raw clipped reading, exactly as the sensor reported it.
+- After a non-finite sample: the last finite reading from that source.
+- If the source has never delivered a finite reading: 0.0.
+
+In every one of these cases the source is listed in `invalid_sources`. A reading is valid only if its source is not listed.
+
+**Field-to-source mapping.**
+
+| Telemetry field | Source(s) |
+|---|---|
+| `altitude_m`, `velocity_mps` | `accel.z` and `baro.pressure` (estimates) |
+| `acceleration_mps2` | `accel.z` (estimate) |
+| `pressure_pa` | `baro.pressure` |
+| `temperature_k` | `temp.temperature` |
+| `roll_rate_radps` | `gyro.z` |
+
+**Receiver rules.**
+
+- A reading whose source is listed in `invalid_sources` must be identified as invalid wherever it is shown, and must never be presented or used as a valid measurement (dashboard test DSH-13).
+- When `data_quality` is `UNRELIABLE`, `altitude_m`, `velocity_mps` and `acceleration_mps2` must be identified as unreliable.
+- `temp.temperature` and `gyro.z` do not feed the estimator. An invalid sample from either makes the message `DEGRADED` but never `UNRELIABLE`.
 
 ## 4. Other messages
 
@@ -132,7 +188,9 @@ Numeric limits are sanity bounds (sensor ranges for measurements, generous envel
   "t_wall_utc": "2026-11-10T14:02:14.007Z",
   "event": "LIFTOFF",
   "flight_state": "BOOST",
-  "detail": {}
+  "detail": {},
+  "source": "DETECTED",
+  "quality": "NOMINAL"
 }
 ```
 
@@ -142,6 +200,11 @@ Numeric limits are sanity bounds (sensor ranges for measurements, generous envel
 | `flight_state` | State after the event |
 | `t_sim_s` | Sim time of **detection** by the avionics (multiple of 0.005), not the true event time |
 | `detail` | Object with event-specific estimates, e.g. `{"altitude_m": 2125.4}` for `APOGEE`. May be empty. |
+| `source` | How the avionics arrived at the event: `DETECTED` (the event's primary criterion), `FALLBACK_CRITERION` (its fallback criterion, from measurements), `BACKUP_TIMER` (inferred because the backup deployment timer expired), `BAROMETRIC_CONFIRMATION` (drag-device deployment confirmed by barometric descent after an unreliable apogee) |
+| `quality` | `NOMINAL`, `DEGRADED` or `UNRELIABLE`. The reliability of the evidence used for this particular event, not the quality of the telemetry stream at that moment. It is fixed when the event is recorded and never rewritten |
+| `reason` | Optional string. Present for fallback, inferred and confirmed events; says what triggered them |
+
+An event's `quality` follows its own evidence. `LIFTOFF` and `BURNOUT` use valid `accel.z` samples only. A detected `APOGEE` and a primary `TOUCHDOWN` use the estimates, so they take the estimate quality (`accel.z` and `baro.pressure`). `DRAG_DEVICE_DEPLOYED` takes the quality of the path that deployed: the triggering apogee's quality for a normal deployment, `DEGRADED` for `BAROMETRIC_CONFIRMATION`, `UNRELIABLE` for `BACKUP_TIMER`. An invalid `gyro.z` or `temp.temperature` sample does not lower any event's quality.
 
 ### 4.2 `hello`
 
@@ -227,6 +290,9 @@ These tables state the fields of each message exactly as shown in the examples a
 | `event` | string | `LIFTOFF`, `BURNOUT`, `APOGEE`, `DRAG_DEVICE_DEPLOYED`, `TOUCHDOWN` |
 | `flight_state` | string | State after the event |
 | `detail` | object | Event-specific estimates; may be empty |
+| `source` | string | `DETECTED`, `FALLBACK_CRITERION`, `BACKUP_TIMER`, `BAROMETRIC_CONFIRMATION` |
+| `quality` | string | `NOMINAL`, `DEGRADED`, `UNRELIABLE` |
+| `reason` | string | Optional. What triggered a fallback, inferred or confirmed event |
 
 **`hello`**
 
@@ -314,7 +380,7 @@ Sequence handling, with `expected` initialised from `hello.next_seq`:
 - UTF-8, no byte-order mark. Field order is not significant.
 - Numbers are JSON numbers, never strings. Integers (`seq`) have no fractional part.
 - The producer refuses to serialize non-finite numbers (`NON_FINITE_VALUE` fault).
-- No `null` values in v1: every required field always has a value. Sensors sample at tick 0, so readings exist from the first frame. Until pad calibration completes (ARCHITECTURE §6.1), the estimates `altitude_m`, `velocity_mps` and `acceleration_mps2` are sent as 0.0.
+- No `null` values in v1: every required field always has a value. A reading that is not valid is still sent as a number and is marked through `invalid_sources` (§3.4). Sensors sample at tick 0, so readings exist from the first frame. Until pad calibration completes (ARCHITECTURE §6.1), the estimates `altitude_m`, `velocity_mps` and `acceleration_mps2` are sent as 0.0.
 
 ## 9. Recorded form
 

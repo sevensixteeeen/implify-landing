@@ -35,6 +35,8 @@ class ConfigurationReason(StrEnum):
     """The estimator gains would make the complementary filter diverge."""
     CALIBRATION_EXCEEDS_PRE_IGNITION = "CALIBRATION_EXCEEDS_PRE_IGNITION"
     """Pad calibration would still be running at ignition."""
+    NO_VALID_CALIBRATION_SAMPLES = "NO_VALID_CALIBRATION_SAMPLES"
+    """A required sensor delivered no valid sample during pad calibration."""
 
 
 class AerosatFault(Exception):

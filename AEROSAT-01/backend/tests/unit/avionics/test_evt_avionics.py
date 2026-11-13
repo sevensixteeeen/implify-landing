@@ -23,7 +23,7 @@ from aerosat.avionics.state_machine import FlightStateMachine, StateMachineConfi
 from aerosat.core.constants import G0_MPS2, P0_PA, T0_K
 from aerosat.core.faults import ConfigurationFault, FaultCode
 from aerosat.core.faults import ConfigurationReason as Reason
-from aerosat.core.types import DataQuality, EventSource
+from aerosat.core.types import DataQuality, EventSource, RejectedSample, RejectionReason
 from aerosat.core.types import FlightEventType as Event
 from aerosat.core.types import FlightState as State
 from aerosat.core.types import SensorSample, TruthState, VehicleCommand
@@ -68,6 +68,7 @@ def machine(**overrides) -> FlightStateMachine:
         period_ticks=5, drag_device_enabled=True, deploy_delay_ticks=1000, backup_deployment_ticks=20_000,
         burnout_fallback_specific_force_mps2=1.0, burnout_fallback_samples=20,
         touchdown_fallback_window_ticks=2800, touchdown_fallback_acceleration_mps2=2.0,
+        deploy_confirm_baro_descent_m=10.0, deploy_confirm_samples=5,
     )
     values.update(overrides)
     return FlightStateMachine(StateMachineConfig(**values))
@@ -80,14 +81,19 @@ class Driver:
         self.fsm, self.tick, self.events, self.commands = fsm, 0, [], []
 
     def feed(self, count: int, *, force: float | None = 9.8, altitude: float = 0.0, velocity: float = 0.0,
-             baro: float | None = None, accel: float = 9.0) -> None:
+             baro: float | None = None, accel: float = 9.0, quality: DataQuality = DataQuality.NOMINAL,
+             accel_rejected: bool = False, baro_rejected: bool = False) -> None:
         """`baro` is the barometric altitude (defaults to `altitude`) and `accel` the gravity-compensated
-        estimated acceleration. Both feed only the touchdown fallback. `accel` defaults to 9.0 m/s^2,
-        which never qualifies, so tests of other criteria cannot trip the fallback by accident."""
+        estimated acceleration. `accel` defaults to 9.0 m/s^2, which never qualifies for the touchdown
+        fallback, so tests of other criteria cannot trip it by accident. Every tick carries a valid
+        barometer sample at `baro`, unless `baro_rejected`. `quality` is the estimate quality."""
         for _ in range(count):
+            baro_m = altitude if baro is None else baro
             events, commands = self.fsm.update(
-                self.tick, specific_force_mps2=force, altitude_m=altitude, velocity_mps=velocity,
-                baro_altitude_m=altitude if baro is None else baro, acceleration_mps2=accel,
+                self.tick, specific_force_mps2=None if accel_rejected else force, altitude_m=altitude,
+                velocity_mps=velocity, baro_altitude_m=baro_m, acceleration_mps2=accel,
+                estimate_quality=quality, accel_rejected=accel_rejected,
+                baro_sample_m=None if baro_rejected else baro_m, baro_rejected=baro_rejected,
             )
             self.events += events
             self.commands += [(self.tick, command) for command in commands]
@@ -829,6 +835,515 @@ def test_evt_16_configuration() -> None:
     fault = rejected(scenario_with(window, 1_999))
     assert (fault.reason, fault.field) == (Reason.OUT_OF_RANGE, window)
     load_avionics_config(scenario_with(window, 2_000))
+
+
+# ---------------------------------------------------------------- EVT-17: sample rejection and data quality
+
+UNITS = {"accel": "m/s^2", "gyro": "rad/s", "baro": "Pa", "temp": "K"}
+
+
+def readings(tick: int, *, accel: float = G0_MPS2, baro: float = P0_PA, temp: float = T0_K, gyro: float = 0.0,
+             saturated: tuple[str, ...] = (), drop: tuple[str, ...] = ()) -> list[SensorSample]:
+    """The samples due at `tick`: accelerometer and gyroscope every 5 ms, barometer every 20, temperature every 100.
+
+    `saturated` names sources whose sample carries the saturation flag; `drop` names sources that deliver nothing.
+    """
+    due = [("accel", "z", accel, True), ("gyro", "z", gyro, True),
+           ("baro", "pressure", baro, tick % 20 == 0), ("temp", "temperature", temp, tick % 100 == 0)]
+    return [
+        SensorSample(tick, tick / 1000, sensor, channel, value, UNITS[sensor], f"{sensor}.{channel}" in saturated)
+        for sensor, channel, value, is_due in due
+        if is_due and f"{sensor}.{channel}" not in drop
+    ]
+
+
+def computer_at(tick_end: int, **kwargs) -> FlightComputer:
+    """A flight computer fed clean pad readings for ticks 0 to `tick_end` (exclusive)."""
+    computer = FlightComputer(ref01_avionics_config())
+    for tick in range(0, tick_end, 5):
+        computer.tick(tick, readings(tick, **kwargs))
+    return computer
+
+
+@pytest.mark.parametrize(
+    ("source", "field", "clipped", "estimator_input"),
+    [
+        ("accel.z", "accel", 160.0, True),
+        ("baro.pressure", "baro", 110_000.0, True),
+        ("temp.temperature", "temp", 330.0, False),
+        ("gyro.z", "gyro", 35.0, False),
+    ],
+)
+def test_evt_17_one_saturated_sample_is_rejected_recorded_and_never_used(
+    source: str, field: str, clipped: float, estimator_input: bool
+) -> None:
+    computer, twin = computer_at(2_000), computer_at(2_000)
+    output = computer.tick(2_000, readings(2_000, **{field: clipped}, saturated=(source,)))
+    reference = twin.tick(2_000, readings(2_000, drop=(source,)))      # the same tick with no sample at all
+
+    # Recorded: which source, when, what it read and why.
+    assert output.rejected == (RejectedSample(2_000, 2.0, source, clipped, RejectionReason.SATURATED),)
+    # Not used: the estimate is exactly what it would be had the sample never arrived.
+    assert output.estimate.altitude_agl_m == reference.estimate.altitude_agl_m
+    assert output.estimate.velocity_mps == reference.estimate.velocity_mps
+    assert output.estimate.acceleration_mps2 == reference.estimate.acceleration_mps2
+    assert abs(output.estimate.altitude_agl_m) < 1.0
+    # Marked: the frame lists the source and is DEGRADED. The estimate is DEGRADED only if it uses the source.
+    assert output.frame.invalid_sources == (source,)
+    assert output.frame.data_quality is DataQuality.DEGRADED
+    assert output.estimate.quality is (DataQuality.DEGRADED if estimator_input else DataQuality.NOMINAL)
+    # Telemetry carries the raw clipped reading, not a stale or invented one.
+    carried = {"baro.pressure": output.frame.pressure_pa, "temp.temperature": output.frame.temperature_k,
+               "gyro.z": output.frame.roll_rate_radps}
+    if source in carried:
+        assert carried[source] == clipped
+
+    # A valid replacement removes the source at once; DEGRADED persists for 1000 ms after the rejection.
+    frames = {}
+    for tick in range(2_005, 3_101, 5):
+        result = computer.tick(tick, readings(tick))
+        assert result.rejected == ()
+        if result.frame is not None:
+            frames[tick] = result.frame
+    next_valid_tick = {"accel.z": 2_005, "gyro.z": 2_005, "baro.pressure": 2_020, "temp.temperature": 2_100}[source]
+    for tick, frame in frames.items():
+        assert frame.invalid_sources == ((source,) if tick < next_valid_tick else ()), tick
+        assert frame.data_quality is (DataQuality.DEGRADED if tick < 3_000 else DataQuality.NOMINAL), tick
+
+
+def test_evt_17_acceleration_is_held_for_at_most_100_ms_then_velocity_only() -> None:
+    """Accelerometer saturated from tick 2000 on. Last valid sample: tick 1995, 2.0 m/s^2 above gravity."""
+    computer = computer_at(1_000)
+    for tick in range(1_000, 2_000, 5):
+        computer.tick(tick, readings(tick, accel=G0_MPS2 + 2.0))
+    outputs = {}
+    for tick in range(2_000, 2_300, 5):
+        outputs[tick] = computer.tick(tick, readings(tick, accel=160.0, saturated=("accel.z",)))
+        assert outputs[tick].rejected[0].source == "accel.z"
+        assert outputs[tick].events == ()                           # a saturated reading never counts for LIFTOFF
+
+    def velocity_step(tick: int) -> float:                           # on ticks with no barometer correction
+        return outputs[tick].estimate.velocity_mps - outputs[tick - 5].estimate.velocity_mps
+
+    # Held: age of the last valid sample is at most 100 ms up to tick 2095. The prediction still uses 2.0 m/s^2.
+    for tick in (2_005, 2_050, 2_085, 2_090, 2_095):
+        assert outputs[tick].estimate.quality is DataQuality.DEGRADED, tick
+    for tick in (2_085, 2_090, 2_095):
+        assert velocity_step(tick) == pytest.approx(2.0 * 0.005, abs=1e-12)
+    # Expired at tick 2100 (age 105 ms): velocity-only prediction and an UNRELIABLE estimate.
+    for tick in (2_100, 2_105, 2_200, 2_295):
+        assert outputs[tick].estimate.quality is DataQuality.UNRELIABLE, tick
+    for tick in (2_105, 2_110, 2_115, 2_205):
+        assert velocity_step(tick) == 0.0
+        step_m = outputs[tick].estimate.altitude_agl_m - outputs[tick - 5].estimate.altitude_agl_m
+        assert step_m == pytest.approx(outputs[tick - 5].estimate.velocity_mps * 0.005, abs=1e-12)
+    assert outputs[2_250].frame.data_quality is DataQuality.UNRELIABLE
+    assert outputs[2_250].frame.invalid_sources == ("accel.z",)
+
+    # Recovery: the next valid sample ends UNRELIABLE at once; DEGRADED lasts 1000 ms after the last rejection (2295).
+    qualities = {}
+    for tick in range(2_300, 3_305, 5):
+        qualities[tick] = computer.tick(tick, readings(tick, accel=G0_MPS2 + 2.0)).estimate.quality
+    assert qualities[2_300] is DataQuality.DEGRADED and qualities[3_290] is DataQuality.DEGRADED
+    assert qualities[3_295] is DataQuality.NOMINAL and qualities[3_300] is DataQuality.NOMINAL
+
+
+@pytest.mark.parametrize(("last_saturated_tick", "expect_unreliable"), [(2_960, False), (3_200, True)])
+def test_evt_17_barometer_saturation_skips_corrections_and_becomes_unreliable_after_1000_ms(
+    last_saturated_tick: int, expect_unreliable: bool
+) -> None:
+    """Last valid barometer sample at tick 1980. UNRELIABLE needs more than 1000 ms without one: tick 2985."""
+    computer = computer_at(2_000)
+    unreliable_ticks = []
+    for tick in range(2_000, 3_400, 5):
+        saturated = tick <= last_saturated_tick
+        output = computer.tick(tick, readings(tick, baro=110_000.0 if saturated else P0_PA,
+                                              saturated=("baro.pressure",) if saturated else ()))
+        assert abs(output.estimate.altitude_agl_m) < 1.0             # 110 000 Pa would read about -700 m
+        if output.estimate.quality is DataQuality.UNRELIABLE:
+            unreliable_ticks.append(tick)
+        if output.frame is not None and saturated:
+            assert output.frame.pressure_pa == 110_000.0 and "baro.pressure" in output.frame.invalid_sources
+            assert output.frame.data_quality is not DataQuality.NOMINAL
+    if expect_unreliable:
+        assert unreliable_ticks[0] == 2_985                          # 1980 + 1000 is still allowed; 2985 is not
+        assert unreliable_ticks[-1] == 3_215                         # the valid sample at 3220 ends it
+    else:
+        assert unreliable_ticks == []
+
+
+def test_evt_17_saturated_accelerometer_samples_do_not_count_toward_liftoff() -> None:
+    computer = computer_at(1_000)
+    tick = 1_000
+
+    def feed(count: int, accel: float, saturated: bool = False) -> list:
+        nonlocal tick
+        events = []
+        for _ in range(count):
+            events += computer.tick(tick, readings(tick, accel=accel, saturated=("accel.z",) if saturated else ())).events
+            tick += 5
+        return events
+
+    assert feed(40, 160.0, saturated=True) == [] and computer.flight_state is State.PAD_IDLE
+    assert feed(9, 40.0) == []                                       # nine valid samples above the 15 m/s^2 threshold
+    assert feed(1, 160.0, saturated=True) == []                      # a rejected sample resets the run
+    assert feed(9, 40.0) == [] and computer.flight_state is State.PAD_IDLE
+    (liftoff,) = feed(1, 40.0)                                       # the tenth valid sample in a row
+    assert liftoff.event is Event.LIFTOFF and liftoff.quality is DataQuality.NOMINAL
+    assert computer.flight_state is State.BOOST
+
+
+def test_evt_17_calibration_excludes_rejected_samples() -> None:
+    computer = FlightComputer(ref01_avionics_config())
+    rejected = []
+    for tick in range(0, 1_005, 5):
+        bad = tick in (200, 400, 600)
+        rejected += computer.tick(tick, readings(tick, baro=110_000.0 if bad else P0_PA, accel=G0_MPS2 + 0.2,
+                                                 saturated=("baro.pressure",) if bad else ())).rejected
+    assert [(r.tick, r.source, r.reason) for r in rejected] == [
+        (200, "baro.pressure", RejectionReason.SATURATED), (400, "baro.pressure", RejectionReason.SATURATED),
+        (600, "baro.pressure", RejectionReason.SATURATED),
+    ]
+    assert computer.calibration.reference_pressure_pa == P0_PA       # the three 110 000 Pa samples are not in the mean
+    assert computer.calibration.accel_bias_mps2 == pytest.approx(0.2, abs=1e-9)
+
+
+@pytest.mark.parametrize("source", ["accel.z", "baro.pressure", "temp.temperature"])
+def test_evt_17_calibration_with_no_valid_sample_is_a_configuration_fault(source: str) -> None:
+    computer = FlightComputer(ref01_avionics_config())
+    for tick in range(0, 1_000, 5):
+        computer.tick(tick, readings(tick, saturated=(source,)))
+    with pytest.raises(ConfigurationFault) as raised:
+        computer.tick(1_000, readings(1_000, saturated=(source,)))
+    assert raised.value.reason is Reason.NO_VALID_CALIBRATION_SAMPLES
+    assert source in str(raised.value)
+
+
+def test_evt_17_non_finite_samples_are_rejected_and_telemetry_keeps_the_last_finite_value() -> None:
+    computer = computer_at(2_000, gyro=0.25)
+    output = computer.tick(2_000, readings(2_000, gyro=math.nan, baro=math.inf))
+    assert [(r.source, r.reason) for r in output.rejected] == [
+        ("gyro.z", RejectionReason.NON_FINITE), ("baro.pressure", RejectionReason.NON_FINITE),
+    ]
+    assert math.isnan(output.rejected[0].value) and math.isinf(output.rejected[1].value)
+    assert output.frame.roll_rate_radps == 0.25                       # the last finite reading
+    assert output.frame.pressure_pa == P0_PA
+    assert output.frame.invalid_sources == ("baro.pressure", "gyro.z")   # explicitly marked invalid
+    assert output.frame.data_quality is DataQuality.DEGRADED
+    assert math.isfinite(output.estimate.altitude_agl_m) and abs(output.estimate.altitude_agl_m) < 1.0
+    for value in (output.frame.altitude_m, output.frame.velocity_mps, output.frame.acceleration_mps2,
+                  output.frame.pressure_pa, output.frame.temperature_k, output.frame.roll_rate_radps):
+        assert math.isfinite(value)
+
+
+def test_evt_17_source_that_never_delivered_a_finite_reading_is_sent_as_zero_and_marked_invalid() -> None:
+    computer = FlightComputer(ref01_avionics_config())
+    output = computer.tick(0, readings(0, temp=math.nan))
+    assert output.frame.temperature_k == 0.0
+    assert output.frame.invalid_sources == ("temp.temperature",)
+    assert output.frame.data_quality is DataQuality.DEGRADED
+    assert output.estimate.quality is DataQuality.NOMINAL             # temperature does not feed the estimator
+
+
+def test_evt_17_invalid_sources_keep_the_documented_order() -> None:
+    computer = computer_at(2_000)
+    output = computer.tick(2_000, readings(2_000, saturated=("gyro.z", "temp.temperature", "baro.pressure", "accel.z")))
+    assert output.frame.invalid_sources == ("accel.z", "baro.pressure", "temp.temperature", "gyro.z")
+    assert len(output.rejected) == 4
+
+
+def test_evt_17_ref01_has_no_rejections_and_is_nominal_throughout() -> None:
+    for record in (flight(0, True), *(flight(seed) for seed in range(10))):
+        assert record.rejected_samples == 0
+        assert record.non_nominal_ticks == 0
+        assert all(e.quality is DataQuality.NOMINAL for e in record.events)
+
+
+def test_evt_17_rejected_samples_reset_the_state_machine_counters() -> None:
+    d = boosting_driver()                                            # primary burnout: 10 samples below zero
+    d.feed(9, force=-2.0, velocity=200.0)
+    d.feed(1, accel_rejected=True, velocity=200.0)
+    d.feed(9, force=-2.0, velocity=200.0)
+    assert d.fsm.state is State.BOOST
+    d.feed(1, force=-2.0, velocity=200.0)
+    assert d.fsm.state is State.COAST and d.events[-1].source is EventSource.DETECTED
+
+    d = boosting_driver()                                            # fallback burnout: 20 samples below 1.0
+    d.feed(19, force=0.5, velocity=200.0)
+    d.feed(1, accel_rejected=True, velocity=200.0)
+    d.feed(19, force=0.5, velocity=200.0)
+    assert d.fsm.state is State.BOOST
+    d.feed(1, force=0.5, velocity=200.0)
+    assert d.fsm.state is State.COAST and d.events[-1].source is EventSource.FALLBACK_CRITERION
+
+    for rejected in ("accel_rejected", "baro_rejected"):             # touchdown fallback: 561 still samples
+        d = descending_driver()
+        still(d, 400)
+        d.feed(1, force=9.8, velocity=-150.0, altitude=-40.0, baro=0.0, accel=0.0, **{rejected: True})
+        still(d, FALLBACK_SAMPLES - 1)
+        assert d.fsm.state is State.DESCENT, rejected
+        still(d, 1)
+        assert d.fsm.state is State.LANDED, rejected
+
+
+# ---------------------------------------------------------------- EVT-19: the three deployment paths
+
+UNRELIABLE, DEGRADED, NOMINAL = DataQuality.UNRELIABLE, DataQuality.DEGRADED, DataQuality.NOMINAL
+
+
+def apogee_driver(quality: DataQuality, **overrides) -> tuple[Driver, int, object]:
+    """Coast to a barometric peak of 2000 m, then record a detected APOGEE of the given estimate quality."""
+    d, burnout_tick = coasting_driver(**overrides)
+    d.feed(250, force=0.0, velocity=50.0, altitude=2_000.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=2_000.0, quality=quality)
+    apogee = d.events[-1]
+    assert (apogee.event, apogee.source, apogee.quality) == (Event.APOGEE, EventSource.DETECTED, quality)
+    assert d.fsm.state is State.DESCENT and d.commands == []
+    return d, burnout_tick, apogee
+
+
+def descend(d: Driver, count: int, baro: float, **kwargs) -> None:
+    d.feed(count, force=0.0, velocity=-12.0, altitude=baro, quality=kwargs.pop("quality", UNRELIABLE), **kwargs)
+
+
+def deployed_events(d: Driver) -> list:
+    return [e for e in d.events if e.event is Event.DRAG_DEVICE_DEPLOYED]
+
+
+@pytest.mark.parametrize("quality", [NOMINAL, DEGRADED])
+def test_evt_19_reliable_apogee_deploys_by_the_normal_path_and_cancels_the_timer(quality: DataQuality) -> None:
+    d, burnout_tick, apogee = apogee_driver(quality)
+    descend(d, 199, 1_990.0, quality=quality)
+    assert d.commands == []
+    descend(d, 1, 1_990.0, quality=quality)
+    assert d.commands == [(apogee.tick + 1_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    (event,) = deployed_events(d)
+    assert (event.source, event.quality, event.reason) == (EventSource.DETECTED, quality, None)
+    descend(d, 5_000, 1_500.0, quality=quality)                       # far past burnout + 20 s
+    assert d.tick > burnout_tick + 20_000 and len(d.commands) == 1 and len(deployed_events(d)) == 1
+
+
+def test_evt_19_reliable_apogee_is_latched_even_if_the_estimate_degrades_during_the_delay() -> None:
+    d, _, apogee = apogee_driver(NOMINAL)
+    descend(d, 200, 1_990.0, quality=UNRELIABLE, baro_rejected=True)
+    assert d.commands == [(apogee.tick + 1_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert deployed_events(d)[0].source is EventSource.DETECTED
+
+
+def test_evt_19_unreliable_apogee_does_not_deploy_by_the_normal_path() -> None:
+    """The delay elapses with the barometer only 5 m below the peak: nothing may be commanded."""
+    d, burnout_tick, apogee = apogee_driver(UNRELIABLE)
+    descend(d, 1_000, 1_995.0)
+    assert d.tick > apogee.tick + 1_000 and d.tick < burnout_tick + 20_000
+    assert d.commands == [] and deployed_events(d) == []
+
+
+def test_evt_19_barometric_confirmation_deploys_after_five_consecutive_valid_samples() -> None:
+    d, _, apogee = apogee_driver(UNRELIABLE)
+    descend(d, 300, 1_995.0)                                          # delay elapsed, 5 m below the 2000 m peak
+    descend(d, 4, 1_989.0)                                            # four samples 11 m below
+    assert d.commands == []
+    confirm_tick = d.tick
+    descend(d, 1, 1_989.0)                                            # the fifth
+    assert d.commands == [(confirm_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    (event,) = deployed_events(d)
+    assert (event.source, event.quality) == (EventSource.BAROMETRIC_CONFIRMATION, DEGRADED)
+    assert "5 consecutive valid barometer samples" in event.reason and "2000.0 m" in event.reason
+    # The original APOGEE is preserved exactly: later confirmation does not rewrite it.
+    assert [e for e in d.events if e.event is Event.APOGEE] == [apogee]
+    assert (apogee.source, apogee.quality) == (EventSource.DETECTED, UNRELIABLE)
+    descend(d, 5_000, 1_500.0)                                        # the timer does not deploy again
+    assert len(d.commands) == 1
+
+
+def test_evt_19_descent_of_exactly_10_m_qualifies_and_less_does_not() -> None:
+    d, _, _ = apogee_driver(UNRELIABLE)
+    descend(d, 300, 1_990.01)
+    assert d.commands == []
+    descend(d, 5, 1_990.0)
+    assert len(d.commands) == 1
+
+
+def test_evt_19_barometric_confirmation_waits_for_the_deployment_delay() -> None:
+    d, _, apogee = apogee_driver(UNRELIABLE)
+    descend(d, 199, 1_980.0)                                          # confirmed long before the delay
+    assert d.commands == []
+    descend(d, 1, 1_980.0)
+    assert d.commands == [(apogee.tick + 1_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert deployed_events(d)[0].source is EventSource.BAROMETRIC_CONFIRMATION
+
+
+@pytest.mark.parametrize("breaker", [{"baro_rejected": True}, {"baro": 1_995.0}])
+def test_evt_19_an_invalid_or_non_qualifying_sample_resets_the_confirmation(breaker: dict) -> None:
+    d, _, _ = apogee_driver(UNRELIABLE)
+    descend(d, 300, 1_995.0)
+    descend(d, 4, 1_989.0)
+    descend(d, 1, breaker.get("baro", 1_989.0), baro_rejected=breaker.get("baro_rejected", False))
+    descend(d, 4, 1_989.0)
+    assert d.commands == []                                           # eight qualifying samples, never five in a row
+    descend(d, 1, 1_989.0)
+    assert len(d.commands) == 1 and deployed_events(d)[0].source is EventSource.BAROMETRIC_CONFIRMATION
+
+
+def test_evt_19_barometer_invalid_throughout_falls_back_to_the_timer_in_descent() -> None:
+    d, burnout_tick, apogee = apogee_driver(UNRELIABLE)
+    descend(d, 3_739, 1_500.0, baro_rejected=True)
+    assert d.tick - 5 == burnout_tick + 19_995 and d.commands == []
+    descend(d, 1, 1_500.0, baro_rejected=True)
+    assert d.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    (event,) = deployed_events(d)
+    assert (event.source, event.quality) == (EventSource.BACKUP_TIMER, UNRELIABLE)
+    assert "unreliable" in event.reason and f"tick {burnout_tick}" in event.reason
+    assert [e for e in d.events if e.event is Event.APOGEE] == [apogee]   # no second, inferred apogee
+    descend(d, 1_000, 1_400.0, baro_rejected=True)
+    assert len(d.commands) == 1
+
+
+def test_evt_19_a_single_pressure_spike_cannot_establish_the_peak() -> None:
+    d, _ = coasting_driver()
+    d.feed(100, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(1, force=0.0, velocity=50.0, altitude=1_000.0, baro=2_500.0)   # one spike: 1500 m too high
+    d.feed(150, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=1_000.0, quality=UNRELIABLE)
+    assert d.fsm._baro_peak_m == 1_000.0
+    descend(d, 400, 1_000.0)                                          # level flight after the delay
+    assert d.commands == []                                           # a raw maximum would have "confirmed" 1500 m of descent
+
+    d, _ = coasting_driver()                                          # two spikes inside five samples: still no effect
+    d.feed(100, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(2, force=0.0, velocity=50.0, altitude=1_000.0, baro=2_500.0)
+    d.feed(150, force=0.0, velocity=50.0, altitude=1_000.0)
+    assert d.fsm._baro_peak_m == 1_000.0
+
+
+def test_evt_19_known_limit_three_bad_samples_in_five_do_move_the_peak() -> None:
+    """Documented limitation of a five-sample median: a sustained error is not a spike."""
+    d, _ = coasting_driver()
+    d.feed(100, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(3, force=0.0, velocity=50.0, altitude=1_000.0, baro=2_500.0)
+    assert d.fsm._baro_peak_m == 2_500.0
+
+
+def test_evt_19_an_invalid_sample_cannot_help_establish_the_peak() -> None:
+    d, _ = coasting_driver()
+    for _ in range(40):                                               # never five valid samples in a row
+        d.feed(4, force=0.0, velocity=50.0, altitude=1_000.0)
+        d.feed(1, force=0.0, velocity=50.0, altitude=1_000.0, baro_rejected=True)
+    assert d.fsm._baro_peak_m is None or d.fsm._baro_peak_m == 0.0     # only the pre-coast pad value, if any
+
+
+def test_evt_19_the_peak_keeps_rising_after_a_falsely_early_apogee() -> None:
+    """Unreliable apogee recorded at 1000 m while still climbing to 1500 m: confirmation is measured from 1500 m."""
+    d, _ = coasting_driver()
+    d.feed(250, force=0.0, velocity=50.0, altitude=1_000.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=1_000.0, quality=UNRELIABLE)
+    descend(d, 100, 1_500.0)
+    assert d.fsm._baro_peak_m == 1_500.0
+    descend(d, 300, 1_495.0)                                          # 495 m above the altitude at "apogee"
+    assert d.commands == []
+    descend(d, 5, 1_490.0)
+    assert len(d.commands) == 1 and deployed_events(d)[0].source is EventSource.BAROMETRIC_CONFIRMATION
+
+
+def test_evt_19_confirmation_wins_when_it_and_the_timer_complete_on_the_same_tick() -> None:
+    def run(**overrides) -> tuple[Driver, int]:
+        d, burnout_tick, _ = apogee_driver(UNRELIABLE, **overrides)
+        descend(d, 300, 1_995.0)
+        descend(d, 5, 1_989.0)
+        return d, burnout_tick
+
+    d, burnout_tick = run()
+    ((confirm_tick, _),) = d.commands
+    d, burnout_tick = run(backup_deployment_ticks=confirm_tick - burnout_tick)   # timer expires on that same tick
+    assert d.commands == [(confirm_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert deployed_events(d)[0].source is EventSource.BAROMETRIC_CONFIRMATION
+    descend(d, 100, 1_900.0)
+    assert len(d.commands) == 1                                       # the timer does not fire afterwards
+
+    d, burnout_tick = run(backup_deployment_ticks=confirm_tick - burnout_tick - 5)   # one tick earlier: the timer wins
+    assert d.commands == [(confirm_tick - 5, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert deployed_events(d)[0].source is EventSource.BACKUP_TIMER
+
+
+def test_evt_19_unreliable_apogee_detected_on_the_tick_the_timer_expires() -> None:
+    d, burnout_tick = coasting_driver(backup_deployment_ticks=2_000)
+    d.feed(390, force=0.0, velocity=50.0, altitude=900.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=900.0, quality=UNRELIABLE)
+    expiry_tick = burnout_tick + 2_000
+    apogee, deployed = d.events[-2], d.events[-1]
+    assert (apogee.event, apogee.tick, apogee.source, apogee.quality) == (Event.APOGEE, expiry_tick, EventSource.DETECTED, UNRELIABLE)
+    assert (deployed.event, deployed.tick, deployed.source, deployed.quality) == (
+        Event.DRAG_DEVICE_DEPLOYED, expiry_tick, EventSource.BACKUP_TIMER, UNRELIABLE)
+    assert d.commands == [(expiry_tick, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert [e.event for e in d.events].count(Event.APOGEE) == 1       # detected, not inferred
+
+
+def test_evt_19_timer_in_descent_commands_nothing_when_the_drag_device_is_disabled() -> None:
+    d, burnout_tick, _ = apogee_driver(UNRELIABLE, drag_device_enabled=False)
+    descend(d, 4_200, 1_500.0, baro_rejected=True)
+    assert d.tick > burnout_tick + 20_000
+    assert d.commands == [] and deployed_events(d) == []
+
+
+def test_evt_19_event_quality_follows_the_evidence_of_each_event() -> None:
+    """LIFTOFF and BURNOUT use valid accelerometer samples; APOGEE and primary TOUCHDOWN use the estimate."""
+    d = Driver(machine())
+    d.feed(10, force=30.0, quality=UNRELIABLE)
+    d.feed(10, force=-2.0, velocity=200.0, quality=UNRELIABLE)
+    assert [(e.event, e.quality) for e in d.events] == [(Event.LIFTOFF, NOMINAL), (Event.BURNOUT, NOMINAL)]
+    d.feed(250, force=0.0, velocity=50.0, altitude=2_000.0)
+    d.feed(10, force=0.0, velocity=-1.0, altitude=2_000.0, quality=DEGRADED)
+    assert d.events[-1].quality is DEGRADED                            # APOGEE: the estimate's quality at detection
+    d.feed(401, force=9.8, velocity=0.0, altitude=0.0, quality=UNRELIABLE)
+    touchdown = d.events[-1]
+    assert (touchdown.event, touchdown.source, touchdown.quality) == (Event.TOUCHDOWN, EventSource.DETECTED, UNRELIABLE)
+
+    d = descending_driver()                                           # fallback TOUCHDOWN: valid barometer and accelerometer
+    d.feed(FALLBACK_SAMPLES, force=9.8, velocity=-150.0, altitude=-40.0, baro=0.0, accel=0.0, quality=UNRELIABLE)
+    assert (d.events[-1].source, d.events[-1].quality) == (EventSource.FALLBACK_CRITERION, NOMINAL)
+
+
+def test_evt_19_closed_loop_barometer_out_of_range_above_1_km() -> None:
+    """REF-01, seed 0, with a barometer that saturates below 90 000 Pa (above about 1 km).
+
+    The barometer is invalid from mid-coast until the descent passes 1 km again, so the estimate is
+    UNRELIABLE at apogee, barometric confirmation is impossible there, and only the timer can deploy.
+    """
+    scenario = copy.deepcopy(REF01)
+    scenario["sensors"]["baro"]["range_pa"] = [90_000.0, 110_000.0]
+    record = run_flight(0, scenario=scenario)
+    truth = record.truth_events
+    burnout_tick = record.detected(Event.BURNOUT)[0].tick
+    (apogee,) = record.detected(Event.APOGEE)
+    (deployed,) = record.detected(Event.DRAG_DEVICE_DEPLOYED)
+    assert record.rejected_samples > 500 and record.non_nominal_ticks > 0
+    assert (apogee.source, apogee.quality) == (EventSource.DETECTED, DataQuality.UNRELIABLE)
+    assert (deployed.source, deployed.quality, deployed.tick) == (EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE, burnout_tick + 20_000)
+    assert record.commands == [(burnout_tick + 20_000, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert deployed.tick > truth.apogee_tick                          # after true apogee, not during ascent
+    assert record.last_estimate.flight_state is State.LANDED
+    print(f"\nEVT-19 closed loop: apogee detected {apogee.t_sim_s - truth.apogee_tick / 1000:+.3f} s from truth, "
+          f"deployed {deployed.t_sim_s - truth.apogee_tick / 1000:+.3f} s after true apogee, "
+          f"touchdown {record.detection_time_s(Event.TOUCHDOWN) - truth.touchdown_time_s:+.3f} s after contact, "
+          f"{record.rejected_samples} samples rejected")
+
+
+def test_evt_19_confirmation_configuration() -> None:
+    avionics = REF01["avionics"]
+    assert (avionics["deploy_confirm_baro_descent_m"], avionics["deploy_confirm_samples"]) == (10.0, 5)
+    descent, samples = "avionics.deploy_confirm_baro_descent_m", "avionics.deploy_confirm_samples"
+    for path in (descent, samples):                                   # required: no default
+        fault = rejected(scenario_with(path, ...))
+        assert (fault.reason, fault.field) == (Reason.MISSING_FIELD, path)
+    for bad, reason in ((0.0, Reason.OUT_OF_RANGE), (-10.0, Reason.OUT_OF_RANGE), (math.nan, Reason.INVALID_TYPE),
+                        (math.inf, Reason.INVALID_TYPE), ("10", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(descent, bad))
+        assert (fault.reason, fault.field) == (reason, descent)
+    for bad, reason in ((0, Reason.OUT_OF_RANGE), (-5, Reason.OUT_OF_RANGE), (5.0, Reason.INVALID_TYPE),
+                        ("5", Reason.INVALID_TYPE), (True, Reason.INVALID_TYPE)):
+        fault = rejected(scenario_with(samples, bad))
+        assert (fault.reason, fault.field) == (reason, samples)
+    load_avionics_config(scenario_with(samples, 1))
 
 
 # ---------------------------------------------------------------- EVT-07

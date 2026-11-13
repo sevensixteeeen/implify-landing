@@ -41,14 +41,41 @@ class EventSource(StrEnum):
     """Directly detected from measurements, but by the event's fallback criterion."""
     BACKUP_TIMER = "BACKUP_TIMER"
     """Inferred: the backup deployment timer expired before the event was detected."""
+    BAROMETRIC_CONFIRMATION = "BAROMETRIC_CONFIRMATION"
+    """Drag-device deployment confirmed by barometric descent after an unreliable apogee."""
 
 
 class DataQuality(StrEnum):
-    """How far an estimate or event can be trusted."""
+    """How far an estimate, a telemetry frame or an event can be trusted.
+
+    For an event it describes the evidence used for that particular event. It is not copied
+    from the telemetry frame, and it is never rewritten after the event is recorded.
+    """
 
     NOMINAL = "NOMINAL"
     DEGRADED = "DEGRADED"
     UNRELIABLE = "UNRELIABLE"
+
+
+class RejectionReason(StrEnum):
+    """Why the avionics refused to use a sensor sample."""
+
+    SATURATED = "SATURATED"
+    """The sensor clipped the reading at its range limit."""
+    NON_FINITE = "NON_FINITE"
+    """The reading is NaN or infinite."""
+
+
+@dataclass(frozen=True, slots=True)
+class RejectedSample:
+    """A sensor sample the avionics refused to use: which source, when, what it read and why."""
+
+    tick: int
+    t_sim_s: float
+    source: str
+    """Sensor and channel, for example "baro.pressure"."""
+    value: float
+    reason: RejectionReason
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,6 +113,8 @@ class AvionicsEstimate:
     acceleration_mps2: float
     baro_altitude_agl_m: float
     flight_state: FlightState
+    quality: DataQuality = DataQuality.NOMINAL
+    """Reliability of the estimate. Depends only on the estimator's inputs: accel.z and baro.pressure."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,6 +123,10 @@ class TelemetryFrame:
 
     `altitude_m` (AGL), `velocity_mps` and `acceleration_mps2` are estimates. `pressure_pa`,
     `temperature_k` and `roll_rate_radps` are the most recent sensor readings. None is truth.
+
+    A reading whose source is listed in `invalid_sources` is not a valid measurement: it is the raw
+    clipped value, or the last finite value, and must never be presented as valid
+    (TELEMETRY_PROTOCOL section 3.4).
     """
 
     tick: int
@@ -105,6 +138,9 @@ class TelemetryFrame:
     temperature_k: float
     flight_state: FlightState
     roll_rate_radps: float
+    data_quality: DataQuality = DataQuality.NOMINAL
+    invalid_sources: tuple[str, ...] = ()
+    """Sources whose most recent sample was rejected, in the order accel.z, baro.pressure, temp.temperature, gyro.z."""
 
 
 class VehicleCommand(StrEnum):

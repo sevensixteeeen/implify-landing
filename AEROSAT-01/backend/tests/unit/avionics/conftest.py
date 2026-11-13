@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 from aerosat.avionics.flight_computer import AvionicsConfig, FlightComputer, load_avionics_config
-from aerosat.core.types import AvionicsEstimate, FlightEvent, FlightEventType, VehicleCommand
+from aerosat.core.types import AvionicsEstimate, DataQuality, FlightEvent, FlightEventType, VehicleCommand
 from aerosat.sensors.suite import SensorSuite, suite_config_from_scenario
 from aerosat.sim.simulator import DragDevice, Simulator, SimulatorConfig, TruthEvents
 from aerosat.sim.vehicle import RollProfile, ThrustCurve, Vehicle
@@ -57,6 +57,10 @@ class FlightRecord:
     drag_area_change_tick: int | None = None
     final_tick: int = 0
     last_estimate: AvionicsEstimate | None = None
+    rejected_samples: int = 0
+    """Sensor samples the avionics refused to use during the flight."""
+    non_nominal_ticks: int = 0
+    """Avionics ticks on which the estimate or the telemetry frame was not NOMINAL."""
 
     def detected(self, event: FlightEventType) -> list[FlightEvent]:
         return [e for e in self.events if e.event is event]
@@ -97,6 +101,12 @@ def run_flight(seed: int, *, ideal: bool = False, pressure_spike: tuple[int, flo
             record.events.extend(output.events)
             record.commands.extend((state.tick, command) for command in output.commands)
             record.last_estimate = output.estimate
+            record.rejected_samples += len(output.rejected)
+            frame_degraded = output.frame is not None and (
+                output.frame.data_quality is not DataQuality.NOMINAL or output.frame.invalid_sources
+            )
+            if output.estimate.quality is not DataQuality.NOMINAL or frame_degraded:
+                record.non_nominal_ticks += 1
             if output.frame is not None:
                 record.frame_ticks.append(state.tick)
             if not state.on_ground and sim.truth_events.touchdown_tick is None:

@@ -59,7 +59,9 @@
     "burnout_fallback_specific_force_mps2": 1.0,
     "burnout_fallback_samples": 20,
     "touchdown_fallback_window_ms": 2800,
-    "touchdown_fallback_acceleration_mps2": 2.0
+    "touchdown_fallback_acceleration_mps2": 2.0,
+    "deploy_confirm_baro_descent_m": 10.0,
+    "deploy_confirm_samples": 5
   },
   "link": { "profile": "ideal" }
 }
