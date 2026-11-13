@@ -2,14 +2,15 @@
 
 Run from `backend/`:
 
-    uv run python tools/f1_audit.py baseline
+    uv run python tools/f1_audit.py rerun       # current avionics (with the F1 detector)
+    uv run python tools/f1_audit.py baseline    # meaningful only on the pre-F1 avionics, commit cee1938
 
-`baseline` flies every run of the audit set closed-loop with the unchanged avionics and no
-detector, drag device enabled, and records each run's deployment command against the
-simulator's true apogee. Output (deterministic for the same code and inputs):
+Both fly every run of the audit set closed-loop, drag device enabled, and record each run's
+deployment command against the simulator's true apogee and the disagreement flag (if any).
+Output (deterministic for the same code and inputs):
 
-    tools/f1_out/baseline_runs.csv     one row per run
-    tools/f1_out/baseline_summary.md   totals, and every run that deploys during ascent
+    tools/f1_out/baseline_runs.csv, baseline_summary.md   section 6d
+    tools/f1_out/rerun_runs.csv, rerun_summary.md         section 6 item 8, scored against section 4
 
 The script lives outside the `aerosat` package. It reads truth only to score runs; the
 avionics receives sensor samples and its tick only (FR-AVI-01).
@@ -70,7 +71,13 @@ def base_scenario(name: str) -> dict:
         s["environment"]["pad_altitude_msl_m"] = 4000.0 if name == "high4k" else 8000.0
     elif name != "ref01":
         raise ValueError(name)
+    if "detector_kappa" in s["avionics"]:
+        s["avionics"]["detector_kappa"] = KAPPA[name]      # F1_DECISIONS 6e.5; REF-01 value is in ref-01.json
     return s
+
+
+KAPPA = {"ref01": 0.007, "zero_drag": 0.008, "low_thrust": 0.007, "high4k": 0.010, "high8k": 0.014}
+"""Detector kappa per audit scenario, F1_DECISIONS 6e.5. Fixed before the rerun."""
 
 
 def truth_times(s: dict) -> tuple[int, int]:
@@ -264,6 +271,7 @@ def run(job_and_truth) -> dict:
         state = sim.step(pending)
         pending = ()
     true_apogee = sim.truth_events.apogee_tick
+    flag = getattr(computer, "disagreement_flag", None)
     dep = next((e for e in events if e[0] == "DRAG_DEVICE_DEPLOYED"), None)
     ap = next((e for e in events if e[0] == "APOGEE"), None)
     cmd = commands[0] if commands else None
@@ -277,22 +285,95 @@ def run(job_and_truth) -> dict:
         ascent=bool(cmd and true_apogee is not None and cmd[0] < true_apogee),
         commands=len(commands),
         events_unique=all(n <= 1 for n in collections.Counter(e[0] for e in events).values()),
+        flag_tick=flag.tick if flag else "", flag_reason=flag.reason.value if flag else "",
     )
 
 
 # ------------------------------------------------------------------ baseline report
-def baseline(workers: int) -> None:
+def fly_all(workers: int) -> tuple[list[dict], dict]:
     truth = {name: truth_times(base_scenario(name)) for name in SCENARIOS}
     jobs = audit_jobs(truth)
     with Pool(workers) as pool:
         rows = pool.map(run, [(j, truth) for j in jobs], chunksize=4)
+    return rows, truth
+
+
+def write_csv(rows: list[dict], name: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    fields = list(rows[0].keys())
-    with open(OUT / "baseline_runs.csv", "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
+    with open(OUT / name, "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
+
+
+def baseline(workers: int) -> None:
+    """Section 6d. Only meaningful on the pre-F1 avionics (commit cee1938); kept for reproducibility."""
+    rows, truth = fly_all(workers)
+    write_csv(rows, "baseline_runs.csv")
     write_summary(rows, truth)
+
+
+def rerun(workers: int) -> None:
+    """Section 6, item 8: same audit set and seeds as the baseline, current avionics with the F1 detector."""
+    rows, truth = fly_all(workers)
+    write_csv(rows, "rerun_runs.csv")
+    base_path = OUT / "baseline_runs.csv"
+    base = {}
+    if base_path.exists():
+        for r in csv.DictReader(open(base_path, encoding="utf-8")):
+            base[(r["set"], r["scenario"], r["case"], r["seed"], r["ideal"])] = r
+    write_rerun_summary(rows, truth, base)
+
+
+def write_rerun_summary(rows: list[dict], truth: dict, base: dict) -> None:
+    faults = [r for r in rows if r["set"] == "fault"]
+    healthy = [r for r in rows if r["set"] == "healthy"]
+    key = lambda r: (r["set"], r["scenario"], r["case"], str(r["seed"]), str(r["ideal"]))
+    flagged_healthy = [r for r in healthy if r["flag_tick"] != ""]
+    ascent = [r for r in faults if r["ascent"]]
+    early_flag = [r for r in faults if r["flag_tick"] != "" and r["flag_tick"] < r["onset_tick"]]
+    detected = lambda r: r["flag_tick"] != "" and r["flag_tick"] >= r["onset_tick"]
+    L = ["# F1 rerun: current avionics with the F1 detector (section 6, item 8)", "",
+         "Generated by `uv run python tools/f1_audit.py rerun` (run from `backend/`). Same audit set and seeds as the baseline "
+         "(F1_DECISIONS 6c, 6d). Closed loop, drag device enabled. Results apply only to these runs (section 4, item 4).", "",
+         "## Section 4 pass criteria", "",
+         "| Criterion | Result | Pass |", "|---|---|---|",
+         f"| 1. False alarms on healthy flights | {len(flagged_healthy)} of {len(healthy)} flights flagged | {'yes' if not flagged_healthy else '**no**'} |",
+         f"| 2. Ascent deployments across fault runs | {len(ascent)} of {len(faults)} | {'yes' if not ascent else '**no**'} |",
+         f"| 3. Detection rate per fault type | table below; no separate minimum (F1-D7) | reported |",
+         f"| 4. Scope | enumerated runs only | — |", "",
+         f"Other checks: healthy-flight ascent deployments {sum(r['ascent'] for r in healthy)}; fault runs flagged before fault onset "
+         f"{len(early_flag)}; runs with more than one command {sum(1 for r in rows if r['commands'] > 1)}; runs with a repeated event "
+         f"type {sum(1 for r in rows if not r['events_unique'])}; fault runs with no deployment {sum(1 for r in faults if not r['commands'])}.", "",
+         "## Detection rate per fault type", "",
+         "A run is detected when the flag is raised at or after the fault onset. `baseline ascent` = runs of the group that deployed "
+         "during ascent in the baseline; criterion 2 requires each of them to be caught or otherwise not to deploy during ascent.", "",
+         "| Group | Runs | Detected | DISAGREEMENT | UNCHECKABLE | Baseline ascent | Of those detected | Ascent now |",
+         "|---|---|---|---|---|---|---|---|"]
+    for g in dict.fromkeys(r["group"] for r in faults):
+        rs = [r for r in faults if r["group"] == g]
+        det = [r for r in rs if detected(r)]
+        reasons = collections.Counter(r["flag_reason"] for r in det)
+        b_asc = [r for r in rs if base.get(key(r), {}).get("ascent") == "True"]
+        L.append(f"| {g} | {len(rs)} | {len(det)} | {reasons['DISAGREEMENT']} | {reasons['UNCHECKABLE']} | {len(b_asc)} | "
+                 f"{sum(1 for r in b_asc if detected(r))} | {sum(r['ascent'] for r in rs)} |")
+    src = collections.Counter(r["deploy_source"] or "none" for r in faults)
+    L += ["", "## Deployment source, fault runs", "", "| Source | Runs |", "|---|---|"] + [f"| {k} | {v} |" for k, v in sorted(src.items())]
+    vel = sorted(float(r["true_v_at_command"]) for r in faults if r["true_v_at_command"] != "")
+    if vel:
+        q = lambda f: vel[min(len(vel) - 1, int(f * len(vel)))]
+        L += ["", f"True vertical velocity at the command, fault runs: min {vel[0]:.1f}, 10th pct {q(0.1):.1f}, median {q(0.5):.1f}, "
+                  f"90th pct {q(0.9):.1f}, max {vel[-1]:.1f} m/s."]
+    L += ["", "## Failing runs", "", "### Healthy flights with a flag", ""]
+    L += [f"- {r['scenario']} {r['case']} seed {r['seed']} ideal {r['ideal']}: flag {r['flag_reason']} at tick {r['flag_tick']}" for r in flagged_healthy] or ["None."]
+    L += ["", "### Fault runs that deploy during ascent", ""]
+    if ascent:
+        L += ["| Scenario | Fault | Seed | Command (s) | True apogee (s) | v (m/s) | Source | Flag |", "|---|---|---|---|---|---|---|---|"]
+        L += [f"| {r['scenario']} | {r['case']} | {r['seed']} | {r['command_time_s']} | {r['true_apogee_tick'] / 1000:.3f} | "
+              f"{r['true_v_at_command']} | {r['deploy_source']} | {r['flag_reason'] or 'none'} {r['flag_tick']} |" for r in ascent]
+    else:
+        L.append("None.")
+    (OUT / "rerun_summary.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
 def write_summary(rows: list[dict], truth: dict) -> None:
@@ -329,11 +410,13 @@ def write_summary(rows: list[dict], truth: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("mode", choices=["baseline"])
+    ap.add_argument("mode", choices=["baseline", "rerun"])
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     args = ap.parse_args()
     if args.mode == "baseline":
         baseline(args.workers)
+    else:
+        rerun(args.workers)
 
 
 if __name__ == "__main__":

@@ -349,6 +349,24 @@ Gains `K_h`, `K_v` are stored in the scenario as `avionics.estimator_gain_h` and
 
 Rules: transitions are one-way; each event fires once; counters reset when a criterion is interrupted (debounce). Physical reasoning behind the burnout test: after thrust ends the only non-gravitational force is drag, so specific force turns negative.
 
+### 6.4 Barometer/accelerometer disagreement detector (F1)
+
+Design and derivations: `docs/F1_DECISIONS.md` sections 6b and 6e. Code: `avionics/estimator.py` (`DeadReckoning`, `DisagreementMonitor`), wired in `flight_computer.py` and `state_machine.py`.
+
+- **Dead reckoning.** Accelerometer only, from the end of pad calibration with `h = v = 0`, using the same held acceleration as the estimator. It becomes invalid for the rest of the flight once the acceleration hold (100 ms) expires.
+- **Statistic.** At each valid barometer sample: `D = h_baro − h_DR`; `dD` = mean of `D` over the latest 5 samples minus the mean over samples `k−10 .. k−14` (15 contiguous valid samples; a rejected barometer sample restarts the window). `q_D = |dD| / sqrt((2/5)·σ_h² + σ_DR(t)² + (κ·|v_est|·Δt)²)`, with `σ_h = σ_p·|dh/dp|`, `Δt` the 200 ms between block centres.
+- **Flag.** Raised when `q_D > 7.0` on 3 consecutive defined samples (`DISAGREEMENT`), or at once when the dead reckoning becomes invalid (`UNCHECKABLE`). Latched for the rest of the flight. The detector runs from calibration until the deployment decision.
+- **Configuration.** `avionics.detector_sigma_p_pa`, `avionics.detector_sigma_a_mps2`, `avionics.detector_kappa` (REF-01: 3.014 Pa, 0.0501 m/s², 0.007). The avionics never reads the scenario's `sensors` section for them.
+- **Evaluation order per tick.** Classify samples → predict and correct the filter → advance dead reckoning → update `q_D` and the flag → estimate quality → state machine. A flag raised on a tick applies to that tick's deployment decision.
+
+### 6.5 Deployment paths
+
+Without a disagreement flag, unchanged: normal path (reliable `APOGEE` + delay), then barometric confirmation (unreliable detected `APOGEE` + delay + barometric descent), then the burnout-anchored backup timer.
+
+With the flag raised (F1-D4): the estimate is `UNRELIABLE`, an `APOGEE` detected afterwards is recorded `UNRELIABLE`, and only a backup timer may deploy. A reliable `APOGEE` recorded earlier is never rewritten, but no longer authorises deployment; the burnout timer, which it otherwise cancels, is evaluated again.
+
+Liftoff-anchored backup timer (F1-D6): starts at detected `LIFTOFF`, duration = end of the thrust table + `backup_deployment_delay_ms` (derived by the scenario loader; REF-01: 23 200 ms). It deploys only if nothing has deployed when it expires. If no `APOGEE` is recorded then, apogee is inferred (`BACKUP_TIMER`, `UNRELIABLE`) and the state becomes `DESCENT`, also from `BOOST` (`BURNOUT` then stays unrecorded). When both timers expire on the same tick, the burnout timer acts; there is always at most one `DEPLOY_DRAG_DEVICE`. Out of scope: `LIFTOFF` never detected.
+
 ---
 
 ## 7. Timing and scheduling

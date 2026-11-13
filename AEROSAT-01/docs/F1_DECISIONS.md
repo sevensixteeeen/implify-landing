@@ -378,6 +378,27 @@ The avionics never reads the scenario's `sensors` section for these. It only see
 5. `kappa` values and their two-term basis (6e.5).
 6. Documentation updates at implementation: ARCHITECTURE section 6 (dead reckoning, detector, evaluation order), TELEMETRY_PROTOCOL (flag reason in events), TEST_PLAN (F1-T01 to F1-T20).
 
+## 6f. Item 8: implementation and rerun results
+
+**Implemented as designed in 6e** (corrections included), with T = 7.0, persistence 3 and the 6e.5 `kappa` values unchanged after the rerun. Code: `avionics/estimator.py` (dead reckoning, detector; kept in the existing module so the specified package layout is unchanged), `flight_computer.py` (configuration fields, derived liftoff timer, evaluation order), `state_machine.py` (F1-D4 restriction, F1-D6 timer), `calibration.py` (calibration sample count). The detector runs until the deployment decision, as 6e.1 specifies; it is not evaluated in descent. Tests F1-T01 to F1-T20: `tests/unit/avionics/test_f1_disagreement.py`.
+
+**Existing tests changed by the approved design** (expectations, not tolerances):
+- EVT-14: the loaded configuration now contains the derived liftoff timer (23,200 ms for REF-01).
+- EVT-15 (zero drag, apogee detection suppressed): the fallback BURNOUT is detected 95 ms after true burnout, so the liftoff timer (LIFTOFF + 29,200 ms) acts 30 ms before the burnout timer, still after true apogee. The test now checks this, and checks the burnout timer on its own with the liftoff timer disabled.
+- EVT-17 (acceleration hold): after the hold expires the latched `UNCHECKABLE` flag keeps the estimate `UNRELIABLE`; the previous DEGRADED-then-NOMINAL recovery no longer occurs.
+
+**Audit rerun** (`uv run python tools/f1_audit.py rerun`, same set and seeds as 6d; full tables `backend/tools/f1_out/rerun_summary.md`, per run `rerun_runs.csv`). Results apply only to these runs.
+
+| Section 4 criterion | Result |
+|---|---|
+| 1. False alarms | 0 of 1,206 healthy flights flagged (also 0 fault runs flagged before fault onset) |
+| 2. Ascent deployments | 0 of 3,820 fault runs (baseline: 1,918) |
+| 3. Detection rate | Reported per fault group in `rerun_summary.md`. Every one of the 1,918 baseline ascent runs was flagged at or after onset: 1,738 `DISAGREEMENT`, 180 `UNCHECKABLE` |
+
+Other results: 0 runs with more than one command or a repeated event; 0 fault runs without deployment (the 90 R-16 runs of 6d now deploy by the liftoff timer). Deployment source in fault runs: `BACKUP_TIMER` 3,306, `DETECTED` 514. True vertical velocity at the command in fault runs: -66.8 to -4.9 m/s, median -20.3. The slowest (-66.8 m/s) are the `low_thrust` accelerometer faults from `B - 1 s`, deployed by the liftoff timer about 6.7 s after apogee, as 6e.4 predicted.
+
+Undetected fault runs (none of them deploys during ascent): drift -2 m/s (all) and part of drift -5 m/s; single ±5 m spikes; barometer invalid (rejection handles it); accelerometer stuck at 0 or held at mid-coast, and stuck at 0 during the deployment delay (near apogee the true specific force is about 0, so the stuck value agrees with it); barometer frozen at `A - 0.5 s` in 22 of 30 runs. All are below the 6e.1 detection floor or produce no disagreement, as predicted. The predicted risk (`high8k` drift -20 m/s near the floor) was detected in all 10 runs.
+
 ## 7. Out of scope here
 
 - **F2:** frozen barometer causes false TOUCHDOWN/LANDED while airborne. Investigated separately, after F1.

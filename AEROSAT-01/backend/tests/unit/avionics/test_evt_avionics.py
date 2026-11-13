@@ -5,6 +5,7 @@ simulator (EVT-05, EVT-06, EVT-08, EVT-12), known injected values (EVT-09), and 
 model (EVT-11). Detection tolerances are the ones fixed in TEST_PLAN section 5.
 """
 import copy
+import dataclasses
 import math
 import random
 
@@ -619,10 +620,19 @@ def test_evt_15_timer_with_a_correctly_declared_coast_duration() -> None:
 
 
 def test_evt_15_backup_timer_starts_from_the_fallback_burnout() -> None:
-    """Apogee detection suppressed: the timer expires exactly 26 000 ticks after the fallback burnout."""
+    """Apogee detection suppressed: the timer expires exactly 26 000 ticks after the fallback burnout.
+
+    The F1-D6 liftoff timer is disabled here to test the burnout timer on its own: with the fallback
+    burnout detected 95 ms after true burnout, the liftoff timer (LIFTOFF + 29 200 ms) would act 30 ms
+    earlier. Both orders are checked."""
     scenario = zero_drag_scenario()
     scenario["avionics"]["apogee_lockout_after_burnout_ms"] = 599_000
-    record = run_flight(0, scenario=scenario, stop_tick=33_500)
+    both = run_flight(0, scenario=scenario, stop_tick=33_500)
+    (liftoff,) = both.detected(Event.LIFTOFF)
+    assert both.commands == [(liftoff.tick + 29_200, VehicleCommand.DEPLOY_DRAG_DEVICE)]
+    assert both.commands[0][0] > both.truth_events.apogee_tick
+    burnout_only = dataclasses.replace(load_avionics_config(scenario), liftoff_backup_delay_ms=None)
+    record = run_flight(0, scenario=scenario, stop_tick=33_500, avionics=burnout_only)
     (burnout,) = record.detected(Event.BURNOUT)
     (apogee,) = record.detected(Event.APOGEE)
     assert burnout.source is EventSource.FALLBACK_CRITERION
@@ -940,12 +950,14 @@ def test_evt_17_acceleration_is_held_for_at_most_100_ms_then_velocity_only() -> 
     assert outputs[2_250].frame.data_quality is DataQuality.UNRELIABLE
     assert outputs[2_250].frame.invalid_sources == ("accel.z",)
 
-    # Recovery: the next valid sample ends UNRELIABLE at once; DEGRADED lasts 1000 ms after the last rejection (2295).
+    # Recovery: before F1 the estimate went DEGRADED, then NOMINAL 1000 ms after the last rejection. Since
+    # F1 (docs/F1_DECISIONS.md 6e.1, 6e.2) an expired hold makes the dead reckoning invalid, which raises the
+    # latched UNCHECKABLE disagreement flag at tick 2100: the estimate stays UNRELIABLE for the rest of the flight.
+    assert computer.disagreement_flag.tick == 2_100 and computer.disagreement_flag.reason.value == "UNCHECKABLE"
     qualities = {}
     for tick in range(2_300, 3_305, 5):
         qualities[tick] = computer.tick(tick, readings(tick, accel=G0_MPS2 + 2.0)).estimate.quality
-    assert qualities[2_300] is DataQuality.DEGRADED and qualities[3_290] is DataQuality.DEGRADED
-    assert qualities[3_295] is DataQuality.NOMINAL and qualities[3_300] is DataQuality.NOMINAL
+    assert set(qualities.values()) == {DataQuality.UNRELIABLE}
 
 
 @pytest.mark.parametrize(("last_saturated_tick", "expect_unreliable"), [(2_960, False), (3_200, True)])
@@ -1515,7 +1527,9 @@ def rejected(scenario: dict) -> ConfigurationFault:
 
 def test_evt_14_ref01_is_accepted_unchanged() -> None:
     config = load_avionics_config(REF01)
-    assert config == avionics_config_from_scenario(REF01["avionics"], REF01["vehicle"]["drag_device"])
+    # The loader adds only the derived F1-D6 liftoff timer: burn duration 3200 ms + backup delay 20000 ms.
+    assert config == dataclasses.replace(
+        avionics_config_from_scenario(REF01["avionics"], REF01["vehicle"]["drag_device"]), liftoff_backup_delay_ms=23_200)
     assert (config.estimator_gain_h, config.estimator_gain_v_hz) == (0.24, 0.72)
     assert (config.calibration_duration_ms, config.drag_device_enabled, config.deploy_delay_after_apogee_ms) == (1000, True, 1000)
     FlightComputer(config)

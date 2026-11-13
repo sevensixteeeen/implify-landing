@@ -61,7 +61,10 @@
     "touchdown_fallback_window_ms": 2800,
     "touchdown_fallback_acceleration_mps2": 2.0,
     "deploy_confirm_baro_descent_m": 10.0,
-    "deploy_confirm_samples": 5
+    "deploy_confirm_samples": 5,
+    "detector_sigma_p_pa": 3.014,
+    "detector_sigma_a_mps2": 0.0501,
+    "detector_kappa": 0.007
   },
   "link": { "profile": "ideal" }
 }

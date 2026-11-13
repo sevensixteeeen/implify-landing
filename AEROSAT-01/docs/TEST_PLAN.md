@@ -164,6 +164,33 @@ Initial conditions and unpowered vehicles (decided 2026-11-11): a normal launch 
 | EVT-11 | Barometric altitude formula | Ideal pressure from the atmosphere model at h = 0, 500, 2 000 m (pad at sea level) returns h within 1.0 m (the expected difference, about `h²/r₀` = 0.63 m at 2 000 m, is the geopotential approximation) |
 | EVT-12 | Deploy command | Issued exactly the configured delay after detected `APOGEE`, once |
 
+### 5.1 F1 disagreement detector, deployment restriction and liftoff timer (F1-T)
+
+Design: `docs/F1_DECISIONS.md` section 6e. Tests: `backend/tests/unit/avionics/test_f1_disagreement.py`. T = 7.0, persistence 3 and `kappa` come from the written noise derivation and are not tuned to pass these tests. The closed-loop audit is `backend/tools/f1_audit.py` (pass criteria: F1_DECISIONS section 4).
+
+| ID | Rule | Pass criterion |
+|---|---|---|
+| F1-T01 | `q_D` definition | Equals the hand-computed value, including the `sqrt(2/5)` term |
+| F1-T02 | Speed term (F1-D3) | `q_D` falls and the allowed `abs(dD)` grows with `abs(v_hat)`; still evaluated at 1000 m/s |
+| F1-T03 | Threshold | 3 values just below (or equal to) 7.0: no flag; 3 just above: flag |
+| F1-T04 | Persistence | 2 above then one below or undefined: no flag; 3 consecutive above: flag |
+| F1-T05 | Availability, barometer | Under 15 contiguous valid samples, or after a rejected sample: undefined, no flag |
+| F1-T06 | Availability, accelerometer | Hold expired (105 ms): flag `UNCHECKABLE`; 100 ms: no flag |
+| F1-T07 | Latching | Flag and `UNRELIABLE` quality persist after the sensors agree again |
+| F1-T08 | Restriction before APOGEE | APOGEE recorded `UNRELIABLE`; only the burnout timer deploys |
+| F1-T09 | Timer restored | Flag after a reliable APOGEE: no normal deployment; APOGEE unchanged; timer deploys |
+| F1-T10 | Same-tick flag | Flag on the command tick: no command on that tick |
+| F1-T11 | Flag after the command | One command, nothing else |
+| F1-T12 | Barometric confirmation blocked | Conditions met while flagged: no `BAROMETRIC_CONFIRMATION` |
+| F1-T13 | Unflagged behaviour unchanged | Identical events with and without the new argument; REF-01 seed 0 unflagged |
+| F1-T14 | Liftoff timer duration; configuration | 23 200 ms (REF-01) and the 6e.4 values; invalid detector fields rejected by name |
+| F1-T15 | Liftoff timer, BURNOUT never detected | Deployment at LIFTOFF + duration, inferred APOGEE, one command, after true apogee |
+| F1-T16 | Liftoff timer never acts first | REF-01 ideal and seeds 0-9: normal deployment at APOGEE + delay, no flag |
+| F1-T17 | Two timers on one tick | One command, burnout timer |
+| F1-T18 | LIFTOFF never detected | No command |
+| F1-T19 | Drag device disabled | No command; both timers mark themselves fired |
+| F1-T20 | Purity | The detector imports nothing from `aerosat.sim` or `aerosat.sensors` and uses no truth identifiers |
+
 ## 6. Sensor simulation (SEN)
 
 | ID | Test | Pass criterion |

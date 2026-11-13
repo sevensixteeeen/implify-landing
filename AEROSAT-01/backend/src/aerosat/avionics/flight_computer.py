@@ -6,11 +6,18 @@ configuration, and nothing else about the vehicle or the truth model.
 """
 import math
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 from aerosat.avionics.calibration import CalibrationResult, PadCalibration
-from aerosat.avionics.estimator import ComplementaryFilter, baro_altitude_agl_m, estimated_acceleration_mps2
+from aerosat.avionics.estimator import (
+    ComplementaryFilter,
+    DeadReckoning,
+    DisagreementFlag,
+    DisagreementMonitor,
+    baro_altitude_agl_m,
+    estimated_acceleration_mps2,
+)
 from aerosat.avionics.state_machine import FlightStateMachine, StateMachineConfig
 from aerosat.core.clock import TICKS_PER_SECOND, ms_to_ticks, tick_to_seconds, ticks_per_sample
 from aerosat.core.faults import ConfigurationFault
@@ -35,6 +42,7 @@ _AVIONICS_KEYS = {
     "burnout_fallback_specific_force_mps2", "burnout_fallback_samples",
     "touchdown_fallback_window_ms", "touchdown_fallback_acceleration_mps2",
     "deploy_confirm_baro_descent_m", "deploy_confirm_samples",
+    "detector_sigma_p_pa", "detector_sigma_a_mps2", "detector_kappa",
 }
 
 
@@ -71,8 +79,17 @@ class AvionicsConfig:
     """Deployment after an unreliable apogee: required barometric descent below the filtered peak, m."""
     deploy_confirm_samples: int
     """Deployment after an unreliable apogee: consecutive valid barometer samples required."""
+    detector_sigma_p_pa: float
+    """Disagreement detector: per-sample barometer noise including quantisation, Pa (F1_DECISIONS 6e.5)."""
+    detector_sigma_a_mps2: float
+    """Disagreement detector: per-sample accelerometer noise including quantisation, m/s^2."""
+    detector_kappa: float
+    """Disagreement detector: bound on the relative barometric altitude-scale error. Dimensionless."""
     drag_device_enabled: bool
     deploy_delay_after_apogee_ms: int
+    liftoff_backup_delay_ms: int | None = None
+    """F1-D6 liftoff-anchored backup timer: burn duration + backup_deployment_delay_ms. Derived by
+    `load_avionics_config` from the scenario's thrust curve; None disables the timer."""
 
     def __post_init__(self) -> None:
         """Validate every value on its own. Raises `ConfigurationFault` naming the field."""
@@ -85,8 +102,11 @@ class AvionicsConfig:
         _require_int(self, "touchdown_window_ms", minimum=1)
         for name in ("liftoff_specific_force_mps2", "touchdown_altitude_range_m", "touchdown_speed_mps",
                      "estimator_gain_h", "estimator_gain_v_hz", "burnout_fallback_specific_force_mps2",
-                     "touchdown_fallback_acceleration_mps2", "deploy_confirm_baro_descent_m"):
+                     "touchdown_fallback_acceleration_mps2", "deploy_confirm_baro_descent_m",
+                     "detector_sigma_p_pa", "detector_sigma_a_mps2", "detector_kappa"):
             _require_positive_number(self, name)
+        if self.liftoff_backup_delay_ms is not None:
+            _require_int(self, "liftoff_backup_delay_ms", minimum=1)
         if not isinstance(self.drag_device_enabled, bool):
             raise ConfigurationFault(Reason.INVALID_TYPE, "vehicle.drag_device.enabled", "must be true or false")
 
@@ -256,7 +276,16 @@ def load_avionics_config(scenario: Mapping[str, Any]) -> AvionicsConfig:
             f"{baro_rate_hz} Hz does not divide the physics rate of {TICKS_PER_SECOND} Hz exactly",
         )
     check_estimator_gains(config.estimator_gain_h, config.estimator_gain_v_hz, 1.0 / baro_rate_hz)
-    return config
+
+    # F1-D6: the liftoff-anchored backup timer = burn duration (end of the thrust table) + backup delay.
+    vehicle = _section(scenario, "vehicle")
+    curve = vehicle.get("thrust_curve")
+    if not isinstance(curve, list) or not curve:
+        raise ConfigurationFault(Reason.MISSING_FIELD, "vehicle.thrust_curve", "required to derive the liftoff backup timer")
+    burn_ms = curve[-1].get("t_ms") if isinstance(curve[-1], Mapping) else None
+    if isinstance(burn_ms, bool) or not isinstance(burn_ms, int) or burn_ms < 0:
+        raise ConfigurationFault(Reason.INVALID_TYPE, "vehicle.thrust_curve", f"last t_ms must be a non-negative integer, got {burn_ms!r}")
+    return replace(config, liftoff_backup_delay_ms=burn_ms + config.backup_deployment_delay_ms)
 
 
 def check_estimator_gains(gain_h: float, gain_v_hz: float, correction_period_s: float) -> None:
@@ -287,6 +316,8 @@ class AvionicsOutput:
     """A telemetry frame every 50 ms of sim time, otherwise None."""
     rejected: tuple[RejectedSample, ...] = ()
     """Samples refused on this tick: which source, when, what it read and why."""
+    disagreement: DisagreementFlag | None = None
+    """The latched F1 disagreement flag, once raised (F1_DECISIONS 6e.2)."""
 
 
 DEGRADED_WINDOW_TICKS = 1000
@@ -337,7 +368,13 @@ class FlightComputer:
             burnout_fallback_samples=config.burnout_fallback_samples,
             deploy_confirm_baro_descent_m=config.deploy_confirm_baro_descent_m,
             deploy_confirm_samples=config.deploy_confirm_samples,
+            liftoff_backup_ticks=(None if config.liftoff_backup_delay_ms is None
+                                  else ms_to_ticks(config.liftoff_backup_delay_ms)),
         ))
+        self._config = config
+        self._dead_reckoning: DeadReckoning | None = None
+        self._monitor: DisagreementMonitor | None = None
+        self._calibrated_tick: int | None = None
         # Last finite reading per source, for telemetry. 0.0 until a finite reading arrives.
         self._latest: dict[tuple[str, str], float] = {source: 0.0 for source in SOURCES}
         # Sources whose most recent sample was rejected, or that have never delivered a valid one.
@@ -351,6 +388,11 @@ class FlightComputer:
     @property
     def flight_state(self) -> FlightState:
         return self._fsm.state
+
+    @property
+    def disagreement_flag(self) -> DisagreementFlag | None:
+        """The latched F1 disagreement flag, or None if it has not been raised."""
+        return None if self._monitor is None else self._monitor.flag
 
     def tick(self, tick: int, samples: Sequence[SensorSample]) -> AvionicsOutput:
         """Process one avionics tick with the sensor samples that arrived since the previous one."""
@@ -397,9 +439,16 @@ class FlightComputer:
                 self.calibration = self._calibration.result()
                 just_calibrated = True
 
-        estimate_quality = self._estimate_quality(tick)
         if self.calibration is not None:
             calibration = self.calibration
+            if just_calibrated:
+                period_s = tick_to_seconds(self._period_ticks)
+                self._calibrated_tick = tick
+                self._dead_reckoning = DeadReckoning(period_s)
+                self._monitor = DisagreementMonitor(
+                    self._config.detector_sigma_p_pa, self._config.detector_sigma_a_mps2,
+                    self._config.detector_kappa, calibration, period_s,
+                )
             # 2. Prediction. The last valid acceleration is held for at most ACCEL_MAX_AGE_TICKS;
             #    after that the estimator predicts from velocity alone (zero acceleration).
             accel_age = tick - self._last_valid_tick[ACCEL_Z]
@@ -418,6 +467,10 @@ class FlightComputer:
                     self._latest[BARO], calibration.reference_pressure_pa, calibration.reference_temperature_k,
                 )
                 self._filter.correct(self._baro_altitude_m)
+            # 4. Dead reckoning and the disagreement detector (F1_DECISIONS 6e.3, steps 3 and 4).
+            self._update_disagreement(tick, just_calibrated, accel_age, baro_sample_m, baro_rejected)
+            # 5. Estimate quality, including a raised disagreement flag.
+            estimate_quality = self._estimate_quality(tick)
             events, commands = self._fsm.update(
                 tick,
                 specific_force_mps2=specific_force if new_accel else None,
@@ -429,7 +482,10 @@ class FlightComputer:
                 accel_rejected=accel_rejected,
                 baro_sample_m=baro_sample_m,
                 baro_rejected=baro_rejected,
+                disagreement=self.disagreement_flag,
             )
+        else:
+            estimate_quality = self._estimate_quality(tick)
 
         state = self._fsm.state
         estimate = AvionicsEstimate(
@@ -444,7 +500,28 @@ class FlightComputer:
                 data_quality=self._frame_quality(tick, estimate_quality),
                 invalid_sources=tuple(source_name(source) for source in SOURCES if source in self._invalid),
             )
-        return AvionicsOutput(estimate, state, tuple(events), tuple(commands), frame, tuple(rejected))
+        return AvionicsOutput(estimate, state, tuple(events), tuple(commands), frame, tuple(rejected),
+                              self.disagreement_flag)
+
+    def _update_disagreement(self, tick: int, just_calibrated: bool, accel_age: int, baro_sample_m: float | None,
+                             baro_rejected: bool) -> None:
+        """Advance the accelerometer-only dead reckoning and feed the disagreement detector. The detector
+        runs from calibration until the deployment decision (F1_DECISIONS 6e.1); a raised flag stays."""
+        if self._fsm.deployment_decided:
+            return
+        dead_reckoning, monitor = self._dead_reckoning, self._monitor
+        if accel_age > ACCEL_MAX_AGE_TICKS:
+            dead_reckoning.invalidate()
+            monitor.uncheckable(tick)
+        elif not just_calibrated:
+            dead_reckoning.step(self._acceleration_mps2)
+        if baro_rejected:
+            monitor.barometer_rejected()
+        if baro_sample_m is not None and dead_reckoning.valid:
+            monitor.barometer_sample(
+                tick, baro_sample_m, self._latest[BARO], dead_reckoning.altitude_m,
+                tick_to_seconds(tick - self._calibrated_tick), self._filter.velocity_mps,
+            )
 
     def _too_old(self, source: tuple[str, str], tick: int, max_age_ticks: int) -> bool:
         last = self._last_valid_tick[source]
@@ -459,7 +536,10 @@ class FlightComputer:
         )
 
     def _estimate_quality(self, tick: int) -> DataQuality:
-        """Reliability of the estimate. Only the estimator's inputs count: accel.z and baro.pressure."""
+        """Reliability of the estimate. Only the estimator's inputs count: accel.z and baro.pressure.
+        A raised disagreement flag makes it UNRELIABLE for the rest of the flight (F1-D4, 6e.2)."""
+        if self.disagreement_flag is not None:
+            return DataQuality.UNRELIABLE
         if self._too_old(ACCEL_Z, tick, ACCEL_MAX_AGE_TICKS) or self._too_old(BARO, tick, BARO_MAX_AGE_TICKS):
             return DataQuality.UNRELIABLE
         if self._recently_rejected((ACCEL_Z, BARO), tick):

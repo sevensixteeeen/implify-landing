@@ -61,6 +61,8 @@ class FlightRecord:
     """Sensor samples the avionics refused to use during the flight."""
     non_nominal_ticks: int = 0
     """Avionics ticks on which the estimate or the telemetry frame was not NOMINAL."""
+    disagreement: object = None
+    """The F1 disagreement flag at the end of the run (None if never raised)."""
 
     def detected(self, event: FlightEventType) -> list[FlightEvent]:
         return [e for e in self.events if e.event is event]
@@ -124,6 +126,7 @@ def run_flight(seed: int, *, ideal: bool = False, pressure_spike: tuple[int, flo
 
     record.truth_events = sim.truth_events
     record.final_tick = state.tick
+    record.disagreement = computer.disagreement_flag
     apogee_tick = sim.truth_events.apogee_tick
     if apogee_tick is not None:
         record.ascent_errors = [(h - true_h, v - true_v) for tick, h, true_h, v, true_v in estimates if tick <= apogee_tick]

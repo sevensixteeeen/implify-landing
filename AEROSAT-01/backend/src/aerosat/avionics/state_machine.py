@@ -15,13 +15,19 @@ exactly one of three paths, evaluated in this order on every tick:
    cancelled only by a reliable detected apogee. If it expires with no apogee recorded, apogee
    is inferred (source BACKUP_TIMER, quality UNRELIABLE).
 
-If BURNOUT is never detected the timer never starts and none of these paths can deploy. That
-is an unresolved safety requirement (a liftoff-anchored emergency timeout), not handled here.
+While the F1 disagreement flag is raised (F1-D4, docs/F1_DECISIONS.md 6e.3), only a backup timer
+may deploy: the normal path and barometric confirmation are not evaluated, and a burnout timer
+"cancelled" by a reliable apogee is evaluated again. The flag never changes flight state.
+
+F1-D6: a second backup timer runs from detected LIFTOFF (burn duration + backup delay). It deploys
+only if nothing has deployed when it expires, so it also covers a BURNOUT that is never detected.
+If no apogee is recorded at that point, apogee is inferred and the state becomes DESCENT.
 """
 import statistics
 from collections import deque
 from dataclasses import dataclass
 
+from aerosat.avionics.estimator import DisagreementFlag
 from aerosat.core.clock import tick_to_seconds
 from aerosat.core.types import (
     DataQuality,
@@ -64,6 +70,8 @@ class StateMachineConfig:
     """Barometric confirmation: required descent below the filtered barometric peak."""
     deploy_confirm_samples: int
     """Barometric confirmation: consecutive valid barometer samples required."""
+    liftoff_backup_ticks: int | None = None
+    """F1-D6 liftoff-anchored backup timer: time after detected LIFTOFF. None disables it."""
 
     def __post_init__(self) -> None:
         if self.backup_deployment_ticks < 1:
@@ -78,6 +86,8 @@ class StateMachineConfig:
             raise ValueError("deploy_confirm_samples must be at least 1")
         if not self.deploy_confirm_baro_descent_m > 0:
             raise ValueError("deploy_confirm_baro_descent_m must be greater than zero")
+        if self.liftoff_backup_ticks is not None and self.liftoff_backup_ticks < 1:
+            raise ValueError("liftoff_backup_ticks must be at least 1")
 
 
 class FlightStateMachine:
@@ -95,6 +105,11 @@ class FlightStateMachine:
         self._apogee_reliable = False
         self._timer_fired = False
         self._deployed = False
+        self._liftoff_tick: int | None = None
+        self._liftoff_timer_fired = False
+        self.deployment_decided = False
+        """True once any deployment path has acted (command issued, or none because the device is disabled).
+        The disagreement detector runs only until then (F1_DECISIONS 6e.1)."""
         self._slow_ticks = 0
         self._window_samples = config.touchdown_window_ticks // config.period_ticks + 1
         self._altitudes: deque[float] = deque(maxlen=self._window_samples)
@@ -119,6 +134,7 @@ class FlightStateMachine:
         accel_rejected: bool,
         baro_sample_m: float | None,
         baro_rejected: bool,
+        disagreement: DisagreementFlag | None = None,
     ) -> tuple[list[FlightEvent], list[VehicleCommand]]:
         """One avionics tick.
 
@@ -129,6 +145,7 @@ class FlightStateMachine:
         acceleration; both feed the touchdown fallback. `baro_sample_m` is the barometric altitude
         of a new VALID barometer sample this tick, otherwise None. `accel_rejected` and
         `baro_rejected` say that a sample from that sensor arrived this tick and was rejected.
+        `disagreement` is the latched F1 disagreement flag, or None (F1-D4).
         """
         config = self._config
         events: list[FlightEvent] = []
@@ -149,6 +166,7 @@ class FlightStateMachine:
             if specific_force_mps2 is not None:
                 self._debounce(specific_force_mps2 > config.liftoff_specific_force_mps2)
                 if self._count >= config.debounce_samples:
+                    self._liftoff_tick = tick
                     events.append(self._enter(FlightState.BOOST, FlightEventType.LIFTOFF, tick))
 
         elif self.state is FlightState.BOOST:
@@ -178,13 +196,15 @@ class FlightStateMachine:
             if self._count >= config.debounce_samples and not locked_out:
                 # Directly detected apogee. Its quality is the reliability of the velocity estimate
                 # it was detected from, fixed here and never rewritten. Only a reliable one
-                # cancels the backup timer and permits normal deployment.
+                # cancels the backup timer and permits normal deployment. Under a raised
+                # disagreement flag the estimate is UNRELIABLE (F1-D4).
+                quality = DataQuality.UNRELIABLE if disagreement is not None else estimate_quality
                 self._apogee_tick = tick
-                self._apogee_quality = estimate_quality
-                self._apogee_reliable = estimate_quality is not DataQuality.UNRELIABLE
+                self._apogee_quality = quality
+                self._apogee_reliable = quality is not DataQuality.UNRELIABLE
                 events.append(self._enter(
                     FlightState.DESCENT, FlightEventType.APOGEE, tick, {"altitude_m": altitude_m},
-                    quality=estimate_quality,
+                    quality=quality,
                 ))
             elif self._timer_expired(tick):
                 # Backup timer with no apogee recorded: apogee is inferred, not observed.
@@ -198,10 +218,10 @@ class FlightStateMachine:
                     reason=self._timer_reason(),
                 ))
             if self.state is FlightState.DESCENT:
-                self._decide_deployment(tick, events, commands)
+                self._decide_deployment(tick, events, commands, disagreement)
 
         elif self.state is FlightState.DESCENT:
-            self._decide_deployment(tick, events, commands)
+            self._decide_deployment(tick, events, commands, disagreement)
             self._altitudes.append(altitude_m)
             self._slow_ticks = self._slow_ticks + 1 if abs(velocity_mps) < config.touchdown_speed_mps else 0
             if not (accel_rejected or baro_rejected):
@@ -229,6 +249,8 @@ class FlightStateMachine:
                     ),
                 ))
 
+        if self.state in (FlightState.BOOST, FlightState.COAST, FlightState.DESCENT):
+            self._check_liftoff_timer(tick, events, commands, altitude_m, disagreement)
         return events, commands
 
     # ------------------------------------------------------------------ deployment
@@ -250,9 +272,22 @@ class FlightStateMachine:
             f"BURNOUT (tick {self._burnout_tick}); the detected APOGEE was unreliable and was not confirmed"
         )
 
-    def _decide_deployment(self, tick: int, events: list[FlightEvent], commands: list[VehicleCommand]) -> None:
+    def _decide_deployment(self, tick: int, events: list[FlightEvent], commands: list[VehicleCommand],
+                           disagreement: DisagreementFlag | None = None) -> None:
         """Deploy the drag device by exactly one path. Called on every tick in DESCENT."""
         config = self._config
+        if disagreement is not None:
+            # F1-D4: while the flag is raised only a backup timer may deploy. The burnout timer is
+            # evaluated here even after a reliable apogee, which otherwise cancels it (6e.3).
+            if self._timer_expired(tick):
+                self._timer_fired = True
+                self._deploy(
+                    tick, events, commands, EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE,
+                    f"backup deployment timer expired {config.backup_deployment_ticks} ms after detected BURNOUT "
+                    f"(tick {self._burnout_tick}); deployment restricted to backup timers by the "
+                    f"{disagreement.describe()}",
+                )
+            return
         delay_elapsed = tick - self._apogee_tick >= config.deploy_delay_ticks
         if self._apogee_reliable:
             # 1. Normal path. A reliable apogee has cancelled the backup timer.
@@ -276,8 +311,31 @@ class FlightStateMachine:
             self._timer_fired = True
             self._deploy(tick, events, commands, EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE, self._timer_reason())
 
+    def _check_liftoff_timer(self, tick: int, events: list[FlightEvent], commands: list[VehicleCommand],
+                             altitude_m: float, disagreement: DisagreementFlag | None) -> None:
+        """F1-D6: deploy at detected LIFTOFF + liftoff_backup_ticks if nothing has deployed by then."""
+        duration = self._config.liftoff_backup_ticks
+        if (duration is None or self._liftoff_tick is None or self._liftoff_timer_fired or self._deployed
+                or tick - self._liftoff_tick < duration):
+            return
+        self._liftoff_timer_fired = True
+        reason = f"liftoff-anchored backup timer expired {duration} ms after detected LIFTOFF (tick {self._liftoff_tick})"
+        if disagreement is not None:
+            reason += f"; {disagreement.describe()}"
+        if self._apogee_tick is None:
+            self._apogee_tick = tick
+            self._apogee_inferred = True
+            self._apogee_quality = DataQuality.UNRELIABLE
+            self._apogee_reliable = False
+            events.append(self._enter(
+                FlightState.DESCENT, FlightEventType.APOGEE, tick, {"altitude_m": altitude_m},
+                source=EventSource.BACKUP_TIMER, quality=DataQuality.UNRELIABLE, reason=reason,
+            ))
+        self._deploy(tick, events, commands, EventSource.BACKUP_TIMER, DataQuality.UNRELIABLE, reason)
+
     def _deploy(self, tick: int, events: list[FlightEvent], commands: list[VehicleCommand],
                 source: EventSource, quality: DataQuality, reason: str | None) -> None:
+        self.deployment_decided = True
         if not self._config.drag_device_enabled or self._deployed:
             return
         self._deployed = True

@@ -18,6 +18,8 @@ class CalibrationResult:
     reference_temperature_k: float
     accel_bias_mps2: float
     """Estimated z-accelerometer bias b_a: mean reading minus g0."""
+    accel_sample_count: int = 0
+    """Valid z-accelerometer samples in the mean (N_cal of the disagreement detector, F1_DECISIONS 6b)."""
 
 
 class PadCalibration:
@@ -54,4 +56,5 @@ class PadCalibration:
             reference_pressure_pa=mean[("baro", "pressure")],
             reference_temperature_k=mean[("temp", "temperature")],
             accel_bias_mps2=mean[("accel", "z")] - G0_MPS2,
+            accel_sample_count=self._count[("accel", "z")],
         )

@@ -142,7 +142,7 @@ Every `telemetry` message carries two required fields that say how far its conte
 
 **`data_quality`.** The first rule that applies, in this order:
 
-1. `UNRELIABLE`: a required estimator input is too old. No valid `baro.pressure` sample for more than 1000 ms, or no valid `accel.z` sample for more than 100 ms. The estimates cannot be trusted.
+1. `UNRELIABLE`: a required estimator input is too old (no valid `baro.pressure` sample for more than 1000 ms, or no valid `accel.z` sample for more than 100 ms), **or the barometer/accelerometer disagreement flag has been raised** (F1, ARCHITECTURE §6.4). The flag is latched: once raised, every later message is `UNRELIABLE` for the rest of the flight, even after both sensors deliver valid, agreeing samples again. The estimates cannot be trusted.
 2. `DEGRADED`: `invalid_sources` is not empty, or a sample from any source was rejected in the previous 1000 ms. A valid replacement sample removes the source from `invalid_sources`, but `DEGRADED` persists until the 1000 ms have passed.
 3. `NOMINAL`: otherwise.
 
@@ -200,7 +200,7 @@ In every one of these cases the source is listed in `invalid_sources`. A reading
 | `flight_state` | State after the event |
 | `t_sim_s` | Sim time of **detection** by the avionics (multiple of 0.005), not the true event time |
 | `detail` | Object with event-specific estimates, e.g. `{"altitude_m": 2125.4}` for `APOGEE`. May be empty. |
-| `source` | How the avionics arrived at the event: `DETECTED` (the event's primary criterion), `FALLBACK_CRITERION` (its fallback criterion, from measurements), `BACKUP_TIMER` (inferred because the backup deployment timer expired), `BAROMETRIC_CONFIRMATION` (drag-device deployment confirmed by barometric descent after an unreliable apogee) |
+| `source` | How the avionics arrived at the event: `DETECTED` (the event's primary criterion), `FALLBACK_CRITERION` (its fallback criterion, from measurements), `BACKUP_TIMER` (inferred because a backup deployment timer expired: the timer anchored at detected `BURNOUT`, or the timer anchored at detected `LIFTOFF`; the `reason` says which and, if the disagreement flag restricted deployment to the timers, when and why the flag was raised), `BAROMETRIC_CONFIRMATION` (drag-device deployment confirmed by barometric descent after an unreliable apogee) |
 | `quality` | `NOMINAL`, `DEGRADED` or `UNRELIABLE`. The reliability of the evidence used for this particular event, not the quality of the telemetry stream at that moment. It is fixed when the event is recorded and never rewritten |
 | `reason` | Optional string. Present for fallback, inferred and confirmed events; says what triggered them |
 
