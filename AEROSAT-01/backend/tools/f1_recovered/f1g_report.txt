@@ -1,0 +1,188 @@
+﻿A. MEASURED SPREAD, noisy training+held flights (REF-01, zero-drag, low-thrust), within the monitor lifetime
+   qD0s|BOOST                   n=  337200 mean -0.071  sd 1.014  rms 1.017
+   qD0s|COAST                   n=  670500 mean +0.027  sd 1.028  rms 1.028
+   qD0s|DESCENT                 n=   52199 mean +0.141  sd 1.005  rms 1.014
+   qD0s|NEAR_APOGEE             n=  180000 mean +0.121  sd 1.004  rms 1.012
+   qD0s|PAD                     n=   79200 mean -0.001  sd 1.015  rms 1.015
+   qD0s||v| 0-40                n=  542159 mean +0.058  sd 1.007  rms 1.009
+   qD0s||v| 120-160             n=  121552 mean -0.037  sd 1.036  rms 1.036
+   qD0s||v| 160-200             n=  113666 mean -0.046  sd 1.062  rms 1.063
+   qD0s||v| 200-240             n=   79629 mean -0.026  sd 1.094  rms 1.094
+   qD0s||v| 40-80               n=  285901 mean +0.015  sd 1.006  rms 1.007
+   qD0s||v| 80-120              n=  176192 mean -0.005  sd 1.013  rms 1.013
+   qr|BOOST                     n=  337200 mean +0.865  sd 0.653  rms 1.084
+   qr|COAST                     n=  670500 mean +0.864  sd 0.651  rms 1.082
+   qr|DESCENT                   n=   52199 mean +0.867  sd 0.655  rms 1.087
+   qr|NEAR_APOGEE               n=  180000 mean +0.866  sd 0.653  rms 1.084
+   qr|PAD                       n=   91800 mean +0.871  sd 0.659  rms 1.092
+   per-flight mean of signed qD0 at |v|>120 m/s: mean -0.036, sd 0.347, max |.| 1.064 (n=600)
+   per-flight mean of signed qD0 at |v|<40 m/s:  mean +0.072, sd 0.084, max |.| 0.391
+
+B. THRESHOLDS (1.5 x training max) and per-flight false alarms; dataset max
+   qr1     thr  7.481 | train 0-99: 0/300 max 4.64 | held 100-299: 0/600 max 5.39 | ideal: 0/5 max 0.05 | pad 0-99: 0/100 max 4.99 | pad-ideal: 0/1 max 0.00 | high4k 0-99: 0/100 max 4.69 | high8k 0-99: 0/100 max 4.52 |
+           margin vs held-out 1.39; where training max occurred: (4.987614553953757, ['ref01', 58, False, True], 'PAD')
+   qr3of5  thr  4.412 | train 0-99: 0/300 max 2.94 | held 100-299: 0/600 max 3.19 | ideal: 0/5 max 0.05 | pad 0-99: 0/100 max 2.80 | pad-ideal: 0/1 max 0.00 | high4k 0-99: 0/100 max 2.79 | high8k 0-99: 0/100 max 2.80 |
+           margin vs held-out 1.38; where training max occurred: (2.941487028364196, ['ref01', 79, False, False], 'COAST')
+   qD0     thr  6.913 | train 0-99: 0/300 max 4.61 | held 100-299: 0/600 max 4.97 | ideal: 0/5 max 0.40 | pad 0-99: 0/100 max 4.25 | pad-ideal: 0/1 max 0.00 | high4k 0-99: 0/100 max 4.41 | high8k 0-99: 0/100 max 4.48 |
+           margin vs held-out 1.39; where training max occurred: (4.608889785620457, ['low_thrust', 91, False, False], 'BOOST')
+   qD1     thr  6.897 | train 0-99: 0/300 max 4.60 | held 100-299: 0/600 max 4.97 | ideal: 0/5 max 0.40 | pad 0-99: 0/100 max 4.22 | pad-ideal: 0/1 max 0.00 | high4k 0-99: 0/100 max 4.41 | high8k 0-99: 0/100 max 4.48 |
+           margin vs held-out 1.39; where training max occurred: (4.597757640821877, ['low_thrust', 91, False, False], 'BOOST')
+   qD2     thr  6.810 | train 0-99: 0/300 max 4.54 | held 100-299: 0/600 max 4.64 | ideal: 0/5 max 0.39 | pad 0-99: 0/100 max 4.22 | pad-ideal: 0/1 max 0.00 | high4k 0-99: 0/100 max 4.31 | high8k 0-99: 0/100 max 4.44 |
+           margin vs held-out 1.47; where training max occurred: (4.540158879682187, ['low_thrust', 91, False, False], 'BOOST')
+   healthy flights where policy A / B decision equals the current code: {(True, True): 1105}
+   healthy flights: commands per flight {1: 1105} | all events unique: True
+
+C. POLICIES A (path 2 kept) and B (path 2 withheld after accelerometer invalid since BURNOUT), W = 1 s, timer on the 5 ms grid
+   qD0|A   ascent deployments  10 (max +5.7) | paths {'normal': 1056, 'timer': 2516, 'none': 90, 'path2': 158} | missing velocity 0
+   qD0|B   ascent deployments   0 (max +0.0) | paths {'normal': 1056, 'timer': 2674, 'none': 90} | missing velocity 0
+   qD1|A   ascent deployments  10 (max +5.7) | paths {'normal': 1056, 'timer': 2516, 'none': 90, 'path2': 158} | missing velocity 0
+   qD1|B   ascent deployments   0 (max +0.0) | paths {'normal': 1056, 'timer': 2674, 'none': 90} | missing velocity 0
+   qD2|A   ascent deployments  10 (max +5.7) | paths {'normal': 1041, 'timer': 2531, 'none': 90, 'path2': 158} | missing velocity 0
+   qD2|B   ascent deployments   0 (max +0.0) | paths {'normal': 1041, 'timer': 2689, 'none': 90} | missing velocity 0
+   P0     velocity at command by path: normal n=3340 min -14.5 p10 -10.5 med +3.0 p90 +80.9 max +203.8; path2 n=330 min -15.6 p10 -10.1 med +5.0 p90 +34.8 max +35.7; timer n=60 min -23.8 p10 -23.8 med -20.3 p90 -19.4 max -19.4
+          delay vs (true apogee + 1000 ms): min -21800 p10 -8662 median -1291 p90 78 max 1430 ms; later than +1 s: 40
+   qD0|A  velocity at command by path: normal n=1056 min -11.2 p10 -10.7 med -10.2 p90 -8.4 max -4.9; path2 n=158 min -15.6 p10 -14.8 med -9.6 p90 -4.5 max +5.7; timer n=2516 min -23.8 p10 -23.8 med -20.3 p90 -19.4 max -9.8
+          delay vs (true apogee + 1000 ms): min -1576 p10 8 median 983 p90 1430 max 1430 ms; later than +1 s: 1686
+   qD0|B  velocity at command by path: normal n=1056 min -11.2 p10 -10.7 med -10.2 p90 -8.4 max -4.9; timer n=2674 min -23.8 p10 -23.8 med -20.3 p90 -19.4 max -9.8
+          delay vs (true apogee + 1000 ms): min -500 p10 18 median 983 p90 1430 max 1430 ms; later than +1 s: 1791
+   residuals under qD0|A: 10
+      ref01      SIM drift -20 + accel invalid @mid         seed 3 [23700, 'path2', 5.36] | first I 31260 ms, D None ms, dD samples after onset 5, accel invalid from 15220
+      ref01      SIM drift -20 + accel invalid @mid         seed 6 [23700, 'path2', 5.36] | first I 31260 ms, D None ms, dD samples after onset 5, accel invalid from 15220
+      ref01      SIM drift -20 + accel invalid @mid         seed 9 [23720, 'path2', 5.17] | first I 31260 ms, D None ms, dD samples after onset 5, accel invalid from 15220
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 0 [29380, 'path2', 4.75] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 1 [29320, 'path2', 5.34] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 2 [29340, 'path2', 5.14] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 7 [29360, 'path2', 4.95] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 8 [29320, 'path2', 5.34] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      zero_drag  SIM drift -20 + accel invalid @mid         seed 9 [29360, 'path2', 4.95] | first I None ms, D None ms, dD samples after onset 5, accel invalid from 18040
+      low_thrust SIM drift -20 + accel invalid @mid         seed 8 [27580, 'path2', 5.65] | first I 20020 ms, D None ms, dD samples after onset 5, accel invalid from 23680
+   residuals under qD0|B: 0
+   runs moved from path 2 (A) to the timer (B): 158 -> {'accel invalid': 30, 'ACCINV@B+1s drift -5 m/s': 60, 'ACCINV@B+1s drift -10 m/s': 58, 'SIM drift -20 + accel invali': 10}
+   P0 hazardous runs 1918; flagged before the false APOGEE by I or D: 1908; pre-onset innovation alarms: 0
+   runs with innovation and disagreement alarms on the same tick: 3045 of 3820
+
+D. CLEARANCE after the fault ends (REC cases): last raw alarm minus fault end (ms), innovation / disagreement
+   ref01      REC drift -50 m/s @mid 1000 ms     I 720..800  D 260..260
+   ref01      REC drift -50 m/s @mid 200 ms      I 140..180  D 260..260
+   ref01      REC frozen @A-2s 500 ms            I 140..180  D 260..260
+   ref01      REC step -100 m @mid 100 ms        I 720..780  D 260..260
+   ref01      REC step -100 m @mid 1000 ms       I 980..1020  D 260..260
+   ref01      REC step -100 m @mid 20 ms         I 240..260  D 260..260
+   ref01      REC step -100 m @mid 300 ms        I 920..1000  D 260..260
+   ref01      REC step -100 m @mid 40 ms         I 260..600  D 260..260
+   ref01      REC step -100 m @mid 60 ms         I 580..680  D 260..260
+   ref01      REC step -30 m @near 100 ms        I 220..480  D 260..260
+   ref01      REC step -30 m @near 300 ms        I 600..700  D 260..260
+   ref01      REC step -30 m @near 40 ms         I 180..220  D 260..260
+   zero_drag  REC drift -50 m/s @mid 1000 ms     I 720..800  D 260..260
+   zero_drag  REC drift -50 m/s @mid 200 ms      I 140..180  D 240..260
+   zero_drag  REC frozen @A-2s 500 ms            I 140..180  D 240..260
+   zero_drag  REC step -100 m @mid 100 ms        I 720..800  D 260..260
+   zero_drag  REC step -100 m @mid 1000 ms       I 940..1060  D 260..260
+   zero_drag  REC step -100 m @mid 20 ms         I 220..260  D 260..260
+   zero_drag  REC step -100 m @mid 300 ms        I 900..980  D 260..260
+   zero_drag  REC step -100 m @mid 40 ms         I 260..540  D 260..260
+   zero_drag  REC step -100 m @mid 60 ms         I 580..720  D 260..260
+   zero_drag  REC step -30 m @near 100 ms        I 220..240  D 260..260
+   zero_drag  REC step -30 m @near 300 ms        I 540..660  D 260..260
+   zero_drag  REC step -30 m @near 40 ms         I 180..200  D 260..260
+   low_thrust REC drift -50 m/s @mid 1000 ms     I 760..820  D 260..260
+   low_thrust REC drift -50 m/s @mid 200 ms      I 140..180  D 260..260
+   low_thrust REC frozen @A-2s 500 ms            I 140..180  D 260..260
+   low_thrust REC step -100 m @mid 100 ms        I 720..820  D 260..260
+   low_thrust REC step -100 m @mid 1000 ms       I 980..1040  D 260..260
+   low_thrust REC step -100 m @mid 20 ms         I 240..260  D 260..260
+   low_thrust REC step -100 m @mid 300 ms        I 920..1000  D 260..260
+   low_thrust REC step -100 m @mid 40 ms         I 260..620  D 260..260
+   low_thrust REC step -100 m @mid 60 ms         I 580..760  D 260..260
+   low_thrust REC step -30 m @near 100 ms        I 220..240  D 260..260
+   low_thrust REC step -30 m @near 300 ms        I 600..720  D 260..260
+   low_thrust REC step -30 m @near 40 ms         I 200..240  D 260..260
+
+E. EDGE CASES (ballistic replay; drag-enabled twin = current code)
+   ref01      seed 10 EDGE spike -50 m on the command tick [C=25280]                     P0 [25280, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25320, 25500], [46480, 47220]] D [[25280, 25360], [25480, 25560]] | twin commands 1 unique events True
+   ref01      seed 10 EDGE spike -50 m one barometer sample before the command [C=25280] P0 [25280, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25300, 25480], [46480, 47220]] D [[25260, 25340], [25460, 25540]] | twin commands 1 unique events True
+   ref01      seed 10 EDGE spike -50 m first barometer sample after the command [C=25280] P0 [25280, 'normal'] A [25280, 'normal'] B [25280, 'normal'] | alarms I [[25340, 25520], [46480, 47220]] D [[25300, 25380], [25500, 25580]] | twin commands 1 unique events True
+   ref01      seed 10 EDGE step -30 m starting 100 ms before the command [C=25280]       P0 [25280, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25220, 25900], [46480, 47220]] D [[25180, 25440], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 30 EDGE spike -50 m on the command tick [C=25340]                     P0 [25340, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25380, 25560], [46480, 47220]] D [[25340, 25420], [25540, 25620]] | twin commands 1 unique events True
+   ref01      seed 30 EDGE spike -50 m one barometer sample before the command [C=25340] P0 [25340, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25360, 25560], [46480, 47220]] D [[25320, 25400], [25520, 25600]] | twin commands 1 unique events True
+   ref01      seed 30 EDGE spike -50 m first barometer sample after the command [C=25340] P0 [25340, 'normal'] A [25340, 'normal'] B [25340, 'normal'] | alarms I [[25400, 25580], [46480, 47220]] D [[25360, 25440], [25560, 25640]] | twin commands 1 unique events True
+   ref01      seed 30 EDGE step -30 m starting 100 ms before the command [C=25340]       P0 [25340, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25280, 25920], [46480, 47220]] D [[25240, 25500], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 0 EDGE spike -50 m one barometer sample before the command [C=25265] P0 [25265, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25300, 25500], [46480, 47240]] D [[25260, 25340], [25460, 25540]] | twin commands 1 unique events True
+   ref01      seed 0 EDGE spike -50 m first barometer sample after the command [C=25265] P0 [25265, 'normal'] A [25265, 'normal'] B [25265, 'normal'] | alarms I [[25320, 25500], [46480, 47240]] D [[25280, 25360], [25480, 25560]] | twin commands 1 unique events True
+   ref01      seed 0 EDGE step -30 m starting 100 ms before the command [C=25265]       P0 [25265, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25200, 25900], [25940, 25940]] D [[25160, 25420], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 1 EDGE spike -50 m one barometer sample before the command [C=25285] P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25320, 25500], [46480, 47220]] D [[25280, 25360], [25480, 25560]] | twin commands 1 unique events True
+   ref01      seed 1 EDGE spike -50 m first barometer sample after the command [C=25285] P0 [25285, 'normal'] A [25285, 'normal'] B [25285, 'normal'] | alarms I [[25340, 25540], [46480, 47220]] D [[25300, 25380], [25500, 25580]] | twin commands 1 unique events True
+   ref01      seed 1 EDGE step -30 m starting 100 ms before the command [C=25285]       P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25220, 25320], [25400, 25920]] D [[25180, 25440], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 2 EDGE spike -50 m one barometer sample before the command [C=25285] P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25320, 25500], [46480, 47280]] D [[25280, 25360], [25480, 25560]] | twin commands 1 unique events True
+   ref01      seed 2 EDGE spike -50 m first barometer sample after the command [C=25285] P0 [25285, 'normal'] A [25285, 'normal'] B [25285, 'normal'] | alarms I [[25340, 25540], [46480, 47280]] D [[25300, 25380], [25500, 25580]] | twin commands 1 unique events True
+   ref01      seed 2 EDGE step -30 m starting 100 ms before the command [C=25285]       P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25220, 25840], [46480, 47280]] D [[25180, 25440], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 3 EDGE spike -50 m one barometer sample before the command [C=25285] P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25320, 25480], [46480, 47260]] D [[25280, 25360], [25480, 25560]] | twin commands 1 unique events True
+   ref01      seed 3 EDGE spike -50 m first barometer sample after the command [C=25285] P0 [25285, 'normal'] A [25285, 'normal'] B [25285, 'normal'] | alarms I [[25340, 25540], [46480, 47260]] D [[25300, 25380], [25500, 25580]] | twin commands 1 unique events True
+   ref01      seed 3 EDGE step -30 m starting 100 ms before the command [C=25285]       P0 [25285, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25220, 25900], [46480, 47260]] D [[25180, 25440], [46460, 49240]] | twin commands 1 unique events True
+   ref01      seed 4 EDGE spike -50 m one barometer sample before the command [C=25255] P0 [25255, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25280, 25460], [46480, 47240]] D [[25240, 25320], [25440, 25520]] | twin commands 1 unique events True
+   ref01      seed 4 EDGE spike -50 m first barometer sample after the command [C=25255] P0 [25255, 'normal'] A [25255, 'normal'] B [25255, 'normal'] | alarms I [[25300, 25480], [46480, 47240]] D [[25260, 25340], [25460, 25540]] | twin commands 1 unique events True
+   ref01      seed 4 EDGE step -30 m starting 100 ms before the command [C=25255]       P0 [25255, 'normal'] A [26230, 'timer'] B [26230, 'timer'] | alarms I [[25180, 25800], [46480, 47240]] D [[25140, 25400], [46480, 49240]] | twin commands 1 unique events True
+   zero_drag  seed 6 EDGE spike -50 m on the command tick [C=30960]                     P0 [30960, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[31000, 31200]] D [[30960, 31040], [31160, 31240]] | twin commands 1 unique events True
+   zero_drag  seed 6 EDGE spike -50 m one barometer sample before the command [C=30960] P0 [30960, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30980, 31160]] D [[30940, 31020], [31140, 31220]] | twin commands 1 unique events True
+   zero_drag  seed 6 EDGE spike -50 m first barometer sample after the command [C=30960] P0 [30960, 'normal'] A [30960, 'normal'] B [30960, 'normal'] | alarms I [[31020, 31220]] D [[30980, 31060], [31180, 31260]] | twin commands 1 unique events True
+   zero_drag  seed 6 EDGE step -30 m starting 100 ms before the command [C=30960]       P0 [30960, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30900, 31540]] D [[30860, 31120]] | twin commands 1 unique events True
+   zero_drag  seed 16 EDGE spike -50 m on the command tick [C=30900]                     P0 [30900, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30940, 31140]] D [[30900, 30980], [31100, 31180]] | twin commands 1 unique events True
+   zero_drag  seed 16 EDGE spike -50 m one barometer sample before the command [C=30900] P0 [30900, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30920, 31080]] D [[30880, 30960], [31080, 31160]] | twin commands 1 unique events True
+   zero_drag  seed 16 EDGE spike -50 m first barometer sample after the command [C=30900] P0 [30900, 'normal'] A [30900, 'normal'] B [30900, 'normal'] | alarms I [[30960, 31140]] D [[30920, 31000], [31120, 31200]] | twin commands 1 unique events True
+   zero_drag  seed 16 EDGE step -30 m starting 100 ms before the command [C=30900]       P0 [30900, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30840, 31480]] D [[30800, 31060]] | twin commands 1 unique events True
+   zero_drag  seed 17 EDGE spike -50 m on the command tick [C=30880]                     P0 [30880, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30920, 31120]] D [[30880, 30960], [31080, 31160]] | twin commands 1 unique events True
+   zero_drag  seed 17 EDGE spike -50 m one barometer sample before the command [C=30880] P0 [30880, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30900, 31100]] D [[30860, 30940], [31060, 31140]] | twin commands 1 unique events True
+   zero_drag  seed 17 EDGE spike -50 m first barometer sample after the command [C=30880] P0 [30880, 'normal'] A [30880, 'normal'] B [30880, 'normal'] | alarms I [[30940, 31120]] D [[30900, 30980], [31100, 31180]] | twin commands 1 unique events True
+   zero_drag  seed 17 EDGE step -30 m starting 100 ms before the command [C=30880]       P0 [30880, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30820, 31480]] D [[30780, 31040]] | twin commands 1 unique events True
+   zero_drag  seed 0 EDGE spike -50 m one barometer sample before the command [C=30925] P0 [30925, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30960, 31120]] D [[30920, 31000], [31120, 31200]] | twin commands 1 unique events True
+   zero_drag  seed 0 EDGE spike -50 m first barometer sample after the command [C=30925] P0 [30925, 'normal'] A [30925, 'normal'] B [30925, 'normal'] | alarms I [[30980, 31160]] D [[30940, 31020], [31140, 31220]] | twin commands 1 unique events True
+   zero_drag  seed 0 EDGE step -30 m starting 100 ms before the command [C=30925]       P0 [30925, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30860, 30960], [31040, 31520]] D [[30820, 31080]] | twin commands 1 unique events True
+   zero_drag  seed 1 EDGE spike -50 m one barometer sample before the command [C=30855] P0 [30855, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30880, 31060]] D [[30840, 30920], [31040, 31120]] | twin commands 1 unique events True
+   zero_drag  seed 1 EDGE spike -50 m first barometer sample after the command [C=30855] P0 [30855, 'normal'] A [30855, 'normal'] B [30855, 'normal'] | alarms I [[30900, 31080]] D [[30860, 30940], [31060, 31140]] | twin commands 1 unique events True
+   zero_drag  seed 1 EDGE step -30 m starting 100 ms before the command [C=30855]       P0 [30855, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30780, 31440]] D [[30740, 31000]] | twin commands 1 unique events True
+   zero_drag  seed 2 EDGE spike -50 m one barometer sample before the command [C=30905] P0 [30905, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30940, 31120]] D [[30900, 30980], [31100, 31180]] | twin commands 1 unique events True
+   zero_drag  seed 2 EDGE spike -50 m first barometer sample after the command [C=30905] P0 [30905, 'normal'] A [30905, 'normal'] B [30905, 'normal'] | alarms I [[30960, 31140]] D [[30920, 31000], [31120, 31200]] | twin commands 1 unique events True
+   zero_drag  seed 2 EDGE step -30 m starting 100 ms before the command [C=30905]       P0 [30905, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30840, 31500]] D [[30800, 31060]] | twin commands 1 unique events True
+   zero_drag  seed 3 EDGE spike -50 m one barometer sample before the command [C=30935] P0 [30935, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30960, 31120]] D [[30920, 31000], [31120, 31200]] | twin commands 1 unique events True
+   zero_drag  seed 3 EDGE spike -50 m first barometer sample after the command [C=30935] P0 [30935, 'normal'] A [30935, 'normal'] B [30935, 'normal'] | alarms I [[30980, 31140]] D [[30940, 31020], [31140, 31220]] | twin commands 1 unique events True
+   zero_drag  seed 3 EDGE step -30 m starting 100 ms before the command [C=30935]       P0 [30935, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30860, 31520]] D [[30820, 31080]] | twin commands 1 unique events True
+   zero_drag  seed 4 EDGE spike -50 m one barometer sample before the command [C=30890] P0 [30890, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30920, 31100]] D [[30880, 30960], [31080, 31160]] | twin commands 1 unique events True
+   zero_drag  seed 4 EDGE spike -50 m first barometer sample after the command [C=30890] P0 [30890, 'normal'] A [30890, 'normal'] B [30890, 'normal'] | alarms I [[30940, 31120]] D [[30900, 30980], [31100, 31180]] | twin commands 1 unique events True
+   zero_drag  seed 4 EDGE step -30 m starting 100 ms before the command [C=30890]       P0 [30890, 'normal'] A [32295, 'timer'] B [32295, 'timer'] | alarms I [[30820, 30940], [31020, 31440]] D [[30780, 31040]] | twin commands 1 unique events True
+   low_thrust seed 10 EDGE spike -50 m on the command tick [C=29140]                     P0 [29140, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29180, 29400], [43700, 44380]] D [[29140, 29220], [29340, 29420]] | twin commands 1 unique events True
+   low_thrust seed 10 EDGE spike -50 m one barometer sample before the command [C=29140] P0 [29140, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29160, 29380], [43700, 44380]] D [[29120, 29200], [29320, 29400]] | twin commands 1 unique events True
+   low_thrust seed 10 EDGE spike -50 m first barometer sample after the command [C=29140] P0 [29140, 'normal'] A [29140, 'normal'] B [29140, 'normal'] | alarms I [[29200, 29400], [43700, 44380]] D [[29160, 29240], [29360, 29440]] | twin commands 1 unique events True
+   low_thrust seed 10 EDGE step -30 m starting 100 ms before the command [C=29140]       P0 [29140, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29080, 29780], [43700, 44380]] D [[29040, 29300], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 16 EDGE spike -50 m on the command tick [C=29220]                     P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29260, 29460], [43700, 44380]] D [[29220, 29300], [29420, 29500]] | twin commands 1 unique events True
+   low_thrust seed 16 EDGE spike -50 m one barometer sample before the command [C=29220] P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29240, 29420], [43700, 44380]] D [[29200, 29280], [29400, 29480]] | twin commands 1 unique events True
+   low_thrust seed 16 EDGE spike -50 m first barometer sample after the command [C=29220] P0 [29220, 'normal'] A [29220, 'normal'] B [29220, 'normal'] | alarms I [[29280, 29460], [43700, 44380]] D [[29240, 29320], [29440, 29520]] | twin commands 1 unique events True
+   low_thrust seed 16 EDGE step -30 m starting 100 ms before the command [C=29220]       P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29160, 29840], [43700, 44380]] D [[29120, 29380], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 24 EDGE spike -50 m on the command tick [C=29240]                     P0 [29240, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29280, 29460], [43700, 44380]] D [[29240, 29320], [29440, 29520]] | twin commands 1 unique events True
+   low_thrust seed 24 EDGE spike -50 m one barometer sample before the command [C=29240] P0 [29240, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29260, 29460], [43700, 44380]] D [[29220, 29300], [29420, 29500]] | twin commands 1 unique events True
+   low_thrust seed 24 EDGE spike -50 m first barometer sample after the command [C=29240] P0 [29240, 'normal'] A [29240, 'normal'] B [29240, 'normal'] | alarms I [[29300, 29480], [43700, 44380]] D [[29260, 29340], [29460, 29540]] | twin commands 1 unique events True
+   low_thrust seed 24 EDGE step -30 m starting 100 ms before the command [C=29240]       P0 [29240, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29180, 29860], [43700, 44380]] D [[29140, 29400], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 25 EDGE spike -50 m on the command tick [C=29220]                     P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29260, 29440], [43700, 44420]] D [[29220, 29300], [29420, 29500]] | twin commands 1 unique events True
+   low_thrust seed 25 EDGE spike -50 m one barometer sample before the command [C=29220] P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29240, 29440], [43700, 44420]] D [[29200, 29280], [29400, 29480]] | twin commands 1 unique events True
+   low_thrust seed 25 EDGE spike -50 m first barometer sample after the command [C=29220] P0 [29220, 'normal'] A [29220, 'normal'] B [29220, 'normal'] | alarms I [[29280, 29480], [43700, 44420]] D [[29240, 29320], [29440, 29520]] | twin commands 1 unique events True
+   low_thrust seed 25 EDGE step -30 m starting 100 ms before the command [C=29220]       P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29160, 29860], [43700, 44420]] D [[29120, 29380], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 29 EDGE spike -50 m on the command tick [C=29220]                     P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29260, 29440], [43700, 44460]] D [[29220, 29300], [29420, 29500]] | twin commands 1 unique events True
+   low_thrust seed 29 EDGE spike -50 m one barometer sample before the command [C=29220] P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29240, 29440], [43700, 44460]] D [[29200, 29280], [29400, 29480]] | twin commands 1 unique events True
+   low_thrust seed 29 EDGE spike -50 m first barometer sample after the command [C=29220] P0 [29220, 'normal'] A [29220, 'normal'] B [29220, 'normal'] | alarms I [[29280, 29480], [43700, 44460]] D [[29240, 29320], [29440, 29520]] | twin commands 1 unique events True
+   low_thrust seed 29 EDGE step -30 m starting 100 ms before the command [C=29220]       P0 [29220, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29160, 29860], [43700, 44460]] D [[29120, 29380], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 0 EDGE spike -50 m one barometer sample before the command [C=29295] P0 [29295, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29320, 29520], [43700, 44400]] D [[29280, 29360], [29480, 29560]] | twin commands 1 unique events True
+   low_thrust seed 0 EDGE spike -50 m first barometer sample after the command [C=29295] P0 [29295, 'normal'] A [29295, 'normal'] B [29295, 'normal'] | alarms I [[29340, 29520], [43700, 44400]] D [[29300, 29380], [29500, 29580]] | twin commands 1 unique events True
+   low_thrust seed 0 EDGE step -30 m starting 100 ms before the command [C=29295]       P0 [29295, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29220, 29900], [43700, 44400]] D [[29180, 29440], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 1 EDGE spike -50 m one barometer sample before the command [C=29205] P0 [29205, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29240, 29420], [43700, 44460]] D [[29200, 29280], [29400, 29480]] | twin commands 1 unique events True
+   low_thrust seed 1 EDGE spike -50 m first barometer sample after the command [C=29205] P0 [29205, 'normal'] A [29205, 'normal'] B [29205, 'normal'] | alarms I [[29260, 29460], [43700, 44460]] D [[29220, 29300], [29420, 29500]] | twin commands 1 unique events True
+   low_thrust seed 1 EDGE step -30 m starting 100 ms before the command [C=29205]       P0 [29205, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29140, 29800], [43700, 44460]] D [[29100, 29360], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 2 EDGE spike -50 m one barometer sample before the command [C=29245] P0 [29245, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29280, 29460], [43700, 44360]] D [[29240, 29320], [29440, 29520]] | twin commands 1 unique events True
+   low_thrust seed 2 EDGE spike -50 m first barometer sample after the command [C=29245] P0 [29245, 'normal'] A [29245, 'normal'] B [29245, 'normal'] | alarms I [[29300, 29520], [43700, 44360]] D [[29260, 29340], [29460, 29540]] | twin commands 1 unique events True
+   low_thrust seed 2 EDGE step -30 m starting 100 ms before the command [C=29245]       P0 [29245, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29180, 29840], [43700, 44360]] D [[29140, 29400], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 3 EDGE spike -50 m one barometer sample before the command [C=29295] P0 [29295, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29320, 29520], [43700, 44400]] D [[29280, 29360], [29480, 29560]] | twin commands 1 unique events True
+   low_thrust seed 3 EDGE spike -50 m first barometer sample after the command [C=29295] P0 [29295, 'normal'] A [29295, 'normal'] B [29295, 'normal'] | alarms I [[29340, 29540], [43700, 44400]] D [[29300, 29380], [29500, 29580]] | twin commands 1 unique events True
+   low_thrust seed 3 EDGE step -30 m starting 100 ms before the command [C=29295]       P0 [29295, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29220, 29900], [43700, 44400]] D [[29180, 29440], [43680, 48620]] | twin commands 1 unique events True
+   low_thrust seed 4 EDGE spike -50 m one barometer sample before the command [C=29170] P0 [29170, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29200, 29400], [43700, 44420]] D [[29160, 29240], [29360, 29440]] | twin commands 1 unique events True
+   low_thrust seed 4 EDGE spike -50 m first barometer sample after the command [C=29170] P0 [29170, 'normal'] A [29170, 'normal'] B [29170, 'normal'] | alarms I [[29220, 29420], [43700, 44420]] D [[29180, 29260], [29380, 29460]] | twin commands 1 unique events True
+   low_thrust seed 4 EDGE step -30 m starting 100 ms before the command [C=29170]       P0 [29170, 'normal'] A [30230, 'timer'] B [30230, 'timer'] | alarms I [[29100, 29820], [43700, 44420]] D [[29060, 29320], [43680, 48620]] | twin commands 1 unique events True
+   all drag-enabled twins: commands per run {1: 85} events unique: True

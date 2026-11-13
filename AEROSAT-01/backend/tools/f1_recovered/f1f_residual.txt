@@ -1,0 +1,18 @@
+﻿
+RESIDUAL premature under Mz3|QB1: 27
+   low_thrust SIM drift -20 + accel invalid @mid       path2  n= 5 v +5.7..+5.2 seeds [0, 2, 4, 8, 9] | first z3 [20020, 20020, 20020, 20020] dmean [None, None, None, None] dD avail 5 acc_bad 23680
+   ref01      ACCINV@B+1s drift -20 m/s @late          path2  n= 2 v +5.4..+5.4 seeds [1, 5] | first z3 [39280, 39280] dmean [None, None] dD avail 5 acc_bad 7200
+   ref01      SIM drift -20 + accel invalid @mid       path2  n= 5 v +5.4..+5.2 seeds [1, 6, 7, 8, 9] | first z3 [31260, 31260, 31260, 31260] dmean [None, None, None, None] dD avail 5 acc_bad 15220
+   zero_drag  ACCINV@B+1s drift -20 m/s @late          path2  n= 4 v +5.7..+4.8 seeds [0, 4, 5, 6] | first z3 [None, None, None, None] dmean [None, None, None, None] dD avail 5 acc_bad 7200
+   zero_drag  ACCINV@B+1s drift -20 m/s @mid           path2  n= 2 v +5.3..+5.1 seeds [4, 8] | first z3 [None, None] dmean [None, None] dD avail 5 acc_bad 7200
+   zero_drag  SIM drift -20 + accel invalid @mid       path2  n= 9 v +5.7..+4.8 seeds [0, 1, 2, 3, 4, 5, 7, 8, 9] | first z3 [None, None, None, None] dmean [None, None, None, None] dD avail 5 acc_bad 18040
+
+RESIDUAL premature under Mzk|QB1: 11
+   low_thrust SIM drift -20 + accel invalid @mid       path2  n= 1 v +5.7..+5.7 seeds [8] | first zk [20020] dmean [None] dD avail 5 acc_bad 23680
+   ref01      SIM drift -20 + accel invalid @mid       path2  n= 4 v +5.4..+5.2 seeds [3, 6, 8, 9] | first zk [31260, 31260, 31260, 31260] dmean [None, None, None, None] dD avail 5 acc_bad 15220
+   zero_drag  SIM drift -20 + accel invalid @mid       path2  n= 6 v +5.3..+4.8 seeds [0, 1, 2, 7, 8, 9] | first zk [None, None, None, None] dmean [None, None, None, None] dD avail 5 acc_bad 18040
+
+RESIDUAL premature under Mz3|QC3: 0
+
+RELEVANCE WINDOW: over P0-hazardous runs, APOGEE tick minus LAST alarm before it, and minus FIRST alarm after onset (ms), for Mz3
+   largest APOGEE - first alarm: [(20650, 'zero_drag', 'drift -10 m/s @early'), (19785, 'zero_drag', 'drift -20 m/s @early'), (19780, 'zero_drag', 'drift -20 m/s @early'), (19775, 'zero_drag', 'drift -20 m/s @early'), (19765, 'zero_drag', 'drift -20 m/s @early'), (19765, 'zero_drag', 'drift -20 m/s @early'), (19750, 'zero_drag', 'drift -20 m/s @early'), (19735, 'zero_drag', 'drift -20 m/s @early')]

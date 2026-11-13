@@ -1,0 +1,285 @@
+﻿========================================================================================================================
+A. Held-out healthy flights, seeds 200-299 (drag device enabled)
+scenario   phase               n  max|r| r>2.206  fl  max dD dD>1.397  fl   sd z  max z  z>4 obs/exp   z>4.5 obs/exp   z>5 obs/exp
+ref01      PAD             10100   1.223       0   0   0.583        0   0  1.095   4.86     5/2.63        2/0.403       0/0.0505 
+ref01      BOOST           15900   1.082       0   0   0.698        0   0  1.087   4.31     2/3.72        0/0.555       0/0.0676 
+ref01      COAST           80300   1.459       0   0   0.845        0   0  1.082   4.73    18/17.60       1/2.581       0/0.3086 
+ref01      NEAR_APOGEE     20000   1.258       0   0   0.863        0   0  1.088   4.08     1/4.71        0/0.703       0/0.0858 
+ref01      DESCENT        791964   1.559       0   0   1.139        0   0  1.084   5.25   176/178.53     27/26.359      4/3.1761 
+ref01      LANDED          25005   1.830       0   0   3.434    24304 100  1.297   7.30   222/51.04      90/13.030     34/2.8916 
+zero_drag  PAD             10100   1.223       0   0   0.583        0   0  1.095   4.86     5/2.63        2/0.403       0/0.0505 
+zero_drag  BOOST           15900   1.083       0   0   0.707        0   0  1.089   4.31     2/3.79        0/0.567       0/0.0694 
+zero_drag  COAST          108400   1.598       0   0   0.945        0   0  1.083   4.70    21/24.09       2/3.545       0/0.4254 
+zero_drag  NEAR_APOGEE     20000   1.481       0   0   0.921        0   0  1.082   4.34     7/4.39        0/0.644       0/0.0770 
+zero_drag  DESCENT       1131316   1.766       0   0   1.268        0   0  1.084   5.80   265/254.99     36/37.647      7/4.5361 
+zero_drag  LANDED          25000   1.731       0   0   3.757    24371 100  1.298   6.91   220/51.40      98/13.143     39/2.9224 
+low_thrust PAD             10400   1.223       0   0   0.583        0   0  1.095   4.86     5/2.70        2/0.413       0/0.0518 
+low_thrust BOOST           80600   1.148       0   0   0.690        0   0  1.083   4.39    13/17.93       0/2.639       0/0.3168 
+low_thrust COAST           34800   1.313       0   0   0.808        0   0  1.085   4.82     6/7.86        1/1.162       0/0.1401 
+low_thrust NEAR_APOGEE     20000   1.324       0   0   0.699        0   0  1.085   4.75     3/4.54        1/0.671       0/0.0810 
+low_thrust DESCENT        415749   1.383       0   0   1.020        0   0  1.084   5.41    95/92.71      14/13.651      4/1.6399 
+low_thrust LANDED          25008   1.619       0   0   3.238    24284 100  1.295   6.44   224/50.16     102/12.749     34/2.8156 
+alarm samples before LANDED: r 0, dD 0  (flights: 300)
+events: {('ref01', 'LIFTOFF', 'DETECTED'): 100, ('ref01', 'BURNOUT', 'DETECTED'): 100, ('ref01', 'APOGEE', 'DETECTED'): 100, ('ref01', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 100, ('ref01', 'TOUCHDOWN', 'DETECTED'): 99, ('ref01', 'TOUCHDOWN', 'FALLBACK_CRITERION'): 1, ('zero_drag', 'LIFTOFF', 'DETECTED'): 100, ('zero_drag', 'BURNOUT', 'FALLBACK_CRITERION'): 98, ('zero_drag', 'APOGEE', 'DETECTED'): 100, ('zero_drag', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 100, ('zero_drag', 'TOUCHDOWN', 'DETECTED'): 98, ('zero_drag', 'TOUCHDOWN', 'FALLBACK_CRITERION'): 2, ('zero_drag', 'BURNOUT', 'DETECTED'): 2, ('low_thrust', 'LIFTOFF', 'DETECTED'): 100, ('low_thrust', 'BURNOUT', 'DETECTED'): 100, ('low_thrust', 'APOGEE', 'DETECTED'): 100, ('low_thrust', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 100, ('low_thrust', 'TOUCHDOWN', 'DETECTED'): 100}
+========================================================================================================================
+B. Extended faults, seeds 0-9, ballistic logging; policies replayed offline
+   P0 current code | P1 alarm within 1 s before APOGEE -> UNRELIABLE | P2 any alarm from calibration end to APOGEE+1 s inhibits the normal path (path 2 + timer remain) | P3 as P2 and path 2 also inhibited after any alarm (timer only)
+   cell = premature/10 (true v>0 at the command) worst..best true v, paths; det = first alarm latency ms max (missed), [k] = alarm before a premature APOGEE
+ref01      drift -5 m/s + accel invalid @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r  31240(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -10..-10 path210 | P1 0/10    -10..-10 path210 | P2 0/10    -10..-10 path210 | P3 0/10    -10..-10 path210
+ref01      drift -10 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  31240(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -4..-5 path210 | P1 0/10      -4..-5 path210 | P2 0/10      -4..-5 path210 | P3 0/10      -4..-5 path210
+ref01      drift -20 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  31240(0m) dD     -(10m) [1] pre 0
+                                                               P0 10/10      +5..+5 path210 | P1 10/10      +5..+5 path210 | P2 10/10      +5..+5 path210 | P3 9/10     +5..-19 path29,timer1
+ref01      drift -50 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +35..+35 path210 | P1 10/10    +35..+35 path210 | P2 10/10    +35..+35 path210 | P3 0/10    -19..-19 timer10
+ref01      drift -5 m/s + accel invalid @apogee-3s              earlyAPO 10/10 noAPO 0 airLND 0 | det r  25220(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -10..-10 path210 | P1 0/10    -10..-10 path210 | P2 0/10    -10..-10 path210 | P3 0/10    -10..-10 path210
+ref01      drift -10 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  25220(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -4..-5 path210 | P1 0/10      -4..-5 path210 | P2 0/10      -4..-5 path210 | P3 0/10      -4..-5 path210
+ref01      drift -20 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  25220(0m) dD     -(10m) [0] pre 0
+                                                               P0 10/10      +5..+5 path210 | P1 10/10      +5..+5 path210 | P2 10/10      +5..+5 path210 | P3 10/10      +5..+5 path210
+ref01      drift -50 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +16..+16 path210 | P1 10/10    +16..+16 path210 | P2 10/10    +16..+16 path210 | P3 0/10    -19..-19 timer10
+ref01      accel invalid only @mid-coast                        earlyAPO 0/10 noAPO 0 airLND 0 | det r  31240(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -15..-16 path210 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -15..-16 path210
+ref01      accel stuck 80 @burnout-1s                           earlyAPO 0/10 noAPO 10 airLND 0 | det r   1500(0m) dD   1240(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+ref01      accel stuck 0 @burnout-1s                            earlyAPO 1/10 noAPO 0 airLND 0 | det r    660(0m) dD    240(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-10 timer10 | P2 0/10    -10..-10 timer10 | P3 0/10    -10..-10 timer10
+ref01      accel stuck 9.81 @burnout-1s                         earlyAPO 0/10 noAPO 10 airLND 0 | det r    720(0m) dD    260(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+ref01      accel held at last value @burnout-1s                 earlyAPO 0/10 noAPO 10 airLND 0 | det r   1460(0m) dD   1160(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+ref01      baro frozen @apogee-2000ms                           earlyAPO 10/10 noAPO 0 airLND 10 | det r     -(10m) dD    120(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -19..-19 timer10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      baro frozen @apogee-1000ms                           earlyAPO 10/10 noAPO 0 airLND 10 | det r     -(10m) dD    220(0m) [10] pre 0
+                                                               P0 0/10      -4..-5 norma10 | P1 0/10    -19..-19 timer10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      baro frozen @apogee-500ms                            earlyAPO 10/10 noAPO 0 airLND 10 | det r     -(10m) dD   1360(0m) [1] pre 0
+                                                               P0 0/10      -7..-9 norma10 | P1 0/10     -8..-19 norma9,timer1 | P2 0/10     -8..-19 norma8,timer2 | P3 0/10     -8..-19 norma8,timer2
+ref01      baro frozen @apogee+0ms                              earlyAPO 1/10 noAPO 0 airLND 10 | det r     -(10m) dD    860(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      baro frozen @apogee+500ms                            earlyAPO 1/10 noAPO 0 airLND 10 | det r     -(10m) dD    360(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      baro frozen @apogee+1000ms                           earlyAPO 1/10 noAPO 0 airLND 10 | det r     -(10m) dD    200(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -10..-11 norma10 | P3 0/10    -10..-11 norma10
+ref01      REC step -100 m @mid-coast for 20 ms                 earlyAPO 1/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for 40 ms                 earlyAPO 1/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for 60 ms                 earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for 100 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for 300 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for 1000 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -100 m @mid-coast for ever ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC drift -50 m/s @mid-coast for 200 ms              earlyAPO 1/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC drift -50 m/s @mid-coast for 1000 ms             earlyAPO 1/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -30 m @apogee-1.5s for 40 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +5..+5 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -30 m @apogee-1.5s for 100 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +5..+5 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      REC step -30 m @apogee-1.5s for 300 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +5..+5 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      SIM baro frozen + accel stuck 0 @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r     20(0m) dD     40(0m) [10] pre 0
+                                                               P0 10/10    +72..+71 norma10 | P1 0/10    -19..-19 timer10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      SIM step -100 m + accel invalid @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +81..+81 norma10 | P1 0/10    -15..-16 path210 | P2 0/10    -15..-16 path210 | P3 0/10    -19..-19 timer10
+ref01      SIM drift -20 m/s + accel stuck 9.81 @mid-coast      earlyAPO 10/10 noAPO 0 airLND 0 | det r  31240(0m) dD    140(0m) [10] pre 0
+                                                               P0 10/10      +7..+6 norma10 | P1 10/10      +5..+5 path210 | P2 10/10      +5..+5 path210 | P3 0/10    -19..-19 timer10
+ref01      SIM baro invalid + accel stuck 0 @apogee-3s          earlyAPO 1/10 noAPO 0 airLND 0 | det r     -(10m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -19..-19 timer10 | P1 0/10    -19..-19 timer10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+ref01      SIM baro frozen + accel held @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r     20(0m) dD     40(0m) [10] pre 0
+                                                               P0 10/10    +72..+72 norma10 | P1 0/10    -19..-19 timer10 | P2 0/10    -19..-19 timer10 | P3 0/10    -19..-19 timer10
+zero_drag  drift -5 m/s + accel invalid @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r  37000(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -10..-10 path210 | P1 0/10    -10..-10 path210 | P2 0/10    -10..-10 path210 | P3 0/10    -10..-10 path210
+zero_drag  drift -10 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  37000(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -4..-5 path210 | P1 0/10      -4..-5 path210 | P2 0/10      -4..-5 path210 | P3 0/10      -4..-5 path210
+zero_drag  drift -20 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  37000(0m) dD     -(10m) [0] pre 0
+                                                               P0 10/10      +6..+5 path210 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 10/10      +6..+5 path210
+zero_drag  drift -50 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +36..+35 path210 | P1 10/10    +36..+35 path210 | P2 10/10    +36..+35 path210 | P3 0/10    -24..-24 timer10
+zero_drag  drift -5 m/s + accel invalid @apogee-3s              earlyAPO 10/10 noAPO 0 airLND 0 | det r  28180(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -10..-10 path210 | P1 0/10    -10..-10 path210 | P2 0/10    -10..-10 path210 | P3 0/10    -10..-10 path210
+zero_drag  drift -10 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  28180(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -4..-5 path210 | P1 0/10      -4..-5 path210 | P2 0/10      -4..-5 path210 | P3 0/10      -4..-5 path210
+zero_drag  drift -20 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  28180(0m) dD     -(10m) [0] pre 0
+                                                               P0 10/10      +6..+5 path210 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 10/10      +6..+5 path210
+zero_drag  drift -50 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +16..+16 path210 | P1 10/10    +16..+16 path210 | P2 10/10    +16..+16 path210 | P3 0/10    -24..-24 timer10
+zero_drag  accel invalid only @mid-coast                        earlyAPO 0/10 noAPO 0 airLND 0 | det r  37000(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -15..-15 path210 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -15..-15 path210
+zero_drag  accel stuck 80 @burnout-1s                           earlyAPO 0/10 noAPO 10 airLND 0 | det r   1720(0m) dD    740(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+zero_drag  accel stuck 0 @burnout-1s                            earlyAPO 1/10 noAPO 0 airLND 0 | det r    500(0m) dD    240(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -14..-14 timer10 | P2 0/10    -14..-14 timer10 | P3 0/10    -14..-14 timer10
+zero_drag  accel stuck 9.81 @burnout-1s                         earlyAPO 0/10 noAPO 10 airLND 0 | det r    720(0m) dD    240(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+zero_drag  accel held at last value @burnout-1s                 earlyAPO 0/10 noAPO 10 airLND 0 | det r   1500(0m) dD   1180(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+zero_drag  baro frozen @apogee-2000ms                           earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD    140(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -24..-24 timer10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  baro frozen @apogee-1000ms                           earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD    220(0m) [10] pre 0
+                                                               P0 0/10      -4..-5 norma10 | P1 0/10    -24..-24 timer10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  baro frozen @apogee-500ms                            earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD   1360(0m) [0] pre 0
+                                                               P0 0/10      -8..-9 norma10 | P1 0/10      -8..-9 norma10 | P2 0/10     -8..-24 norma5,timer5 | P3 0/10     -8..-24 norma5,timer5
+zero_drag  baro frozen @apogee+0ms                              earlyAPO 1/10 noAPO 0 airLND 0 | det r     -(10m) dD    860(0m) [0] pre 0
+                                                               P0 0/10    -10..-12 norma10 | P1 0/10    -10..-12 norma10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  baro frozen @apogee+500ms                            earlyAPO 1/10 noAPO 0 airLND 0 | det r     -(10m) dD    360(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  baro frozen @apogee+1000ms                           earlyAPO 1/10 noAPO 0 airLND 0 | det r     -(10m) dD    200(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -10..-11 norma10 | P3 0/10    -10..-11 norma10
+zero_drag  REC step -100 m @mid-coast for 20 ms                 earlyAPO 1/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for 40 ms                 earlyAPO 1/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for 60 ms                 earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for 100 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for 300 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for 1000 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -100 m @mid-coast for ever ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC drift -50 m/s @mid-coast for 200 ms              earlyAPO 1/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC drift -50 m/s @mid-coast for 1000 ms             earlyAPO 1/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [1] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -30 m @apogee-1.5s for 40 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -30 m @apogee-1.5s for 100 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  REC step -30 m @apogee-1.5s for 300 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  SIM baro frozen + accel stuck 0 @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r     20(0m) dD     40(0m) [10] pre 0
+                                                               P0 10/10    +97..+96 norma10 | P1 0/10    -24..-24 timer10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  SIM step -100 m + accel invalid @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10  +105..+105 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -24..-24 timer10
+zero_drag  SIM drift -20 m/s + accel stuck 9.81 @mid-coast      earlyAPO 10/10 noAPO 0 airLND 0 | det r  37000(0m) dD    140(0m) [10] pre 0
+                                                               P0 10/10      +7..+5 norma10 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 0/10    -24..-24 timer10
+zero_drag  SIM baro invalid + accel stuck 0 @apogee-3s          earlyAPO 0/10 noAPO 0 airLND 0 | det r     -(10m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -24..-24 timer10 | P1 0/10    -24..-24 timer10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+zero_drag  SIM baro frozen + accel held @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r     20(0m) dD     40(0m) [10] pre 0
+                                                               P0 10/10    +96..+96 norma10 | P1 0/10    -24..-24 timer10 | P2 0/10    -24..-24 timer10 | P3 0/10    -24..-24 timer10
+low_thrust drift -5 m/s + accel invalid @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r  19980(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10     -9..-10 path210 | P1 0/10     -9..-10 path210 | P2 0/10     -9..-10 path210 | P3 0/10     -9..-10 path210
+low_thrust drift -10 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  19980(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -5..-5 path210 | P1 0/10      -5..-5 path210 | P2 0/10      -5..-5 path210 | P3 0/10      -5..-5 path210
+low_thrust drift -20 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r  19980(0m) dD     -(10m) [1] pre 0
+                                                               P0 10/10      +6..+5 path210 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 9/10     +6..-20 path29,timer1
+low_thrust drift -50 m/s + accel invalid @mid-coast             earlyAPO 10/10 noAPO 0 airLND 0 | det r    100(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +29..+28 path210 | P1 10/10    +29..+28 path210 | P2 10/10    +29..+28 path210 | P3 0/10    -20..-20 timer10
+low_thrust drift -5 m/s + accel invalid @apogee-3s              earlyAPO 10/10 noAPO 0 airLND 0 | det r  18500(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10     -9..-10 path210 | P1 0/10     -9..-10 path210 | P2 0/10     -9..-10 path210 | P3 0/10     -9..-10 path210
+low_thrust drift -10 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  18500(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10      -5..-5 path210 | P1 0/10      -5..-5 path210 | P2 0/10      -5..-5 path210 | P3 0/10      -5..-5 path210
+low_thrust drift -20 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r  18500(0m) dD     -(10m) [0] pre 0
+                                                               P0 10/10      +6..+5 path210 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 10/10      +6..+5 path210
+low_thrust drift -50 m/s + accel invalid @apogee-3s             earlyAPO 10/10 noAPO 0 airLND 0 | det r     80(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +16..+16 path210 | P1 10/10    +16..+16 path210 | P2 10/10    +16..+16 path210 | P3 0/10    -20..-20 timer10
+low_thrust accel invalid only @mid-coast                        earlyAPO 0/10 noAPO 0 airLND 0 | det r  19980(0m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -15..-15 path210 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -15..-15 path210
+low_thrust accel stuck 80 @burnout-1s                           earlyAPO 0/10 noAPO 10 airLND 0 | det r   1180(0m) dD    280(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+low_thrust accel stuck 0 @burnout-1s                            earlyAPO 0/10 noAPO 0 airLND 0 | det r  25460(0m) dD    620(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -11..-11 timer10 | P2 0/10    -11..-11 timer10 | P3 0/10    -11..-11 timer10
+low_thrust accel stuck 9.81 @burnout-1s                         earlyAPO 0/10 noAPO 10 airLND 0 | det r  25460(0m) dD   2340(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+low_thrust accel held at last value @burnout-1s                 earlyAPO 0/10 noAPO 10 airLND 0 | det r  25480(0m) dD   1520(0m) [0] pre 0
+                                                               P0 0/10        none none10 | P1 0/10        none none10 | P2 0/10        none none10 | P3 0/10        none none10
+low_thrust baro frozen @apogee-2000ms                           earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD    140(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -20..-20 timer10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust baro frozen @apogee-1000ms                           earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD    220(0m) [10] pre 0
+                                                               P0 0/10      -4..-5 norma10 | P1 0/10    -20..-20 timer10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust baro frozen @apogee-500ms                            earlyAPO 10/10 noAPO 0 airLND 0 | det r     -(10m) dD   1360(0m) [0] pre 0
+                                                               P0 0/10      -7..-9 norma10 | P1 0/10      -7..-9 norma10 | P2 0/10     -7..-20 norma8,timer2 | P3 0/10     -7..-20 norma8,timer2
+low_thrust baro frozen @apogee+0ms                              earlyAPO 0/10 noAPO 0 airLND 0 | det r     -(10m) dD    860(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust baro frozen @apogee+500ms                            earlyAPO 0/10 noAPO 0 airLND 0 | det r     -(10m) dD    360(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust baro frozen @apogee+1000ms                           earlyAPO 0/10 noAPO 0 airLND 0 | det r     -(10m) dD    180(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -10..-11 norma10 | P3 0/10    -10..-11 norma10
+low_thrust REC step -100 m @mid-coast for 20 ms                 earlyAPO 0/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for 40 ms                 earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for 60 ms                 earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for 100 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for 300 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for 1000 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -100 m @mid-coast for ever ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 10/10    +34..+34 path210 | P2 10/10    +34..+34 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC drift -50 m/s @mid-coast for 200 ms              earlyAPO 0/10 noAPO 0 airLND 0 | det r    100(0m) dD     80(0m) [0] pre 0
+                                                               P0 0/10    -10..-11 norma10 | P1 0/10    -10..-11 norma10 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC drift -50 m/s @mid-coast for 1000 ms             earlyAPO 10/10 noAPO 0 airLND 0 | det r    100(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +29..+29 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -30 m @apogee-1.5s for 40 ms                earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -30 m @apogee-1.5s for 100 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust REC step -30 m @apogee-1.5s for 300 ms               earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10      +4..+4 norma10 | P1 0/10    -15..-15 path210 | P2 0/10    -15..-15 path210 | P3 0/10    -20..-20 timer10
+low_thrust SIM baro frozen + accel stuck 0 @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r     60(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +27..+27 norma10 | P1 0/10    -20..-20 timer10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust SIM step -100 m + accel invalid @mid-coast           earlyAPO 10/10 noAPO 0 airLND 0 | det r      0(0m) dD      0(0m) [10] pre 0
+                                                               P0 10/10    +34..+34 norma10 | P1 10/10    +34..+34 path210 | P2 10/10    +34..+34 path210 | P3 0/10    -20..-20 timer10
+low_thrust SIM drift -20 m/s + accel stuck 9.81 @mid-coast      earlyAPO 10/10 noAPO 0 airLND 0 | det r  19980(0m) dD    140(0m) [10] pre 0
+                                                               P0 10/10      +7..+6 norma10 | P1 10/10      +6..+5 path210 | P2 10/10      +6..+5 path210 | P3 0/10    -20..-20 timer10
+low_thrust SIM baro invalid + accel stuck 0 @apogee-3s          earlyAPO 1/10 noAPO 0 airLND 0 | det r     -(10m) dD     -(10m) [0] pre 0
+                                                               P0 0/10    -20..-20 timer10 | P1 0/10    -20..-20 timer10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+low_thrust SIM baro frozen + accel held @mid-coast              earlyAPO 10/10 noAPO 0 airLND 0 | det r     60(0m) dD     80(0m) [10] pre 0
+                                                               P0 10/10    +27..+27 norma10 | P1 0/10    -20..-20 timer10 | P2 0/10    -20..-20 timer10 | P3 0/10    -20..-20 timer10
+========================================================================================================================
+C. Replay check: P0 offline replay of the ballistic run vs the real deployment of the drag-enabled twin (seed 0)
+   108 match, 0 mismatch, of 108
+   drag-enabled twins with TOUCHDOWN declared above 5 m: 18 [('ref01', 'baro frozen @apogee-2000ms'), ('ref01', 'baro frozen @apogee-1000ms'), ('ref01', 'baro frozen @apogee-500ms'), ('ref01', 'baro frozen @apogee+0ms'), ('ref01', 'baro frozen @apogee+500ms'), ('ref01', 'baro frozen @apogee+1000ms'), ('zero_drag', 'baro frozen @apogee-2000ms'), ('zero_drag', 'baro frozen @apogee-1000ms'), ('zero_drag', 'baro frozen @apogee-500ms'), ('zero_drag', 'baro frozen @apogee+0ms'), ('zero_drag', 'baro frozen @apogee+500ms'), ('zero_drag', 'baro frozen @apogee+1000ms')]
+========================================================================================================================
+D. Recovery: alarm clear time after the fault ends (ms, max over seeds), from alarm intervals
+   ref01      REC step -100 m @mid-coast for 20 ms                 last alarm relative to fault end: 260..260 ms
+   ref01      REC step -100 m @mid-coast for 40 ms                 last alarm relative to fault end: 260..260 ms
+   ref01      REC step -100 m @mid-coast for 60 ms                 last alarm relative to fault end: 260..480 ms
+   ref01      REC step -100 m @mid-coast for 100 ms                last alarm relative to fault end: 520..640 ms
+   ref01      REC step -100 m @mid-coast for 300 ms                last alarm relative to fault end: 740..800 ms
+   ref01      REC step -100 m @mid-coast for 1000 ms               last alarm relative to fault end: 840..920 ms
+   ref01      REC step -100 m @mid-coast for ever ms               last alarm relative to fault end: -..- ms
+   ref01      REC drift -50 m/s @mid-coast for 200 ms              last alarm relative to fault end: 260..260 ms
+   ref01      REC drift -50 m/s @mid-coast for 1000 ms             last alarm relative to fault end: 620..680 ms
+   ref01      REC step -30 m @apogee-1.5s for 40 ms                last alarm relative to fault end: 260..260 ms
+   ref01      REC step -30 m @apogee-1.5s for 100 ms               last alarm relative to fault end: 260..260 ms
+   ref01      REC step -30 m @apogee-1.5s for 300 ms               last alarm relative to fault end: 400..540 ms
+   zero_drag  REC step -100 m @mid-coast for 20 ms                 last alarm relative to fault end: 260..260 ms
+   zero_drag  REC step -100 m @mid-coast for 40 ms                 last alarm relative to fault end: 260..260 ms
+   zero_drag  REC step -100 m @mid-coast for 60 ms                 last alarm relative to fault end: 260..540 ms
+   zero_drag  REC step -100 m @mid-coast for 100 ms                last alarm relative to fault end: 560..720 ms
+   zero_drag  REC step -100 m @mid-coast for 300 ms                last alarm relative to fault end: 760..840 ms
+   zero_drag  REC step -100 m @mid-coast for 1000 ms               last alarm relative to fault end: 840..940 ms
+   zero_drag  REC step -100 m @mid-coast for ever ms               last alarm relative to fault end: -..- ms
+   zero_drag  REC drift -50 m/s @mid-coast for 200 ms              last alarm relative to fault end: 240..260 ms
+   zero_drag  REC drift -50 m/s @mid-coast for 1000 ms             last alarm relative to fault end: 600..740 ms
+   zero_drag  REC step -30 m @apogee-1.5s for 40 ms                last alarm relative to fault end: 260..260 ms
+   zero_drag  REC step -30 m @apogee-1.5s for 100 ms               last alarm relative to fault end: 260..420 ms
+   zero_drag  REC step -30 m @apogee-1.5s for 300 ms               last alarm relative to fault end: 440..540 ms
+   low_thrust REC step -100 m @mid-coast for 20 ms                 last alarm relative to fault end: 260..260 ms
+   low_thrust REC step -100 m @mid-coast for 40 ms                 last alarm relative to fault end: 260..260 ms
+   low_thrust REC step -100 m @mid-coast for 60 ms                 last alarm relative to fault end: 260..500 ms
+   low_thrust REC step -100 m @mid-coast for 100 ms                last alarm relative to fault end: 560..640 ms
+   low_thrust REC step -100 m @mid-coast for 300 ms                last alarm relative to fault end: 760..820 ms
+   low_thrust REC step -100 m @mid-coast for 1000 ms               last alarm relative to fault end: 800..900 ms
+   low_thrust REC step -100 m @mid-coast for ever ms               last alarm relative to fault end: -..- ms
+   low_thrust REC drift -50 m/s @mid-coast for 200 ms              last alarm relative to fault end: 260..260 ms
+   low_thrust REC drift -50 m/s @mid-coast for 1000 ms             last alarm relative to fault end: 580..660 ms
+   low_thrust REC step -30 m @apogee-1.5s for 40 ms                last alarm relative to fault end: 260..260 ms
+   low_thrust REC step -30 m @apogee-1.5s for 100 ms               last alarm relative to fault end: 260..260 ms
+   low_thrust REC step -30 m @apogee-1.5s for 300 ms               last alarm relative to fault end: 420..500 ms

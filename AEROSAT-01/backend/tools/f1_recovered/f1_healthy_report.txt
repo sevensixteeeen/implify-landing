@@ -1,0 +1,216 @@
+﻿====================================================================================================
+E1  Innovation r = h_baro - h_predicted at every barometer correction (m)
+-- ref01 seeds 0-99
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10100   -0.000   0.277   1.107    4.00   0.813   0.637 -0.097   11  ('ref01', 51, 1180)
+   BOOST           15900   -0.001   0.275   1.043    3.79   0.769   0.563 -0.092   10  ('ref01', 2, 5600)
+   COAST           80300   +0.000   0.315   1.324    4.20   0.917   0.694 -0.103   10  ('ref01', 92, 17900)
+   NEAR_APOGEE     20000   -0.000   0.334   1.318    3.94   1.062   0.781 -0.095   10  ('ref01', 31, 22960)
+   DESCENT        791978   +0.000   0.302   1.473    4.88   1.053   0.889 -0.097   12  ('ref01', 72, 64300)
+   LANDED          25003   +0.070   0.326   1.514    4.65   1.205   1.047  0.231   31  ('ref01', 22, 184780)
+-- ref01 seeds 100-199
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10100   -0.000   0.270   1.133    4.20   0.806   0.798 -0.107    9  ('ref01', 165, 2720)
+   BOOST           15900   -0.002   0.274   1.019    3.71   0.807   0.591 -0.103   10  ('ref01', 112, 4760)
+   COAST           80300   +0.000   0.315   1.468    4.66   1.040   0.806 -0.098   11  ('ref01', 133, 18660)
+   NEAR_APOGEE     20000   +0.000   0.332   1.637    4.93   1.021   0.770 -0.100   10  ('ref01', 196, 24500)
+   DESCENT        791961   +0.000   0.301   1.431    4.75   1.044   0.808 -0.100   12  ('ref01', 107, 59920)
+   LANDED          25006   +0.070   0.327   1.619    4.95   1.186   1.130  0.231   34  ('ref01', 159, 184860)
+-- zero_drag seeds 0-99
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10100   -0.000   0.277   1.107    4.00   0.813   0.637 -0.097   11  ('zero_drag', 51, 1180)
+   BOOST           15900   -0.002   0.275   1.017    3.70   0.775   0.605 -0.093   10  ('zero_drag', 22, 3780)
+   COAST          108400   +0.000   0.336   1.463    4.35   1.092   0.843 -0.099   15  ('zero_drag', 92, 17900)
+   NEAR_APOGEE     20000   +0.001   0.372   1.471    3.95   0.953   0.953 -0.100   10  ('zero_drag', 75, 30980)
+   DESCENT       1131317   +0.000   0.318   1.675    5.27   1.181   0.901 -0.097   13  ('zero_drag', 72, 64300)
+   LANDED          25000   +0.070   0.325   1.670    5.14   1.208   1.105  0.238   37  ('zero_drag', 51, 258180)
+-- zero_drag seeds 100-199
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10100   -0.000   0.270   1.133    4.20   0.806   0.798 -0.107    9  ('zero_drag', 165, 2720)
+   BOOST           15900   -0.002   0.275   0.986    3.58   0.815   0.587 -0.104   10  ('zero_drag', 149, 5260)
+   COAST          108400   +0.000   0.335   1.810    5.40   1.109   0.828 -0.099   11  ('zero_drag', 196, 24500)
+   NEAR_APOGEE     20000   +0.000   0.372   1.644    4.42   1.017   0.833 -0.114    9  ('zero_drag', 143, 28220)
+   DESCENT       1131302   +0.000   0.317   1.631    5.14   1.142   0.980 -0.099   15  ('zero_drag', 107, 59920)
+   LANDED          25000   +0.070   0.325   1.518    4.67   1.318   1.029  0.237   34  ('zero_drag', 145, 258280)
+-- low_thrust seeds 0-99
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10400   -0.000   0.277   1.107    4.00   0.813   0.637 -0.098   11  ('low_thrust', 51, 1180)
+   BOOST           80600   -0.000   0.278   1.197    4.31   0.777   0.600 -0.100   10  ('low_thrust', 24, 13820)
+   COAST           34800   +0.000   0.296   1.184    4.00   0.891   0.679 -0.098   11  ('low_thrust', 31, 22960)
+   NEAR_APOGEE     20000   +0.001   0.304   1.104    3.63   0.728   0.648 -0.087   11  ('low_thrust', 4, 27040)
+   DESCENT        415754   +0.000   0.287   1.353    4.72   0.965   0.785 -0.097   13  ('low_thrust', 58, 56700)
+   LANDED          25005   +0.070   0.325   1.548    4.77   1.287   1.271  0.239   33  ('low_thrust', 21, 113440)
+-- low_thrust seeds 100-199
+   phase               n     mean      sd  max|r|  max/sd  p2 max  p3 max   rho1  run  worst (scenario, seed, tick)
+   PAD             10400   -0.001   0.270   1.133    4.19   0.806   0.798 -0.106    9  ('low_thrust', 165, 2720)
+   BOOST           80600   +0.000   0.278   1.255    4.52   0.940   0.652 -0.098   11  ('low_thrust', 133, 18660)
+   COAST           34800   +0.000   0.295   1.398    4.73   0.886   0.674 -0.101    9  ('low_thrust', 196, 24500)
+   NEAR_APOGEE     20000   +0.001   0.301   1.291    4.29   0.920   0.589 -0.106   10  ('low_thrust', 143, 28220)
+   DESCENT        415750   +0.000   0.286   1.337    4.67   0.897   0.736 -0.100   13  ('low_thrust', 107, 59920)
+   LANDED          25005   +0.070   0.325   1.674    5.15   1.315   1.057  0.240   36  ('low_thrust', 111, 113480)
+-- ref01/ideal: PAD sd 0.0000 max 0.0000 mean -0.0000, BOOST sd 0.0031 max 0.0103 mean -0.0016, COAST sd 0.0018 max 0.0140 mean +0.0005, NEAR_APOGEE sd 0.0001 max 0.0004 mean +0.0003, DESCENT sd 0.0001 max 0.0002 mean +0.0001, LANDED sd 0.1794 max 0.7937 mean +0.0703
+-- zero_drag/ideal: PAD sd 0.0000 max 0.0000 mean -0.0000, BOOST sd 0.0030 max 0.0103 mean -0.0018, COAST sd 0.0015 max 0.0137 mean +0.0004, NEAR_APOGEE sd 0.0001 max 0.0005 mean +0.0005, DESCENT sd 0.0001 max 0.0003 mean +0.0001, LANDED sd 0.1794 max 0.7930 mean +0.0703
+-- low_thrust/ideal: PAD sd 0.0000 max 0.0000 mean -0.0000, BOOST sd 0.0001 max 0.0020 mean -0.0000, COAST sd 0.0005 max 0.0027 mean +0.0003, NEAR_APOGEE sd 0.0001 max 0.0002 mean +0.0001, DESCENT sd 0.0000 max 0.0001 mean +0.0000, LANDED sd 0.1797 max 0.7942 mean +0.0703
+-- pad_noisy: PAD sd 0.2718 max 1.2501 mean -0.0000
+-- pad_ideal: PAD sd 0.0000 max 0.0000 mean -0.0000
+====================================================================================================
+E3  Longest run of identical consecutive RAW readings (samples), max over runs in the group
+-- baro
+   ref01/train       PAD     6 (0.096)  BOOST     6 (0.012)  COAST     3 (0.006)  NEAR_APO     5 (0.084)  DESCENT     4 (0.074)  LANDED     5 (0.093)
+   zero_drag/train   PAD     6 (0.096)  BOOST     6 (0.012)  COAST     3 (0.006)  NEAR_APO     5 (0.086)  DESCENT     5 (0.075)  LANDED     6 (0.091)
+   low_thrust/train  PAD     6 (0.095)  BOOST     5 (0.027)  COAST     3 (0.010)  NEAR_APO     4 (0.081)  DESCENT     4 (0.074)  LANDED     5 (0.093)
+   ref01/valid       PAD     6 (0.089)  BOOST     3 (0.010)  COAST     3 (0.006)  NEAR_APO     5 (0.083)  DESCENT     4 (0.074)  LANDED     5 (0.093)
+   zero_drag/valid   PAD     6 (0.089)  BOOST     3 (0.009)  COAST     3 (0.005)  NEAR_APO     6 (0.085)  DESCENT     5 (0.075)  LANDED     5 (0.095)
+   low_thrust/valid  PAD     6 (0.089)  BOOST     4 (0.027)  COAST     3 (0.010)  NEAR_APO     4 (0.083)  DESCENT     4 (0.074)  LANDED     5 (0.094)
+   ref01/ideal       PAD   151 (1.000)  BOOST     1 (0.000)  COAST     1 (0.000)  NEAR_APO     1 (0.000)  DESCENT     1 (0.000)  LANDED   250 (1.000)
+   zero_drag/ideal   PAD   151 (1.000)  BOOST     1 (0.000)  COAST     1 (0.000)  NEAR_APO     1 (0.000)  DESCENT     1 (0.000)  LANDED   250 (1.000)
+   low_thrust/ideal  PAD   154 (1.000)  BOOST     1 (0.000)  COAST     1 (0.000)  NEAR_APO     1 (0.000)  DESCENT     1 (0.000)  LANDED   250 (1.000)
+   pad_noisy         PAD     6 (0.093)
+   pad_ideal         PAD  3001 (1.000)
+-- accel
+   ref01/train       PAD     3 (0.028)  BOOST     3 (0.024)  COAST     4 (0.028)  NEAR_APO     4 (0.027)  DESCENT     5 (0.028)  LANDED     5 (0.029)
+   zero_drag/train   PAD     3 (0.028)  BOOST     3 (0.022)  COAST     5 (0.028)  NEAR_APO     3 (0.028)  DESCENT     5 (0.028)  LANDED     4 (0.028)
+   low_thrust/train  PAD     3 (0.028)  BOOST     5 (0.028)  COAST     5 (0.028)  NEAR_APO     5 (0.029)  DESCENT     5 (0.028)  LANDED     5 (0.029)
+   ref01/valid       PAD     4 (0.029)  BOOST     3 (0.024)  COAST     4 (0.028)  NEAR_APO     4 (0.028)  DESCENT     5 (0.028)  LANDED     4 (0.029)
+   zero_drag/valid   PAD     4 (0.029)  BOOST     3 (0.022)  COAST     5 (0.028)  NEAR_APO     4 (0.027)  DESCENT     5 (0.028)  LANDED     4 (0.029)
+   low_thrust/valid  PAD     4 (0.028)  BOOST     6 (0.028)  COAST     4 (0.029)  NEAR_APO     3 (0.028)  DESCENT     5 (0.028)  LANDED     5 (0.029)
+   ref01/ideal       PAD   603 (1.000)  BOOST     1 (0.000)  COAST     1 (0.000)  NEAR_APO     1 (0.000)  DESCENT     1 (0.000)  LANDED  1000 (1.000)
+   zero_drag/ideal   PAD   603 (1.000)  BOOST     1 (0.000)  COAST  4333 (1.000)  NEAR_APO   610 (0.761)  DESCENT     1 (0.000)  LANDED  1001 (1.000)
+   low_thrust/ideal  PAD   615 (1.000)  BOOST     1 (0.000)  COAST     1 (0.000)  NEAR_APO     1 (0.000)  DESCENT     1 (0.000)  LANDED  1000 (1.000)
+   pad_noisy         PAD     4 (0.028)
+   pad_ideal         PAD 12001 (1.000)
+====================================================================================================
+E4  Windowed dead-reckoning disagreement dD_W = mean5(D) - mean5(D W earlier), D = h_baro - h_accel_only (m)
+-- W = 0.2 s
+   ref01/train       PAD sd  0.165 max   0.617 p3   0.483  BOOST sd  0.163 max   0.720 p3   0.681  COAST sd  0.187 max   0.818 p3   0.674  NEAR_AP sd  0.199 max   0.767 p3   0.579  DESCENT sd  0.195 max   1.015 p3   0.881
+   zero_drag/train   PAD sd  0.165 max   0.617 p3   0.483  BOOST sd  0.163 max   0.731 p3   0.683  COAST sd  0.202 max   0.893 p3   0.702  NEAR_AP sd  0.219 max   0.931 p3   0.680  DESCENT sd  0.224 max   1.254 p3   1.099
+   low_thrust/train  PAD sd  0.165 max   0.617 p3   0.483  BOOST sd  0.161 max   0.766 p3   0.549  COAST sd  0.176 max   0.697 p3   0.545  NEAR_AP sd  0.179 max   0.721 p3   0.536  DESCENT sd  0.175 max   0.883 p3   0.746
+   ref01/valid       PAD sd  0.157 max   0.617 p3   0.464  BOOST sd  0.166 max   0.638 p3   0.589  COAST sd  0.189 max   0.807 p3   0.706  NEAR_AP sd  0.194 max   0.797 p3   0.657  DESCENT sd  0.198 max   1.142 p3   0.953
+   zero_drag/valid   PAD sd  0.157 max   0.617 p3   0.464  BOOST sd  0.165 max   0.651 p3   0.596  COAST sd  0.202 max   0.854 p3   0.729  NEAR_AP sd  0.215 max   0.857 p3   0.667  DESCENT sd  0.228 max   1.349 p3   1.210
+   low_thrust/valid  PAD sd  0.157 max   0.617 p3   0.464  BOOST sd  0.163 max   0.671 p3   0.582  COAST sd  0.174 max   0.693 p3   0.592  NEAR_AP sd  0.175 max   0.691 p3   0.559  DESCENT sd  0.176 max   0.796 p3   0.691
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.009 max   0.044 p3   0.044  COAST sd  0.006 max   0.028 p3   0.020  NEAR_AP sd  0.003 max   0.025 p3   0.025  DESCENT sd  0.030 max   0.124 p3   0.124
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.009 max   0.048 p3   0.048  COAST sd  0.011 max   0.033 p3   0.028  NEAR_AP sd  0.004 max   0.041 p3   0.041  DESCENT sd  0.062 max   0.248 p3   0.248
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.001 max   0.005 p3   0.005  COAST sd  0.002 max   0.010 p3   0.010  NEAR_AP sd  0.001 max   0.014 p3   0.014  DESCENT sd  0.008 max   0.039 p3   0.039
+   pad_noisy         PAD sd  0.160 max   0.675 p3   0.578
+-- W = 0.5 s
+   ref01/train       PAD sd  0.163 max   0.599 p3   0.532  BOOST sd  0.187 max   0.909 p3   0.820  COAST sd  0.213 max   0.971 p3   0.927  NEAR_AP sd  0.203 max   0.832 p3   0.678  DESCENT sd  0.275 max   1.616 p3   1.388
+   zero_drag/train   PAD sd  0.163 max   0.599 p3   0.532  BOOST sd  0.188 max   0.911 p3   0.817  COAST sd  0.234 max   1.061 p3   0.995  NEAR_AP sd  0.227 max   0.979 p3   0.853  DESCENT sd  0.364 max   2.047 p3   1.930
+   low_thrust/train  PAD sd  0.163 max   0.599 p3   0.532  BOOST sd  0.168 max   0.753 p3   0.677  COAST sd  0.186 max   0.837 p3   0.666  NEAR_AP sd  0.185 max   0.814 p3   0.685  DESCENT sd  0.212 max   1.201 p3   0.971
+   ref01/valid       PAD sd  0.157 max   0.547 p3   0.483  BOOST sd  0.193 max   0.878 p3   0.717  COAST sd  0.218 max   0.886 p3   0.843  NEAR_AP sd  0.198 max   0.858 p3   0.656  DESCENT sd  0.287 max   1.827 p3   1.727
+   zero_drag/valid   PAD sd  0.157 max   0.547 p3   0.483  BOOST sd  0.194 max   0.900 p3   0.732  COAST sd  0.236 max   0.933 p3   0.848  NEAR_AP sd  0.224 max   0.889 p3   0.766  DESCENT sd  0.382 max   2.474 p3   2.390
+   low_thrust/valid  PAD sd  0.157 max   0.547 p3   0.483  BOOST sd  0.169 max   0.720 p3   0.696  COAST sd  0.185 max   0.722 p3   0.624  NEAR_AP sd  0.183 max   0.747 p3   0.615  DESCENT sd  0.220 max   1.136 p3   1.068
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.026 max   0.107 p3   0.107  COAST sd  0.016 max   0.093 p3   0.085  NEAR_AP sd  0.007 max   0.062 p3   0.062  DESCENT sd  0.074 max   0.309 p3   0.309
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.028 max   0.117 p3   0.117  COAST sd  0.028 max   0.104 p3   0.096  NEAR_AP sd  0.010 max   0.103 p3   0.103  DESCENT sd  0.154 max   0.619 p3   0.619
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.002 max   0.013 p3   0.013  COAST sd  0.006 max   0.023 p3   0.023  NEAR_AP sd  0.003 max   0.034 p3   0.034  DESCENT sd  0.020 max   0.098 p3   0.098
+   pad_noisy         PAD sd  0.169 max   0.806 p3   0.706
+-- W = 1.0 s
+   ref01/train       PAD sd  0.165 max   0.585 p3   0.485  BOOST sd  0.236 max   1.479 p3   1.281  COAST sd  0.290 max   1.460 p3   1.223  NEAR_AP sd  0.214 max   0.961 p3   0.894  DESCENT sd  0.456 max   2.489 p3   2.336
+   zero_drag/train   PAD sd  0.165 max   0.585 p3   0.485  BOOST sd  0.238 max   1.509 p3   1.301  COAST sd  0.323 max   1.486 p3   1.276  NEAR_AP sd  0.243 max   1.049 p3   0.904  DESCENT sd  0.653 max   3.696 p3   3.513
+   low_thrust/train  PAD sd  0.166 max   0.598 p3   0.485  BOOST sd  0.185 max   0.969 p3   0.807  COAST sd  0.220 max   0.876 p3   0.810  NEAR_AP sd  0.202 max   0.855 p3   0.721  DESCENT sd  0.310 max   1.524 p3   1.424
+   ref01/valid       PAD sd  0.156 max   0.703 p3   0.553  BOOST sd  0.244 max   1.243 p3   1.106  COAST sd  0.301 max   1.371 p3   1.302  NEAR_AP sd  0.211 max   1.082 p3   0.927  DESCENT sd  0.487 max   3.138 p3   3.088
+   zero_drag/valid   PAD sd  0.156 max   0.703 p3   0.553  BOOST sd  0.247 max   1.282 p3   1.107  COAST sd  0.334 max   1.423 p3   1.351  NEAR_AP sd  0.242 max   1.053 p3   0.919  DESCENT sd  0.692 max   4.569 p3   4.435
+   low_thrust/valid  PAD sd  0.156 max   0.703 p3   0.553  BOOST sd  0.188 max   0.845 p3   0.780  COAST sd  0.220 max   0.910 p3   0.843  NEAR_AP sd  0.203 max   0.842 p3   0.719  DESCENT sd  0.330 max   1.863 p3   1.789
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.062 max   0.209 p3   0.209  COAST sd  0.039 max   0.197 p3   0.189  NEAR_AP sd  0.014 max   0.124 p3   0.124  DESCENT sd  0.149 max   0.618 p3   0.618
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.066 max   0.225 p3   0.224  COAST sd  0.059 max   0.215 p3   0.207  NEAR_AP sd  0.021 max   0.204 p3   0.204  DESCENT sd  0.309 max   1.239 p3   1.239
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.005 max   0.026 p3   0.026  COAST sd  0.014 max   0.045 p3   0.045  NEAR_AP sd  0.007 max   0.068 p3   0.068  DESCENT sd  0.040 max   0.196 p3   0.196
+   pad_noisy         PAD sd  0.198 max   1.071 p3   0.969
+-- W = 2.0 s
+   ref01/train       BOOST sd  0.313 max   1.689 p3   1.667  COAST sd  0.499 max   2.252 p3   2.150  NEAR_AP sd  0.259 max   1.139 p3   1.079  DESCENT sd  0.858 max   4.365 p3   4.280
+   zero_drag/train   BOOST sd  0.318 max   1.727 p3   1.703  COAST sd  0.558 max   2.383 p3   2.241  NEAR_AP sd  0.302 max   1.451 p3   1.273  DESCENT sd  1.264 max   6.771 p3   6.670
+   low_thrust/train  BOOST sd  0.238 max   1.140 p3   1.023  COAST sd  0.330 max   1.239 p3   1.167  NEAR_AP sd  0.262 max   1.016 p3   0.931  DESCENT sd  0.546 max   2.540 p3   2.396
+   ref01/valid       BOOST sd  0.327 max   1.776 p3   1.612  COAST sd  0.523 max   2.205 p3   2.087  NEAR_AP sd  0.261 max   1.348 p3   1.172  DESCENT sd  0.921 max   5.805 p3   5.787
+   zero_drag/valid   BOOST sd  0.331 max   1.813 p3   1.644  COAST sd  0.583 max   2.317 p3   2.244  NEAR_AP sd  0.310 max   1.705 p3   1.529  DESCENT sd  1.345 max   8.798 p3   8.716
+   low_thrust/valid  BOOST sd  0.243 max   1.263 p3   1.157  COAST sd  0.334 max   1.336 p3   1.203  NEAR_AP sd  0.271 max   1.227 p3   1.095  DESCENT sd  0.590 max   3.276 p3   3.160
+   ref01/ideal       BOOST sd  0.131 max   0.398 p3   0.397  COAST sd  0.093 max   0.388 p3   0.381  NEAR_AP sd  0.029 max   0.240 p3   0.239  DESCENT sd  0.300 max   1.237 p3   1.237
+   zero_drag/ideal   BOOST sd  0.136 max   0.419 p3   0.418  COAST sd  0.122 max   0.412 p3   0.406  NEAR_AP sd  0.043 max   0.396 p3   0.395  DESCENT sd  0.621 max   2.478 p3   2.478
+   low_thrust/ideal  BOOST sd  0.011 max   0.050 p3   0.050  COAST sd  0.034 max   0.085 p3   0.084  NEAR_AP sd  0.015 max   0.132 p3   0.132  DESCENT sd  0.081 max   0.392 p3   0.392
+   pad_noisy         PAD sd  0.284 max   1.756 p3   1.607
+====================================================================================================
+E5  Barometric plausibility P_W = quadratic-fit acceleration - mean accel-derived acceleration (m/s^2)
+-- W = 0.2 s
+   ref01/train       PAD sd 55.425 max 223.985 p3 131.052  BOOST sd 55.194 max 236.848 p3 154.352  COAST sd 63.044 max 281.984 p3 200.677  NEAR_AP sd 67.039 max 285.846 p3 194.458  DESCENT sd 60.647 max 283.284 p3 197.897
+   zero_drag/train   PAD sd 55.425 max 223.985 p3 131.052  BOOST sd 55.053 max 232.971 p3 144.585  COAST sd 67.354 max 304.089 p3 199.725  NEAR_AP sd 74.716 max 295.312 p3 219.882  DESCENT sd 63.806 max 325.080 p3 225.351
+   low_thrust/train  PAD sd 55.382 max 223.985 p3 131.052  BOOST sd 55.715 max 252.712 p3 168.264  COAST sd 59.260 max 246.813 p3 167.148  NEAR_AP sd 60.929 max 216.817 p3 146.304  DESCENT sd 57.603 max 268.126 p3 187.043
+   ref01/valid       PAD sd 53.705 max 212.671 p3 143.387  BOOST sd 55.182 max 214.146 p3 139.482  COAST sd 62.917 max 310.279 p3 190.230  NEAR_AP sd 66.352 max 290.134 p3 159.493  DESCENT sd 60.387 max 305.256 p3 198.371
+   zero_drag/valid   PAD sd 53.705 max 212.671 p3 143.387  BOOST sd 55.366 max 214.433 p3 145.606  COAST sd 67.080 max 329.307 p3 199.255  NEAR_AP sd 73.420 max 300.281 p3 186.096  DESCENT sd 63.615 max 339.489 p3 214.350
+   low_thrust/valid  PAD sd 53.768 max 212.671 p3 143.387  BOOST sd 55.621 max 256.350 p3 157.275  COAST sd 58.930 max 280.814 p3 144.086  NEAR_AP sd 60.217 max 254.685 p3 146.078  DESCENT sd 57.364 max 275.784 p3 173.769
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  1.236 max   5.873 p3   4.568  COAST sd  0.262 max   3.821 p3   3.058  NEAR_AP sd  0.105 max   0.741 p3   0.506  DESCENT sd  0.002 max   0.009 p3   0.009
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  1.237 max   5.873 p3   4.568  COAST sd  0.225 max   3.807 p3   3.048  NEAR_AP sd  0.095 max   0.650 p3   0.414  DESCENT sd  0.003 max   0.013 p3   0.013
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.063 max   0.706 p3   0.565  COAST sd  0.074 max   0.708 p3   0.567  NEAR_AP sd  0.118 max   0.821 p3   0.596  DESCENT sd  0.001 max   0.005 p3   0.005
+   pad_noisy         PAD sd 54.438 max 245.276 p3 178.058
+-- W = 0.5 s
+   ref01/train       PAD sd  5.542 max  19.346 p3  17.745  BOOST sd  6.068 max  27.571 p3  22.598  COAST sd  6.276 max  31.433 p3  26.779  NEAR_AP sd  6.716 max  29.534 p3  24.673  DESCENT sd  6.010 max  31.312 p3  26.750
+   zero_drag/train   PAD sd  5.542 max  19.346 p3  17.745  BOOST sd  6.054 max  27.345 p3  22.598  COAST sd  6.706 max  32.777 p3  27.435  NEAR_AP sd  7.378 max  29.848 p3  24.517  DESCENT sd  6.321 max  32.414 p3  27.588
+   low_thrust/train  PAD sd  5.549 max  19.346 p3  17.745  BOOST sd  5.430 max  22.516 p3  19.035  COAST sd  5.917 max  26.406 p3  22.291  NEAR_AP sd  6.054 max  24.751 p3  19.381  DESCENT sd  5.719 max  27.317 p3  22.566
+   ref01/valid       PAD sd  5.362 max  20.826 p3  15.261  BOOST sd  6.138 max  25.706 p3  22.459  COAST sd  6.345 max  33.499 p3  28.323  NEAR_AP sd  6.568 max  27.575 p3  21.119  DESCENT sd  5.978 max  32.016 p3  27.661
+   zero_drag/valid   PAD sd  5.362 max  20.826 p3  15.261  BOOST sd  6.120 max  25.972 p3  22.459  COAST sd  6.699 max  34.385 p3  29.035  NEAR_AP sd  7.309 max  31.150 p3  22.848  DESCENT sd  6.298 max  35.594 p3  30.073
+   low_thrust/valid  PAD sd  5.353 max  20.826 p3  15.261  BOOST sd  5.489 max  23.820 p3  19.414  COAST sd  5.880 max  24.595 p3  20.159  NEAR_AP sd  5.894 max  24.761 p3  19.252  DESCENT sd  5.680 max  28.734 p3  24.656
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  2.726 max   9.368 p3   8.195  COAST sd  1.233 max  10.429 p3   9.980  NEAR_AP sd  0.182 max   0.735 p3   0.697  DESCENT sd  0.002 max   0.022 p3   0.022
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  2.728 max   9.417 p3   8.188  COAST sd  1.060 max  10.519 p3  10.091  NEAR_AP sd  0.165 max   0.662 p3   0.634  DESCENT sd  0.003 max   0.026 p3   0.026
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.130 max   1.746 p3   1.318  COAST sd  0.349 max   1.947 p3   1.862  NEAR_AP sd  0.203 max   0.820 p3   0.787  DESCENT sd  0.002 max   0.018 p3   0.017
+   pad_noisy         PAD sd  5.397 max  25.315 p3  20.995
+-- W = 1.0 s
+   ref01/train       PAD sd  0.954 max   3.207 p3   2.886  BOOST sd  3.889 max  11.854 p3  11.289  COAST sd  2.592 max  16.917 p3  16.273  NEAR_AP sd  1.234 max   4.765 p3   4.139  DESCENT sd  1.058 max   5.282 p3   4.700
+   zero_drag/train   PAD sd  0.954 max   3.207 p3   2.886  BOOST sd  3.883 max  11.858 p3  11.298  COAST sd  2.336 max  17.086 p3  16.455  NEAR_AP sd  1.348 max   5.236 p3   4.481  DESCENT sd  1.111 max   5.939 p3   5.343
+   low_thrust/train  PAD sd  0.952 max   3.207 p3   2.886  BOOST sd  0.978 max   3.993 p3   3.582  COAST sd  1.252 max   5.361 p3   4.905  NEAR_AP sd  1.131 max   4.475 p3   3.893  DESCENT sd  0.999 max   4.797 p3   4.364
+   ref01/valid       PAD sd  0.944 max   3.001 p3   2.650  BOOST sd  3.855 max  12.684 p3  12.485  COAST sd  2.583 max  15.754 p3  15.216  NEAR_AP sd  1.172 max   5.126 p3   4.076  DESCENT sd  1.056 max   5.162 p3   4.673
+   zero_drag/valid   PAD sd  0.944 max   3.001 p3   2.650  BOOST sd  3.847 max  12.686 p3  12.487  COAST sd  2.321 max  16.002 p3  15.481  NEAR_AP sd  1.330 max   5.001 p3   4.115  DESCENT sd  1.113 max   5.732 p3   5.286
+   low_thrust/valid  PAD sd  0.944 max   3.001 p3   2.650  BOOST sd  0.980 max   4.162 p3   3.756  COAST sd  1.202 max   6.328 p3   5.606  NEAR_AP sd  1.106 max   4.661 p3   4.099  DESCENT sd  1.004 max   4.658 p3   4.181
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  3.751 max   9.339 p3   9.211  COAST sd  2.329 max  13.406 p3  13.250  NEAR_AP sd  0.277 max   0.822 p3   0.811  DESCENT sd  0.005 max   0.181 p3   0.075
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  3.743 max   9.342 p3   9.215  COAST sd  2.001 max  13.550 p3  13.421  NEAR_AP sd  0.251 max   0.749 p3   0.740  DESCENT sd  0.005 max   0.146 p3   0.075
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.129 max   1.337 p3   0.862  COAST sd  0.659 max   2.499 p3   2.469  NEAR_AP sd  0.307 max   0.905 p3   0.895  DESCENT sd  0.007 max   0.248 p3   0.073
+   pad_noisy         PAD sd  0.952 max   4.640 p3   4.202
+-- W = 2.0 s
+   ref01/train       PAD sd  0.184 max   0.539 p3   0.000  BOOST sd  5.338 max  10.236 p3  10.146  COAST sd  3.571 max  15.065 p3  14.966  NEAR_AP sd  0.376 max   1.767 p3   1.671  DESCENT sd  0.194 max   1.577 p3   1.467
+   zero_drag/train   PAD sd  0.184 max   0.539 p3   0.000  BOOST sd  5.289 max  10.241 p3  10.148  COAST sd  3.051 max  15.229 p3  15.120  NEAR_AP sd  0.375 max   1.580 p3   1.515  DESCENT sd  0.201 max   1.539 p3   1.455
+   low_thrust/train  PAD sd  0.191 max   0.599 p3   0.530  BOOST sd  0.234 max   1.177 p3   1.145  COAST sd  1.021 max   3.289 p3   3.220  NEAR_AP sd  0.376 max   1.650 p3   1.611  DESCENT sd  0.192 max   1.480 p3   1.441
+   ref01/valid       PAD sd  0.178 max   0.540 p3   0.000  BOOST sd  5.330 max  10.141 p3  10.091  COAST sd  3.569 max  14.950 p3  14.895  NEAR_AP sd  0.373 max   1.445 p3   1.408  DESCENT sd  0.194 max   1.282 p3   1.235
+   zero_drag/valid   PAD sd  0.178 max   0.540 p3   0.000  BOOST sd  5.281 max  10.154 p3  10.103  COAST sd  3.050 max  15.125 p3  15.094  NEAR_AP sd  0.368 max   1.539 p3   1.462  DESCENT sd  0.200 max   1.411 p3   1.372
+   low_thrust/valid  PAD sd  0.173 max   0.540 p3   0.492  BOOST sd  0.232 max   1.123 p3   1.071  COAST sd  1.018 max   3.078 p3   3.035  NEAR_AP sd  0.389 max   1.646 p3   1.607  DESCENT sd  0.193 max   1.529 p3   1.447
+   ref01/ideal       PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  5.325 max   9.696 p3   9.677  COAST sd  3.560 max  14.411 p3  14.369  NEAR_AP sd  0.313 max   0.941 p3   0.938  DESCENT sd  0.047 max   0.831 p3   0.828
+   zero_drag/ideal   PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  5.275 max   9.708 p3   9.689  COAST sd  3.039 max  14.558 p3  14.514  NEAR_AP sd  0.293 max   0.872 p3   0.870  DESCENT sd  0.036 max   0.751 p3   0.749
+   low_thrust/ideal  PAD sd  0.000 max   0.000 p3   0.000  BOOST sd  0.157 max   0.748 p3   0.616  COAST sd  1.004 max   2.666 p3   2.658  NEAR_AP sd  0.333 max   1.015 p3   1.013  DESCENT sd  0.072 max   0.919 p3   0.916
+   pad_noisy         PAD sd  0.168 max   0.790 p3   0.737
+====================================================================================================
+E4  Absolute disagreement |D| (accumulated dead-reckoning drift + barometric scale error), max per phase (m)
+   ref01/train       PAD     1.17  BOOST     2.46  COAST     9.28  NEAR_AP    10.74  DESCENT   199.26  LANDED   271.94
+   zero_drag/train   PAD     1.17  BOOST     2.55  COAST    13.94  NEAR_AP    15.04  DESCENT   453.47  LANDED   532.26
+   low_thrust/train  PAD     1.17  BOOST     3.68  COAST     6.48  NEAR_AP     7.33  DESCENT    59.75  LANDED   127.53
+   ref01/valid       PAD     0.98  BOOST     2.39  COAST    10.24  NEAR_AP    10.65  DESCENT   272.86  LANDED   350.19
+   ref01/ideal       PAD     0.00  BOOST     0.58  COAST     0.60  NEAR_AP     0.29  DESCENT    72.27  LANDED   138.58
+   zero_drag/ideal   PAD     0.00  BOOST     0.61  COAST     0.98  NEAR_AP     0.38  DESCENT   203.97  LANDED   273.27
+   low_thrust/ideal  PAD     0.00  BOOST     0.26  COAST     0.26  NEAR_AP     0.19  DESCENT    12.89  LANDED    77.16
+   pad_noisy         PAD    19.77
+E4  Accelerometer-only dead reckoning error vs truth (h m, v m/s): max |.| and mean over the group
+   ref01/train        at apogee   : dh max     2.81 mean    -0.61 | dv max   0.302 mean  -0.109 | D max     9.60
+   ref01/train        at touchdown: dh max   199.01 mean   -70.72 | dv max  14.664 mean  -6.170 | D max   199.35
+   zero_drag/train    at apogee   : dh max     4.83 mean    -1.45 | dv max   0.416 mean  -0.181 | D max    14.03
+   zero_drag/train    at touchdown: dh max   453.10 mean  -200.57 | dv max  15.117 mean  -6.774 | D max   453.47
+   low_thrust/train   at apogee   : dh max     3.82 mean    -0.24 | dv max   0.283 mean  -0.061 | D max     6.64
+   low_thrust/train   at touchdown: dh max    59.34 mean   -12.39 | dv max  13.559 mean  -6.766 | D max    59.75
+   ref01/ideal        at apogee   : dh max     0.61 mean    -0.61 | dv max   0.110 mean  -0.110 | D max     0.10
+   ref01/ideal        at touchdown: dh max    72.27 mean   -72.27 | dv max   0.618 mean  -0.618 | D max    72.27
+   zero_drag/ideal    at apogee   : dh max     1.46 mean    -1.46 | dv max   0.183 mean  -0.183 | D max     0.05
+   zero_drag/ideal    at touchdown: dh max   204.06 mean  -204.06 | dv max  13.897 mean -13.897 | D max   204.06
+   low_thrust/ideal   at apogee   : dh max     0.25 mean    -0.25 | dv max   0.062 mean  -0.062 | D max     0.06
+   low_thrust/ideal   at touchdown: dh max    12.89 mean   -12.89 | dv max   0.196 mean  -0.196 | D max    12.89
+====================================================================================================
+Healthy regression sanity: event sources and non-NOMINAL ticks
+   flights with any non-NOMINAL estimate tick: 0 []
+   ('low_thrust', 'APOGEE', 'DETECTED'): 201
+   ('low_thrust', 'BURNOUT', 'DETECTED'): 201
+   ('low_thrust', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 201
+   ('low_thrust', 'LIFTOFF', 'DETECTED'): 201
+   ('low_thrust', 'TOUCHDOWN', 'DETECTED'): 200
+   ('low_thrust', 'TOUCHDOWN', 'FALLBACK_CRITERION'): 1
+   ('ref01', 'APOGEE', 'DETECTED'): 201
+   ('ref01', 'BURNOUT', 'DETECTED'): 201
+   ('ref01', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 201
+   ('ref01', 'LIFTOFF', 'DETECTED'): 201
+   ('ref01', 'TOUCHDOWN', 'DETECTED'): 198
+   ('ref01', 'TOUCHDOWN', 'FALLBACK_CRITERION'): 3
+   ('zero_drag', 'APOGEE', 'DETECTED'): 201
+   ('zero_drag', 'BURNOUT', 'FALLBACK_CRITERION'): 201
+   ('zero_drag', 'DRAG_DEVICE_DEPLOYED', 'DETECTED'): 201
+   ('zero_drag', 'LIFTOFF', 'DETECTED'): 201
+   ('zero_drag', 'TOUCHDOWN', 'DETECTED'): 201
