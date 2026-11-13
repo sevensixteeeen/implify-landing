@@ -181,7 +181,7 @@ Findings:
 
 ## 6e. Item 7: design (before code)
 
-Status: **design for approval. No code written.** Values below are derived from the noise model (section 6b) and the scenario configuration. Where a baseline figure is used, it is from section 6d (`baseline_runs.csv`) and is used as evidence for a choice, never to set a threshold. Predictions marked "predicted" are to be checked by the item 8 rerun.
+Status: **approved by the project owner, including all points of 6e.7, with corrections** (barometer-bias term in `kappa`, validity of the false-flag bound, `sigma_p`, `sigma_a` and `kappa` as avionics configuration values). The corrections were written before any code. Values below are derived from the noise model (section 6b) and the scenario configuration. Where a baseline figure is used, it is from section 6d (`baseline_runs.csv`) and is used as evidence for a choice, never to set a threshold. Predictions marked "predicted" are to be checked by the item 8 rerun.
 
 ### 6e.1 Policy B: the disagreement detector
 
@@ -202,6 +202,8 @@ All inputs are avionics data (FR-AVI-01): the barometer sample, an accelerometer
 5. Budget (for approval): `P_flight <= 1e-5`. This needs `2 Q(T - 1) <= 5e-9`, so `T - 1 >= 5.84`.
 
 **Proposed threshold: `T = 7.0`.** Then `2 Q(6.0) = 1.97e-9` per sample and `P_flight <= 3.9e-6`. Over the 1,206 healthy flights of the audit set the expected number of false flags is at most about 0.005 under this model. That is a prediction from the model, not a result.
+
+**Validity of the bound.** Step 2 needs `abs(b) <= kappa * abs(v) * 0.2 s`. The bound therefore holds only while the sensor biases are within the 3-sigma assumptions behind `kappa` (6e.5): thermometer bias within `3 * bias_sigma_k`, barometer bias within `3 * bias_sigma_pa`, and flight altitude within the `h_max` used for the geopotential term. Outside those, the bound says nothing.
 
 **Persistence: 3 consecutive defined samples above `T` raise the flag.**
 
@@ -229,7 +231,7 @@ All inputs are avionics data (FR-AVI-01): the barometer sample, an accelerometer
 
 Prediction to check in item 8:
 - **At risk:** the `high8k` drift -20 m/s case. Its disagreement is close to the floor there.
-- **Expected to flag:** the 0-ascent baseline cases below the floor (drift -2 and -5 m/s, single-sample ±5 m spikes) stay unflagged. That is harmless, because none of them deployed during ascent in the baseline.
+- **Expected not to flag:** the 0-ascent baseline cases below the floor (drift -2 and -5 m/s, single-sample ±5 m spikes) stay unflagged. That is harmless, because none of them deployed during ascent in the baseline.
 
 ### 6e.2 Flag lifetime: latched for the rest of the flight
 
@@ -316,20 +318,31 @@ A flag raised on a tick therefore applies to the deployment decision on that sam
 
 ### 6e.5 `kappa`: value and basis
 
-`kappa` bounds the relative error between the avionics barometric altitude and true geometric altitude. There are two terms, added linearly (conservative):
+`kappa` bounds the relative error between the avionics barometric altitude and true geometric altitude. There are three terms, added linearly (conservative):
 
 1. **Reference temperature:** `3 * sigma_T / T_ref`. `sigma_T` is the thermometer bias spread (REF-01 sensor configuration: 0.5 K). The 1 s calibration mean removes noise, not bias. `T_ref` is the pad temperature.
 2. **Geopotential vs geometric altitude:** the avionics pressure law assumes constant `g0`; truth uses inverse-square gravity and geometric altitude. Their ratio is about `(1 + h/R0)^2`, so the bound is `2 h_max / R0`, with `h_max` the highest MSL altitude of the flight and `R0 = 6,356,766 m`.
+3. **Barometer bias:** a constant bias `delta = 3 * bias_sigma_pa` (REF-01: 90 Pa) enters both the pad reference `p_ref` and every reading. Through the avionics pressure law the local altitude slope changes by the factor `((p + delta)/p)^(n-1) * (p_ref/(p_ref + delta))^n`, with `n = R L / g0`. The term is the largest deviation of that factor from 1 over the flight. It is largest at apogee, where `p` is lowest. Evaluated for both signs of `delta`, at the true pad and minimum pressures of a sensor-free truth run.
 
-| Scenario | `T_ref` (K) | `h_max` MSL (m) | Temperature term | Geopotential term | `kappa` | **Proposed configuration value** |
-|---|---|---|---|---|---|---|
-| `ref01` (REF-01) | 288.15 | 2,126 | 0.00521 | 0.00067 | 0.00587 | **0.006** |
-| `zero_drag` | 288.15 | 3,102 | 0.00521 | 0.00098 | 0.00618 | **0.007** |
-| `low_thrust` | 288.15 | 1,096 | 0.00521 | 0.00034 | 0.00555 | **0.006** |
-| `high4k` | 262.15 | 6,360 | 0.00572 | 0.00200 | 0.00772 | **0.008** |
-| `high8k` | 236.15 | 10,578 | 0.00635 | 0.00333 | 0.00968 | **0.010** |
+| Scenario | `T_ref` (K) | `h_max` MSL (m) | Temperature term | Geopotential term | Barometer-bias term (at apogee) | `kappa` | **Configuration value** |
+|---|---|---|---|---|---|---|---|
+| `ref01` (REF-01) | 288.15 | 2,126 | 0.00521 | 0.00067 | 0.00110 | 0.00698 | **0.007** |
+| `zero_drag` | 288.15 | 3,102 | 0.00521 | 0.00098 | 0.00122 | 0.00740 | **0.008** |
+| `low_thrust` | 288.15 | 1,096 | 0.00521 | 0.00034 | 0.00099 | 0.00654 | **0.007** |
+| `high4k` | 262.15 | 6,360 | 0.00572 | 0.00200 | 0.00190 | 0.00963 | **0.010** |
+| `high8k` | 236.15 | 10,578 | 0.00635 | 0.00333 | 0.00350 | 0.01318 | **0.014** |
 
-Values are rounded up to the next 0.001. `kappa` becomes an avionics configuration value written by the scenario author with this formula; the avionics never reads the thermometer bias from the sensor section (FR-AVI-01).
+Values are rounded up to the next 0.001. The barometer-bias term agrees with the project owner's check (0.0011, 0.0019, 0.0035 for `ref01`, `high4k`, `high8k`).
+
+**Configuration values.** `sigma_p`, `sigma_a` and `kappa` are avionics configuration values, written by the scenario author with the formulas above:
+
+| Field (`avionics` section) | Formula | REF-01 value | Audit scenarios |
+|---|---|---|---|
+| `detector_sigma_p_pa` | `sqrt(noise_sigma_pa^2 + resolution_pa^2 / 12)` = `sqrt(3.0^2 + 1.0^2/12)` = 3.0139, rounded up | **3.014** | 3.014 (same barometer) |
+| `detector_sigma_a_mps2` | `sqrt(noise_sigma_mps2^2 + resolution_mps2^2 / 12)` = `sqrt(0.05^2 + 0.005^2/12)` = 0.05002, rounded up | **0.0501** | 0.0501 (same accelerometer) |
+| `detector_kappa` | table above | **0.007** | `zero_drag` 0.008, `low_thrust` 0.007, `high4k` 0.010, `high8k` 0.014 |
+
+The avionics never reads the scenario's `sensors` section for these. It only sees its own configuration (FR-AVI-01). The liftoff timer (6e.4) is derived from the `vehicle` section and the existing backup delay, not from the sensors.
 
 ### 6e.6 Unit tests, one or more per rule
 
