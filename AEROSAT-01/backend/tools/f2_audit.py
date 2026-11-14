@@ -78,6 +78,9 @@ class Fault(F1.Fault):
     baro_stuck_pad (reading held at the pad reference pressure, 0 m AGL)."""
 
     def apply(self, tick, samples, calibration):
+        if self.kind == "accel_bias":
+            return [replace(s, value=s.value + self.value)
+                    if (s.sensor_id == "accel" and s.channel == "z" and self.active(tick)) else s for s in samples]
         if self.kind not in ("baro_stuck_alt", "baro_stuck_pad"):
             return super().apply(tick, samples, calibration)
         out = []
@@ -137,6 +140,35 @@ def fault_cases(name: str, ref: dict) -> list[tuple[str, str, list[tuple]]]:
     return c
 
 
+def addition_cases(name: str, ref: dict) -> list[tuple[str, str, list[tuple]]]:
+    """Section 6a additional cases: accelerometer bias steps in descent; high-speed deployment (low_thrust)."""
+    r = ref[name]
+    B, A, TD = r["B"], r["A"], r["TD"]
+    r20 = lambda t: int(round(t / 20.0)) * 20
+    D = lambda f: r20(A + f * (TD - A))
+    c = []
+    if name in DRAG_SCENARIOS:
+        for sign, grp in ((1, "accel bias step (requested)"), (-1, "accel bias step (mirror)")):
+            for f in (0.25, 0.5):
+                for b in (0.02, 0.05, 0.1, 0.5):
+                    c.append((grp, f"accel bias {sign * b:+g} m/s^2 @D({f})", [("accel_bias", D(f), None, sign * b)]))
+    if name == "low_thrust":
+        for lab, sp in (("accel stuck 0 @B-1s", ("accel_value", B - 1000, None, 0.0)),
+                        ("accel stuck 9.81 @B-1s", ("accel_value", B - 1000, None, 9.80665)),
+                        ("accel stuck 80 @B-1s", ("accel_value", B - 1000, None, 80.0)),
+                        ("accel held @B-1s", ("accel_hold", B - 1000, None, 0.0))):
+            c.append(("high-speed deployment", lab, [sp]))
+    return c
+
+
+def addition_jobs(ref: dict) -> list[tuple]:
+    jobs = []
+    for name in DRAG_SCENARIOS:
+        for group, label, specs in addition_cases(name, ref):
+            jobs += [("fault", name, group, label, specs, seed, False) for seed in FAULT_SEEDS]
+    return jobs
+
+
 def audit_jobs(ref: dict) -> list[tuple]:
     """(set, scenario, group, case, specs, seed, ideal), fixed order."""
     jobs = []
@@ -151,7 +183,8 @@ def audit_jobs(ref: dict) -> list[tuple]:
 
 # ------------------------------------------------------------------ one run, to the end of the hold
 def run(arg) -> dict:
-    job, ref = arg
+    job, ref = arg[0], arg[1]
+    extended = len(arg) > 2 and arg[2]
     set_, name, group, label, specs, seed, ideal = job
     ba = {n: (ref[n]["B"], ref[n]["A"]) for n in ref}
     s = build(name, ba)
@@ -163,6 +196,7 @@ def run(arg) -> dict:
     faults = [Fault(*sp) for sp in specs]
     events, commands = [], []
     state, pending = sim.state, ()
+    ext = dict(rejected=0, last_valid=None, max_gap=0, v_cmd=None)
     while True:
         samples = suite.sample(state)
         if computer.calibration is not None:
@@ -172,8 +206,19 @@ def run(arg) -> dict:
             for f in faults:
                 if f.kind == "baro_frozen":
                     f.held = next((x.value for x in samples if x.sensor_id == "baro"), f.held)
+        if extended and state.tick % AVIONICS_PERIOD == 0:
+            acc = next((x for x in samples if x.sensor_id == "accel" and x.channel == "z"), None)
+            if acc is not None:
+                if commands and acc.saturated:
+                    ext["rejected"] += 1
+                if not acc.saturated:
+                    if commands and ext["last_valid"] is not None:
+                        ext["max_gap"] = max(ext["max_gap"], state.tick - ext["last_valid"])
+                    ext["last_valid"] = state.tick
         if state.tick % AVIONICS_PERIOD == 0:
             out = computer.tick(state.tick, samples)
+            if out.commands and ext["v_cmd"] is None:
+                ext["v_cmd"] = state.velocity_mps
             for e in out.events:
                 events.append((e.event.value, e.tick, e.source.value, e.quality.value, state.altitude_agl_m, state.velocity_mps))
             commands += [(state.tick, k.value) for k in out.commands]
@@ -189,7 +234,10 @@ def run(arg) -> dict:
     delay = None if td is None or te.touchdown_time_s is None else td[1] / 1000.0 - te.touchdown_time_s
     outcome = ("false" if false_td else "missing" if td is None else "on time" if 0.0 <= delay <= 3.0 else "late" if delay > 3.0 else "early")
     flag = computer.disagreement_flag
-    return dict(
+    extra = {} if not extended else dict(
+        accel_rejected_after_command=ext["rejected"], longest_accel_gap_after_command_ms=ext["max_gap"],
+        true_v_at_command_mps=f"{ext['v_cmd']:.2f}" if ext["v_cmd"] is not None else "")
+    return extra | dict(
         set=set_, scenario=name, group=group, case=label, seed=seed, ideal=ideal,
         onset_tick=min((sp[1] for sp in specs), default=""),
         touchdown_tick=td[1] if td else "", criterion=({"DETECTED": "primary", "FALLBACK_CRITERION": "fallback"}.get(td[2], td[2]) if td else ""),
@@ -217,13 +265,13 @@ def baseline(workers: int) -> None:
     write_summary(rows, ref, "baseline_summary.md", "F2 baseline: current avionics (F1 closed), before any F2 change")
 
 
-def write_summary(rows: list[dict], ref: dict, filename: str, title: str) -> None:
+def write_summary(rows: list[dict], ref: dict, filename: str, title: str, mode: str = "baseline") -> None:
     faults = [r for r in rows if r["set"] == "fault"]
     healthy = [r for r in rows if r["set"] == "healthy"]
     false_all = [r for r in rows if r["false_touchdown"]]
     h_bad = [r for r in healthy if r["outcome"] != "on time"]
     L = [f"# {title}", "",
-         "Generated by `uv run python tools/f2_audit.py baseline` (run from `backend/`). Every run flown closed loop to true "
+         f"Generated by `uv run python tools/f2_audit.py {mode}` (run from `backend/`). Every run flown closed loop to true "
          "touchdown plus the post-touchdown hold. Results apply only to these runs (section 4, item 5).", "",
          "## Reference times (ticks; v_d in m/s)", "", "| Scenario | B | A | TD | v_d |", "|---|---|---|---|---|"]
     L += [f"| {n} | {r['B']} | {r['A']} | {r['TD']} | {r['v_d']} |" for n, r in ref.items()]
@@ -265,12 +313,34 @@ def write_summary(rows: list[dict], ref: dict, filename: str, title: str) -> Non
     (OUT / filename).write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
+def addition(workers: int) -> None:
+    """Section 6a additional cases on the current code, as an addition to the baseline (6b)."""
+    ref = reference_times()
+    jobs = addition_jobs(ref)
+    with Pool(workers) as pool:
+        rows = pool.map(run, [(j, ref, True) for j in jobs], chunksize=2)
+    OUT.mkdir(parents=True, exist_ok=True)
+    with open(OUT / "baseline_add_runs.csv", "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    write_summary(rows, ref, "baseline_add_summary.md", "F2 baseline addition: accelerometer bias steps and high-speed deployment", "addition")
+    hs = [r for r in rows if r["group"] == "high-speed deployment"]
+    L = ["", "## High-speed deployment: accelerometer after the deployment command", "",
+         "| Case | Seed | True speed at command (m/s) | Accel samples rejected after command | Longest gap between valid accel samples after command (ms) | TOUCHDOWN outcome |",
+         "|---|---|---|---|---|---|"]
+    L += [f"| {r['case']} | {r['seed']} | {r['true_v_at_command_mps']} | {r['accel_rejected_after_command']} | "
+          f"{r['longest_accel_gap_after_command_ms']} | {r['outcome']} {r['delay_s']} |" for r in hs]
+    with open(OUT / "baseline_add_summary.md", "a", encoding="utf-8") as fh:
+        fh.write("\n".join(L) + "\n")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("mode", choices=["baseline"])
+    ap.add_argument("mode", choices=["baseline", "addition"])
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     args = ap.parse_args()
-    baseline(args.workers)
+    (baseline if args.mode == "baseline" else addition)(args.workers)
 
 
 if __name__ == "__main__":

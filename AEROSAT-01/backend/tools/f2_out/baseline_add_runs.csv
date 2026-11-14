@@ -1,0 +1,841 @@
+accel_rejected_after_command,longest_accel_gap_after_command_ms,true_v_at_command_mps,set,scenario,group,case,seed,ideal,onset_tick,touchdown_tick,criterion,touchdown_quality,true_alt_at_touchdown_m,true_v_at_touchdown_mps,true_touchdown_tick,true_touchdown_time_s,delay_s,outcome,false_touchdown,deploy_tick,deploy_source,commands,flag_reason,final_state,events_unique
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),3,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),3,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),3,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),6,False,64360,187160,primary,NOMINAL,0.0,0.00,184642,184.641,2.519,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),2,False,64360,187160,primary,NOMINAL,0.0,0.00,184650,184.649,2.511,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),3,False,64360,187180,primary,NOMINAL,0.0,0.00,184650,184.649,2.531,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),6,False,64360,187160,primary,NOMINAL,0.0,0.00,184642,184.641,2.519,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),8,False,64360,187220,primary,NOMINAL,0.0,0.00,184637,184.637,2.583,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),3,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),3,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),3,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),6,False,104460,187160,primary,NOMINAL,0.0,0.00,184642,184.641,2.519,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),2,False,104460,187160,primary,NOMINAL,0.0,0.00,184650,184.649,2.511,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),3,False,104460,187180,primary,NOMINAL,0.0,0.00,184650,184.649,2.531,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),6,False,104460,187160,primary,NOMINAL,0.0,0.00,184642,184.641,2.519,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),8,False,104460,187220,primary,NOMINAL,0.0,0.00,184637,184.637,2.583,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),3,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),0,False,64360,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),3,False,64360,187220,primary,NOMINAL,0.0,0.00,184650,184.649,2.571,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),0,False,64360,187200,primary,NOMINAL,0.0,0.00,184656,184.655,2.545,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),1,False,64360,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),3,False,64360,187220,primary,NOMINAL,0.0,0.00,184650,184.649,2.571,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),4,False,64360,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),5,False,64360,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),7,False,64360,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),9,False,64360,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),0,False,64360,187200,primary,NOMINAL,0.0,0.00,184656,184.655,2.545,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),1,False,64360,187280,primary,NOMINAL,0.0,0.00,184650,184.649,2.631,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),2,False,64360,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),3,False,64360,187240,fallback,NOMINAL,0.0,0.00,184650,184.649,2.591,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),4,False,64360,187240,primary,NOMINAL,0.0,0.00,184659,184.658,2.582,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),5,False,64360,187180,primary,NOMINAL,0.0,0.00,184637,184.637,2.543,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),6,False,64360,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),7,False,64360,187180,primary,NOMINAL,0.0,0.00,184636,184.635,2.545,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),8,False,64360,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),9,False,64360,187260,primary,NOMINAL,0.0,0.00,184661,184.661,2.599,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),3,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),0,False,104460,187180,primary,NOMINAL,0.0,0.00,184656,184.655,2.525,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),3,False,104460,187220,primary,NOMINAL,0.0,0.00,184650,184.649,2.571,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),0,False,104460,187200,primary,NOMINAL,0.0,0.00,184656,184.655,2.545,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),1,False,104460,187260,primary,NOMINAL,0.0,0.00,184650,184.649,2.611,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),3,False,104460,187220,primary,NOMINAL,0.0,0.00,184650,184.649,2.571,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),4,False,104460,187200,primary,NOMINAL,0.0,0.00,184659,184.658,2.542,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),5,False,104460,187160,primary,NOMINAL,0.0,0.00,184637,184.637,2.523,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),7,False,104460,187160,primary,NOMINAL,0.0,0.00,184636,184.635,2.525,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),9,False,104460,187240,primary,NOMINAL,0.0,0.00,184661,184.661,2.579,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-9.97,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),0,False,104460,187200,primary,NOMINAL,0.0,0.00,184656,184.655,2.545,on time,False,25265,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),1,False,104460,187280,primary,NOMINAL,0.0,0.00,184650,184.649,2.631,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),2,False,104460,187200,primary,NOMINAL,0.0,0.00,184650,184.649,2.551,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-10.17,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),3,False,104460,187240,fallback,NOMINAL,0.0,0.00,184650,184.649,2.591,on time,False,25285,DETECTED,1,,LANDED,True
+0,5,-9.87,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),4,False,104460,187240,primary,NOMINAL,0.0,0.00,184659,184.658,2.582,on time,False,25255,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),5,False,104460,187180,primary,NOMINAL,0.0,0.00,184637,184.637,2.543,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-10.41,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),6,False,104460,187200,primary,NOMINAL,0.0,0.00,184642,184.641,2.559,on time,False,25310,DETECTED,1,,LANDED,True
+0,5,-10.61,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),7,False,104460,187180,primary,NOMINAL,0.0,0.00,184636,184.635,2.545,on time,False,25330,DETECTED,1,,LANDED,True
+0,5,-10.56,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),8,False,104460,187240,primary,NOMINAL,0.0,0.00,184637,184.637,2.603,on time,False,25325,DETECTED,1,,LANDED,True
+0,5,-9.77,fault,ref01,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),9,False,104460,187260,primary,NOMINAL,0.0,0.00,184661,184.661,2.599,on time,False,25245,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),3,False,86940,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),3,False,86940,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),3,False,86940,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),0,False,86940,260700,primary,NOMINAL,0.0,0.00,258131,258.130,2.570,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),1,False,86940,260680,primary,NOMINAL,0.0,0.00,258150,258.150,2.530,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),3,False,86940,260680,primary,NOMINAL,0.0,0.00,258128,258.128,2.552,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),4,False,86940,260695,primary,NOMINAL,0.0,0.00,258141,258.140,2.555,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),6,False,86940,260660,primary,NOMINAL,0.0,0.00,258121,258.120,2.540,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),7,False,86940,260640,primary,NOMINAL,0.0,0.00,258139,258.139,2.501,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),8,False,86940,260680,primary,NOMINAL,0.0,0.00,258141,258.140,2.540,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),9,False,86940,260660,primary,NOMINAL,0.0,0.00,258122,258.122,2.538,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),3,False,144000,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),3,False,144000,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),3,False,144000,260720,primary,NOMINAL,0.0,0.00,258128,258.128,2.592,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),0,False,144000,260700,primary,NOMINAL,0.0,0.00,258131,258.130,2.570,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),1,False,144000,260680,primary,NOMINAL,0.0,0.00,258150,258.150,2.530,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),3,False,144000,260680,primary,NOMINAL,0.0,0.00,258128,258.128,2.552,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),4,False,144000,260695,primary,NOMINAL,0.0,0.00,258141,258.140,2.555,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),6,False,144000,260660,primary,NOMINAL,0.0,0.00,258121,258.120,2.540,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),7,False,144000,260640,primary,NOMINAL,0.0,0.00,258139,258.139,2.501,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),8,False,144000,260680,primary,NOMINAL,0.0,0.00,258141,258.140,2.540,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),9,False,144000,260660,primary,NOMINAL,0.0,0.00,258122,258.122,2.538,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),3,False,86940,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),3,False,86940,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),3,False,86940,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),4,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),5,False,86940,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),9,False,86940,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),0,False,86940,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),1,False,86940,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),2,False,86940,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),3,False,86940,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),4,False,86940,260720,primary,NOMINAL,0.0,0.00,258141,258.140,2.580,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),5,False,86940,260660,primary,NOMINAL,0.0,0.00,258145,258.144,2.516,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),6,False,86940,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),7,False,86940,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),8,False,86940,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),9,False,86940,260720,primary,NOMINAL,0.0,0.00,258122,258.122,2.598,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),3,False,144000,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),3,False,144000,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),3,False,144000,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),4,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),5,False,144000,260640,primary,NOMINAL,0.0,0.00,258145,258.144,2.496,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),9,False,144000,260700,primary,NOMINAL,0.0,0.00,258122,258.122,2.578,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-10.39,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),0,False,144000,260720,primary,NOMINAL,0.0,0.00,258131,258.130,2.590,on time,False,30925,DETECTED,1,,LANDED,True
+0,5,-9.70,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),1,False,144000,260720,primary,NOMINAL,0.0,0.00,258150,258.150,2.570,on time,False,30855,DETECTED,1,,LANDED,True
+0,5,-10.19,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),2,False,144000,260700,primary,NOMINAL,0.0,0.00,258137,258.136,2.564,on time,False,30905,DETECTED,1,,LANDED,True
+0,5,-10.48,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),3,False,144000,260740,primary,NOMINAL,0.0,0.00,258128,258.128,2.612,on time,False,30935,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),4,False,144000,260720,primary,NOMINAL,0.0,0.00,258141,258.140,2.580,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-9.90,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),5,False,144000,260660,primary,NOMINAL,0.0,0.00,258145,258.144,2.516,on time,False,30875,DETECTED,1,,LANDED,True
+0,5,-10.73,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),6,False,144000,260680,primary,NOMINAL,0.0,0.00,258121,258.120,2.560,on time,False,30960,DETECTED,1,,LANDED,True
+0,5,-10.09,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),7,False,144000,260700,primary,NOMINAL,0.0,0.00,258139,258.139,2.561,on time,False,30895,DETECTED,1,,LANDED,True
+0,5,-10.04,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),8,False,144000,260700,primary,NOMINAL,0.0,0.00,258141,258.140,2.560,on time,False,30890,DETECTED,1,,LANDED,True
+0,5,-10.68,fault,zero_drag,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),9,False,144000,260720,primary,NOMINAL,0.0,0.00,258122,258.122,2.598,on time,False,30955,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),2,False,49440,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),8,False,49440,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),2,False,49440,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),8,False,49440,115800,primary,NOMINAL,0.0,0.00,113294,113.294,2.506,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),2,False,49440,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),8,False,49440,115800,primary,NOMINAL,0.0,0.00,113294,113.294,2.506,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),0,False,49440,115780,primary,NOMINAL,0.0,0.00,113269,113.268,2.512,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),2,False,49440,115800,primary,NOMINAL,0.0,0.00,113287,113.287,2.513,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),5,False,49440,115840,primary,NOMINAL,0.0,0.00,113307,113.307,2.533,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),6,False,49440,115800,primary,NOMINAL,0.0,0.00,113301,113.300,2.500,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),8,False,49440,115780,primary,NOMINAL,0.0,0.00,113294,113.294,2.486,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),2,False,70740,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),8,False,70740,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),2,False,70740,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),8,False,70740,115800,primary,NOMINAL,0.0,0.00,113294,113.294,2.506,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),2,False,70740,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),8,False,70740,115800,primary,NOMINAL,0.0,0.00,113294,113.294,2.506,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),0,False,70740,115780,primary,NOMINAL,0.0,0.00,113269,113.268,2.512,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),2,False,70740,115800,primary,NOMINAL,0.0,0.00,113287,113.287,2.513,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),5,False,70740,115840,primary,NOMINAL,0.0,0.00,113307,113.307,2.533,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),6,False,70740,115800,primary,NOMINAL,0.0,0.00,113301,113.300,2.500,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),8,False,70740,115780,primary,NOMINAL,0.0,0.00,113294,113.294,2.486,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),2,False,49440,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),8,False,49440,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),2,False,49440,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),8,False,49440,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),0,False,49440,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),1,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),2,False,49440,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),3,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),4,False,49440,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),6,False,49440,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),8,False,49440,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),9,False,49440,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),0,False,49440,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),1,False,49440,115880,primary,NOMINAL,0.0,0.00,113301,113.300,2.580,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),2,False,49440,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),3,False,49440,115840,primary,NOMINAL,0.0,0.00,113269,113.268,2.572,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),4,False,49440,115920,primary,NOMINAL,0.0,0.00,113312,113.312,2.608,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),5,False,49440,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),6,False,49440,115860,primary,NOMINAL,0.0,0.00,113301,113.300,2.560,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),7,False,49440,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),8,False,49440,115840,primary,NOMINAL,0.0,0.00,113294,113.294,2.546,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),9,False,49440,115900,primary,NOMINAL,0.0,0.00,113312,113.312,2.588,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),2,False,70740,115820,primary,NOMINAL,0.0,0.00,113287,113.287,2.533,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),8,False,70740,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),2,False,70740,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),8,False,70740,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),0,False,70740,115800,primary,NOMINAL,0.0,0.00,113269,113.268,2.532,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),1,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),2,False,70740,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),3,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),4,False,70740,115880,primary,NOMINAL,0.0,0.00,113312,113.312,2.568,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),6,False,70740,115820,primary,NOMINAL,0.0,0.00,113301,113.300,2.520,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),8,False,70740,115820,primary,NOMINAL,0.0,0.00,113294,113.294,2.526,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),9,False,70740,115800,primary,NOMINAL,0.0,0.00,113312,113.312,2.488,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),0,False,70740,115820,primary,NOMINAL,0.0,0.00,113269,113.268,2.552,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),1,False,70740,115880,primary,NOMINAL,0.0,0.00,113301,113.300,2.580,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.67,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),2,False,70740,115840,primary,NOMINAL,0.0,0.00,113287,113.287,2.553,on time,False,29245,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),3,False,70740,115840,primary,NOMINAL,0.0,0.00,113269,113.268,2.572,on time,False,29295,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),4,False,70740,115920,primary,NOMINAL,0.0,0.00,113312,113.312,2.608,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-10.08,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),5,False,70740,115920,primary,NOMINAL,0.0,0.00,113307,113.307,2.613,on time,False,29185,DETECTED,1,,LANDED,True
+0,5,-10.28,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),6,False,70740,115860,primary,NOMINAL,0.0,0.00,113301,113.300,2.560,on time,False,29205,DETECTED,1,,LANDED,True
+0,5,-10.13,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),7,False,70740,115860,primary,NOMINAL,0.0,0.00,113306,113.305,2.555,on time,False,29190,DETECTED,1,,LANDED,True
+0,5,-10.47,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),8,False,70740,115840,primary,NOMINAL,0.0,0.00,113294,113.294,2.546,on time,False,29225,DETECTED,1,,LANDED,True
+0,5,-9.94,fault,low_thrust,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),9,False,70740,115900,primary,NOMINAL,0.0,0.00,113312,113.312,2.588,on time,False,29170,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,0,False,18200,,,,,,113269,113.268,,missing,False,29295,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-11.16,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,1,False,18200,,,,,,113269,113.268,,missing,False,29295,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,2,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-11.16,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,3,False,18200,,,,,,113269,113.268,,missing,False,29295,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,4,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,5,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-11.16,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,6,False,18200,,,,,,113269,113.268,,missing,False,29295,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,7,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,8,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.67,fault,low_thrust,high-speed deployment,accel stuck 0 @B-1s,9,False,18200,,,,,,113287,113.287,,missing,False,29245,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,0,False,18200,102600,primary,UNRELIABLE,0.0,0.00,100107,100.106,2.494,on time,False,35170,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+13,70,-65.56,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,1,False,18200,103220,primary,UNRELIABLE,0.0,0.00,100669,100.669,2.551,on time,False,35035,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+14,75,-66.55,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,2,False,18200,102740,primary,UNRELIABLE,0.0,0.00,100212,100.211,2.529,on time,False,35145,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+12,65,-65.25,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,3,False,18200,103400,primary,UNRELIABLE,0.0,0.00,100813,100.812,2.588,on time,False,35000,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+13,70,-66.37,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,4,False,18200,102880,primary,UNRELIABLE,0.0,0.00,100296,100.295,2.585,on time,False,35125,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+13,70,-65.92,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,5,False,18200,103040,primary,UNRELIABLE,0.0,0.00,100504,100.503,2.537,on time,False,35075,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+12,65,-65.43,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,6,False,18200,103360,primary,UNRELIABLE,0.0,0.00,100731,100.730,2.630,on time,False,35020,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+13,70,-66.51,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,7,False,18200,102820,primary,UNRELIABLE,0.0,0.00,100233,100.232,2.588,on time,False,35140,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+12,65,-64.89,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,8,False,18200,103520,primary,UNRELIABLE,0.0,0.00,100976,100.976,2.544,on time,False,34960,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel stuck 9.81 @B-1s,9,False,18200,102640,primary,UNRELIABLE,0.0,0.00,100107,100.106,2.534,on time,False,35170,BACKUP_TIMER,1,DISAGREEMENT,LANDED,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,0,False,18200,,,,,,100107,100.106,,missing,False,35170,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-65.56,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,1,False,18200,,,,,,100669,100.669,,missing,False,35035,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.55,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,2,False,18200,,,,,,100212,100.211,,missing,False,35145,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-65.25,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,3,False,18200,,,,,,100813,100.812,,missing,False,35000,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-66.37,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,4,False,18200,,,,,,100296,100.295,,missing,False,35125,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-65.92,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,5,False,18200,,,,,,100504,100.503,,missing,False,35075,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-65.43,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,6,False,18200,,,,,,100731,100.730,,missing,False,35020,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-66.51,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,7,False,18200,,,,,,100233,100.232,,missing,False,35140,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-64.89,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,8,False,18200,,,,,,100976,100.976,,missing,False,34960,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel stuck 80 @B-1s,9,False,18200,,,,,,100107,100.106,,missing,False,35170,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel held @B-1s,0,False,18200,,,,,,100107,100.106,,missing,False,35170,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-65.56,fault,low_thrust,high-speed deployment,accel held @B-1s,1,False,18200,,,,,,100669,100.669,,missing,False,35035,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.55,fault,low_thrust,high-speed deployment,accel held @B-1s,2,False,18200,,,,,,100212,100.211,,missing,False,35145,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-65.25,fault,low_thrust,high-speed deployment,accel held @B-1s,3,False,18200,,,,,,100813,100.812,,missing,False,35000,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-66.37,fault,low_thrust,high-speed deployment,accel held @B-1s,4,False,18200,,,,,,100296,100.295,,missing,False,35125,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-65.92,fault,low_thrust,high-speed deployment,accel held @B-1s,5,False,18200,,,,,,100504,100.503,,missing,False,35075,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-65.43,fault,low_thrust,high-speed deployment,accel held @B-1s,6,False,18200,,,,,,100731,100.730,,missing,False,35020,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+13,70,-66.51,fault,low_thrust,high-speed deployment,accel held @B-1s,7,False,18200,,,,,,100233,100.232,,missing,False,35140,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+12,65,-64.89,fault,low_thrust,high-speed deployment,accel held @B-1s,8,False,18200,,,,,,100976,100.976,,missing,False,34960,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+14,75,-66.78,fault,low_thrust,high-speed deployment,accel held @B-1s,9,False,18200,,,,,,100107,100.106,,missing,False,35170,BACKUP_TIMER,1,DISAGREEMENT,DESCENT,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),0,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),5,False,61780,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),0,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),5,False,61780,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),0,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),5,False,61780,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),0,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),3,False,61780,172700,primary,NOMINAL,0.0,0.00,170105,170.104,2.596,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),4,False,61780,172740,primary,NOMINAL,0.0,0.00,170101,170.101,2.639,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),5,False,61780,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),7,False,61780,172680,primary,NOMINAL,0.0,0.00,170117,170.116,2.564,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),8,False,61780,172620,primary,NOMINAL,0.0,0.00,170110,170.110,2.510,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),0,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),5,False,97900,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),0,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),5,False,97900,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),0,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),5,False,97900,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),0,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),3,False,97900,172700,primary,NOMINAL,0.0,0.00,170105,170.104,2.596,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),4,False,97900,172740,primary,NOMINAL,0.0,0.00,170101,170.101,2.639,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),5,False,97900,172680,primary,NOMINAL,0.0,0.00,170109,170.109,2.571,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),7,False,97900,172680,primary,NOMINAL,0.0,0.00,170117,170.116,2.564,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),8,False,97900,172620,primary,NOMINAL,0.0,0.00,170110,170.110,2.510,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),0,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),5,False,61780,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),0,False,61780,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),5,False,61780,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),0,False,61780,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),2,False,61780,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),3,False,61780,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),4,False,61780,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),5,False,61780,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),7,False,61780,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),8,False,61780,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),9,False,61780,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),0,False,61780,172760,primary,NOMINAL,0.0,0.00,170118,170.117,2.643,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),1,False,61780,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),2,False,61780,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),3,False,61780,172740,primary,NOMINAL,0.0,0.00,170105,170.104,2.636,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),4,False,61780,172800,primary,NOMINAL,0.0,0.00,170101,170.101,2.699,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),5,False,61780,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),6,False,61780,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),7,False,61780,172720,primary,NOMINAL,0.0,0.00,170117,170.116,2.604,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),8,False,61780,172660,primary,NOMINAL,0.0,0.00,170110,170.110,2.550,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),9,False,61780,172780,primary,NOMINAL,0.0,0.00,170114,170.113,2.667,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),0,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),5,False,97900,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),0,False,97900,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),5,False,97900,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),0,False,97900,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),2,False,97900,172680,primary,NOMINAL,0.0,0.00,170118,170.117,2.563,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),3,False,97900,172720,primary,NOMINAL,0.0,0.00,170105,170.104,2.616,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),4,False,97900,172760,primary,NOMINAL,0.0,0.00,170101,170.101,2.659,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),5,False,97900,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),7,False,97900,172700,primary,NOMINAL,0.0,0.00,170117,170.116,2.584,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),8,False,97900,172640,primary,NOMINAL,0.0,0.00,170110,170.110,2.530,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),9,False,97900,172680,primary,NOMINAL,0.0,0.00,170114,170.113,2.567,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),0,False,97900,172760,primary,NOMINAL,0.0,0.00,170118,170.117,2.643,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-9.52,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),1,False,97900,172740,primary,NOMINAL,0.0,0.00,170129,170.128,2.612,on time,False,26650,DETECTED,1,,LANDED,True
+0,5,-10.06,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),2,False,97900,172700,primary,NOMINAL,0.0,0.00,170118,170.117,2.583,on time,False,26705,DETECTED,1,,LANDED,True
+0,5,-10.65,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),3,False,97900,172740,primary,NOMINAL,0.0,0.00,170105,170.104,2.636,on time,False,26765,DETECTED,1,,LANDED,True
+0,5,-10.79,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),4,False,97900,172800,primary,NOMINAL,0.0,0.00,170101,170.101,2.699,on time,False,26780,DETECTED,1,,LANDED,True
+0,5,-10.45,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),5,False,97900,172780,primary,NOMINAL,0.0,0.00,170109,170.109,2.671,on time,False,26745,DETECTED,1,,LANDED,True
+0,5,-9.47,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),6,False,97900,172740,primary,NOMINAL,0.0,0.00,170130,170.129,2.611,on time,False,26645,DETECTED,1,,LANDED,True
+0,5,-10.11,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),7,False,97900,172720,primary,NOMINAL,0.0,0.00,170117,170.116,2.604,on time,False,26710,DETECTED,1,,LANDED,True
+0,5,-10.40,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),8,False,97900,172660,primary,NOMINAL,0.0,0.00,170110,170.110,2.550,on time,False,26740,DETECTED,1,,LANDED,True
+0,5,-10.26,fault,high4k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),9,False,97900,172780,primary,NOMINAL,0.0,0.00,170114,170.113,2.667,on time,False,26725,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),2,False,58280,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),6,False,58280,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),2,False,58280,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),6,False,58280,154880,primary,NOMINAL,0.0,0.00,152222,152.221,2.659,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),0,False,58280,154820,primary,NOMINAL,0.0,0.00,152199,152.198,2.622,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),2,False,58280,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),6,False,58280,154880,primary,NOMINAL,0.0,0.00,152222,152.221,2.659,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),2,False,58280,156940,primary,NOMINAL,0.0,0.00,152205,152.204,4.736,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),6,False,58280,154860,primary,NOMINAL,0.0,0.00,152222,152.221,2.639,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.25),9,False,58280,156380,primary,NOMINAL,0.0,0.00,152211,152.210,4.170,late,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),2,False,89580,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),6,False,89580,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.02 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),2,False,89580,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),6,False,89580,154880,primary,NOMINAL,0.0,0.00,152222,152.221,2.659,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.05 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),0,False,89580,154820,primary,NOMINAL,0.0,0.00,152199,152.198,2.622,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),2,False,89580,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),6,False,89580,154880,primary,NOMINAL,0.0,0.00,152222,152.221,2.659,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.1 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),2,False,89580,156940,primary,NOMINAL,0.0,0.00,152205,152.204,4.736,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),6,False,89580,154860,primary,NOMINAL,0.0,0.00,152222,152.221,2.639,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (requested),accel bias +0.5 m/s^2 @D(0.5),9,False,89580,156380,primary,NOMINAL,0.0,0.00,152211,152.210,4.170,late,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),2,False,58280,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),6,False,58280,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),2,False,58280,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),6,False,58280,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),1,False,58280,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),2,False,58280,155020,primary,NOMINAL,0.0,0.00,152205,152.204,2.816,on time,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),4,False,58280,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),6,False,58280,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),0,False,58280,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),1,False,58280,155780,primary,NOMINAL,0.0,0.00,152202,152.201,3.579,late,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),2,False,58280,155020,primary,NOMINAL,0.0,0.00,152205,152.204,2.816,on time,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),3,False,58280,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),4,False,58280,154900,primary,NOMINAL,0.0,0.00,152213,152.213,2.687,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),5,False,58280,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),6,False,58280,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),7,False,58280,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),8,False,58280,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.25),9,False,58280,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),2,False,89580,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),6,False,89580,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.02 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),2,False,89580,156920,primary,NOMINAL,0.0,0.00,152205,152.204,4.716,late,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),6,False,89580,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.05 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),1,False,89580,154940,primary,NOMINAL,0.0,0.00,152202,152.201,2.739,on time,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),2,False,89580,155020,primary,NOMINAL,0.0,0.00,152205,152.204,2.816,on time,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),4,False,89580,154860,primary,NOMINAL,0.0,0.00,152213,152.213,2.647,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),6,False,89580,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.1 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
+0,5,-10.96,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),0,False,89580,155000,fallback,NOMINAL,0.0,0.00,152199,152.198,2.802,on time,False,28085,DETECTED,1,,LANDED,True
+0,5,-10.77,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),1,False,89580,155780,primary,NOMINAL,0.0,0.00,152202,152.201,3.579,late,False,28065,DETECTED,1,,LANDED,True
+0,5,-10.57,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),2,False,89580,155020,primary,NOMINAL,0.0,0.00,152205,152.204,2.816,on time,False,28045,DETECTED,1,,LANDED,True
+0,5,-10.62,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),3,False,89580,154940,primary,NOMINAL,0.0,0.00,152204,152.203,2.737,on time,False,28050,DETECTED,1,,LANDED,True
+0,5,-9.99,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),4,False,89580,154900,primary,NOMINAL,0.0,0.00,152213,152.213,2.687,on time,False,27985,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),5,False,89580,154880,primary,NOMINAL,0.0,0.00,152195,152.195,2.685,on time,False,28105,DETECTED,1,,LANDED,True
+0,5,-9.35,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),6,False,89580,155020,fallback,NOMINAL,0.0,0.00,152222,152.221,2.799,on time,False,27920,DETECTED,1,,LANDED,True
+0,5,-9.21,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),7,False,89580,156340,primary,NOMINAL,0.0,0.00,152223,152.223,4.117,late,False,27905,DETECTED,1,,LANDED,True
+0,5,-11.16,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),8,False,89580,155200,primary,NOMINAL,0.0,0.00,152195,152.195,3.005,late,False,28105,DETECTED,1,,LANDED,True
+0,5,-10.18,fault,high8k,accel bias step (mirror),accel bias -0.5 m/s^2 @D(0.5),9,False,89580,154900,primary,NOMINAL,0.0,0.00,152211,152.210,2.690,on time,False,28005,DETECTED,1,,LANDED,True
